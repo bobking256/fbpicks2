@@ -34,8 +34,7 @@ trait SupportTrait {
   	}
 
   	public function getCurrentWeek(){
-          return 1;
-
+        return 1;
 		$d = date("U");
 		$date_time_array = getdate($d);
     	$hours = $date_time_array['hours'];
