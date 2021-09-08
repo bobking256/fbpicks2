@@ -36,9 +36,6 @@ class CreateNewUser implements CreatesNewUsers
             }
         }
 
-        Log::debug($pick531);
-        Log::debug($pickall);
-
 
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],

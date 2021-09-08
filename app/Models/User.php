@@ -27,6 +27,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'pick531',
+        'pickall',
+        'admin'
     ];
 
     /**
