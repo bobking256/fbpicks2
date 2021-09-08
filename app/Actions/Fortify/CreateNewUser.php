@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
+use Illuminate\Support\Facades\Log;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -20,6 +21,7 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input)
     {
+
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -27,12 +29,26 @@ class CreateNewUser implements CreatesNewUsers
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
         ])->validate();
 
+        $pick531 = 0;
+        $pickall = 0;
+
+        if(isset($input['pick531'])){
+            if($input['pick531'] == 'on'){
+                $pick531 = 1;
+            }
+        }
+        if(isset($input['pickall'])){
+            if($input['pickall'] == 'on'){
+                $pickall = 1;
+            }
+        }
+
         return User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
-            'pick531' => $input['pick531'],
-            'pickall' => $input['pickall']
+            'pick531' => $pick531,
+            'pickall' => $pickall
         ]);
     }
 }
