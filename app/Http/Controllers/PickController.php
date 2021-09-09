@@ -136,7 +136,7 @@ class PickController extends Controller
                         Log::debug($picks);
                         if($picks == null){
                             Log::debug('creating new pick');
-                            $picks = Pick::create();
+                            $picks = Pick::create($data);
                         }
                         $picks->user_id = auth()->user()->id;
                         $picks->week_no = $weekno;
