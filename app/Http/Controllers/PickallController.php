@@ -8,11 +8,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Traits\SupportTrait;
 use App\Http\Traits\PickallTrait;
+use App\Http\Traits\ResultallTrait;
 
 
 class PickallController extends Controller
 {
-    use SupportTrait, PickallTrait;
+    use SupportTrait, PickallTrait, ResultallTrait;
     /**
      * Display a listing of the resource.
      *
@@ -36,11 +37,11 @@ class PickallController extends Controller
         $st = $this->getState($weekno);
 //		$st = $this->requestAction('/weeknos/getState/'.$weekno);
 
-        if($st==0) return redirect( route('pickall.newweek'));
+        if($st==0) return view('pickall.newweek');
         if($st > 2) return redirect( route('pickalllocked'));
 
         if($this->process_and_lock() == true){
-            return redirect( route('pickall.pickallloced'));
+            return redirect( route('pickall.pickalllocked'));
         }
 /*
 		if($st==0) $this->redirect('/pickalls/newweek/');
@@ -325,5 +326,57 @@ class PickallController extends Controller
     public function notpickall()
     {
 
+    }
+
+    public function pickalllocked()
+    {
+		$weekno = request()->session()->get('weekno');
+		$st = $this->getState($weekno);
+
+        if($st < 3) redirect(route('pickall.pickall'));
+
+        $result = $this->getResults();
+//		$result = $this->requestAction('/resultsalls/getResultsAll/');
+
+        $teams = $this->Support->getTeams();
+        $users = $this->Pickall->getUsers();
+//		$teams = $this->requestAction('/teams/getTeams');
+//		$users = $this->requestAction('/users/getPickAllUsers/');
+		$x=array(array());
+
+		if(sizeof($result) > 0){
+			for($k=0;$k<sizeof($result);$k++){
+				for($i=0;$i<sizeof($users);$i++){
+					if($result[$k]['user_id'] != $users[$i]['id']) continue;
+					$picks = $this->getpicks($users[$i]['id'],$weekno);
+					if($picks['def']==1) $end='*';
+					else $end='';
+					$x[$k][0]=$users[$i]['username'];
+					for($j=1;$j<=16;$j++){
+						$p='p'.$j;
+						if($picks[$p] == 0) $x[$k][$j] = ' ';
+						else $x[$k][$j]=$teams[$picks[$p]-1]['abbrev'].$end;
+					}
+					$x[$k][17]=$picks['totpts'];
+					$x[$k][18]=$result[$k]['tot'];
+					break;
+				}
+			}
+		} else {
+				for($i=0;$i<sizeof($users);$i++){
+					$picks = $this->getpicks($users[$i]['id'],$weekno);
+					if($picks['def']==1) $end='*';
+					else $end='';
+					$x[$i][0]=$users[$i]['username'];
+					for($j=1;$j<=16;$j++){
+						$p='p'.$j;
+						if($picks[$p] == 0) $x[$i][$j] = ' ';
+						else $x[$i][$j]=$teams[$picks[$p]-1]['abbrev'].$end;
+					}
+					$x[$i][17]=$picks['totpts'];
+					$x[$i][18]=0;
+				}
+		}
+		return view('pickall.pickslocked',['x' => $x]);
     }
 }

@@ -35,11 +35,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::get('pick531', [PickController::class, 'create'])->name('pick531.create');
     Route::post('pick531', [PickController::class, 'store'])->name('pick531.store');
     Route::get('complete', [PickController::class, 'complete'])->name('pick531.complete');
+    Route::get('pick531locked', [PickController::class, 'pick531locked'])->name('pick531.pickslocked');
     Route::get('results', [ResultController::class, 'results'])->name('results');
     Route::get('resultsbyweek', [ResultController::class, 'resultsbyweek'])->name('resultsbyweek');
     Route::get('seasonresults', [ResultController::class, 'seasonresults'])->name('seasonresults');
     Route::get('pickall', [PickallController::class, 'create'])->name('pickall.create');
     Route::post('pickall', [PickallController::class, 'store'])->name('pickall.store');
+    Route::get('pickalllocked', [PickallController::class, 'pickalllocked'])->name('pickall.pickslocked');
     Route::get('resultsall', [ResultsallController::class, 'resultsall'])->name('resultsall');
     Route::get('resultsallbyweek', [ResultsallController::class, 'resultsallbyweek'])->name('resultsallbyweek');
     Route::get('completeall', [PickallController:: class, 'complete'])->name('pickall.complete');

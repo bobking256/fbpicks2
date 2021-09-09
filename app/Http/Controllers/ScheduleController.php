@@ -253,7 +253,7 @@ class ScheduleController extends Controller
 //			$this->redirect('/schedules/admin_pt_spread_post');
 
 
-        return back()->with(['success'=>'Schedule updated.']);
+        return back()->with('success','Schedule updated.');
     }
 
     public function changeweek()

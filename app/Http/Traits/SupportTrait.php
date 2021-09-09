@@ -34,23 +34,11 @@ trait SupportTrait {
   	}
 
   	public function getCurrentWeek(){
-        return 1;
-		$d = date("U");
-		$date_time_array = getdate($d);
-    	$hours = $date_time_array['hours'];
-    	$minutes = $date_time_array['minutes'];
-    	$seconds = $date_time_array['seconds'];
-    	$month = $date_time_array['mon'];
-    	$day = $date_time_array['mday'];
-    	$year = $date_time_array['year'];
-
-		$condition = "Weekno.weektime > '".$year."-".$month."-".$day." ".$hours.":".$minutes.":".$seconds."'";
 
         date_default_timezone_set('America/New_York');
         $condition = "Weekno.weektime > '". date('Y-m-d H:m:s')."'";
 
-        $result = Weekno::where(['weektime >'=>date('Y-m-d H:m:s')])
-        	->first();
+        $result = Weekno::where(['weektime','>',date('Y-m-d H:m:s')])->first();
 
 		return $result->id;
 

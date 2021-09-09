@@ -38,6 +38,14 @@ class PickController extends Controller
         $scheds = Schedule::where(['week_no'=>$weekno])->orderBy('id','ASC')->get();
         $picktime = now();  //was session('picktime)
 
+
+        $st = $this->getState($weekno);
+        $pt = $this->getPickTime($weekno);
+
+        if($st==0) return view('pick531.newweek');
+        if($st > 2) return redirect(route('pick531.pickslocked'));
+
+
         Log::debug('Weekno: ' . $weekno);
 
         return view('pick531.create',['picks'=>$picks, 'teams'=>$teams, 'rembonus'=>$rembonus, 'picktime'=>$picktime, 'scheds'=>$scheds,'weekno'=>$weekno]);
@@ -222,6 +230,67 @@ class PickController extends Controller
 
     public function notpick531()
     {
+
+    }
+
+    public function newweek()
+    {
+        return view('pick531.newweek');
+    }
+
+    public function pick531locked()
+    {
+        $weekno = request()->session()->get('weekno');
+
+        $st = $this->getState($weekno);
+        if($st < 3) return redirect(route('pick531.create'));
+
+        $results = $this->getresults();
+
+        $teams = $this->getTeams();
+        $users = $this->getUsers();
+
+        $x=array(array());
+
+        if(sizeof($results) > 0){
+
+            for($j=0;$j<sizeof($results);$j++){
+                for($i=0;$i<sizeof($users);$i++){
+                    if($results[$j]['user_id'] != $users[$i]['id']) continue;
+                    $picks = $this->Pick531->getpicks($users[$i]['id'],$weekno);
+                    if($picks['def']==1) $end='*';
+                    else $end='';
+                    if($picks['bonus'] > 0) $bonusteam = $teams[$picks['bonus']-1]['abbrev'];
+                    else $bonusteam='';
+                    $x[$j][0]=$users[$i]['username'];
+                    $x[$j][1]=$teams[$picks['pt5']-1]['abbrev'].$end;
+                    $x[$j][2]=$teams[$picks['pt3']-1]['abbrev'].$end;
+                    $x[$j][3]=$teams[$picks['pt1']-1]['abbrev'].$end;
+                    $x[$j][4]=$bonusteam;
+                    $x[$j][5]=$this->getRemainingBonus($users[$i]['id']);
+                    $x[$j][6]=$results[$j]['tot'];
+                    break;
+                }
+            }
+        } else {
+                for($i=0;$i<sizeof($users);$i++){
+                    $picks = $this->Pick531->getpicks($users[$i]['id'],$weekno);
+                    if($picks['def']==1) $end='*';
+                    else $end='';
+                    if($picks['bonus'] > 0) $bonusteam = $teams[$picks['bonus']-1]['abbrev'];
+                    else $bonusteam='';
+                    $x[$i][0]=$users[$i]['username'];
+                    $x[$i][1]=$teams[$picks['pt5']-1]['abbrev'].$end;
+                    $x[$i][2]=$teams[$picks['pt3']-1]['abbrev'].$end;
+                    $x[$i][3]=$teams[$picks['pt1']-1]['abbrev'].$end;
+                    $x[$i][4]=$bonusteam;
+                    $x[$i][5]=$this->getRemainingBonus($users[$i]['id']);
+                    $x[$i][6]=0;
+                }
+
+        }
+
+        return view('pick531.pickslocked',['x'=>$x]);
 
     }
 }
