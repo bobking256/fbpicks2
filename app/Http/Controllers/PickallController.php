@@ -170,8 +170,8 @@ class PickallController extends Controller
             $pks = Pickall::create($data);
         } else {
             $pks = Pickall::find($picks['id']);
+            $pks->update($data);
         }
-        $pks->update($data);
 
         $shortweek=0;
         $msgsubject="Weekly Football Picks";
