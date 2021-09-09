@@ -36,9 +36,8 @@ trait SupportTrait {
   	public function getCurrentWeek(){
 
         date_default_timezone_set('America/New_York');
-        $condition = "Weekno.weektime > '". date('Y-m-d H:m:s')."'";
 
-        $result = Weekno::where(['weektime','>',date('Y-m-d H:m:s')])->first();
+        $result = Weekno::where('weektime','>',date('Y-m-d H:m:s'))->first();
 
 		return $result->id;
 

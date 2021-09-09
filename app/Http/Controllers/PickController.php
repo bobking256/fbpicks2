@@ -40,7 +40,7 @@ class PickController extends Controller
 
 
         $st = $this->getState($weekno);
-        $pt = $this->getPickTime($weekno);
+//        $pt = $this->getPickTime($weekno);
 
         if($st==0) return view('pick531.newweek');
         if($st > 2) return redirect(route('pick531.pickslocked'));
