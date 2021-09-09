@@ -9,7 +9,7 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="container max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg ">
                 <div class="font-bold py-6 px-4">
                     Week No.: {{ $weekno }}
@@ -87,7 +87,7 @@
                                     $hometeam = "hometeam_id".$i;
                                     $name="favteam_id".$i;
                                 @endphp
-                                    <input type="radio" name="{{ $name }}" value="{{ $data[$name] }}" {{ $data[$hometeam]  == $data[$name] ? 'checked' : '' }}>
+                                    <input type="radio" name="{{ $name }}" value="{{ $data[$hometeam] }}" {{ $data[$hometeam]  == $data[$name] ? 'checked' : '' }}>
                                 </td>
                                 <td align="left" valign="middle">
                                 @php
