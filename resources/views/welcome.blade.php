@@ -45,7 +45,7 @@
                     </svg>
                 </div>
 
-                <div class="mt-8 bg-white overflow-hidden shadow sm:rounded-lg">
+                <div class="mt-8 bg-white overflow-hidden shadow sm:rounded-lg px-6 py-4">
                     The new and improved Paulie's Football Picks.
                 </div>
 

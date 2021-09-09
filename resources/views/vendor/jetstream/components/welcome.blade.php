@@ -7,7 +7,7 @@
         Welcome to your Paulie's Football Picks!
     </div>
 
-    <div class="mt-6 text-gray-500">
+    <div class="mt-6 text-gray-500 px-6 py-4">
         This web application is a rewrite to catch up with latest secure web frameworks.  Please be patient while we work out the kinks.  Thanks.
     </div>
 </div>
