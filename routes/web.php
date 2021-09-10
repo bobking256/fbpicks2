@@ -58,4 +58,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::get('admin/getnflscores', [ScheduleController::class, 'getnflscores'])->name('admin.getnflscores');
 
     Route::get('admin/users', [GroupController::class, 'index'])->name('admin.users');
+    Route::get('admin/edituser/{user}', [GroupController::class, 'edituser'])->name('admin.edituser');
+    Route::post('admin/updateuser/{user}', [GroupController::class, 'updateuser'])->name('admin.updateuser');
 });

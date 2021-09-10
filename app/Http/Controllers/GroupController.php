@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Group;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+
 
 class GroupController extends Controller
 {
@@ -74,6 +77,27 @@ class GroupController extends Controller
     public function update(Request $request, Group $group)
     {
         //
+    }
+
+    public function edituser(User $user){
+        return view('users.edit',['user'=>$user]);
+    }
+
+    public function updateuser(Request $request, User $user)
+    {
+        if(isset($request->password) && $request->password != null && $request->password != '')
+        {
+            $user->password = Hash::make($request->password);
+        }
+        $user->pick531 = $request->pick531 == 'on' ? 1 : 0;
+        $user->pickall = $request->pickall == 'on' ? 1 : 0;
+        $user->admin = $request->admin == 'on' ? 1 : 0;
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        $user->save();
+
+        return redirect(route('admin.users'));
     }
 
     /**

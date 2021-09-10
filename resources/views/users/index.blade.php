@@ -20,7 +20,7 @@
                     <tbody>
                         @foreach($users as $u)
                         <tr>
-                            <td class="px-2 py-1">{{ $u->id }}</td>
+                            <td class="px-2 py-1"><a class="underline text-blue-700" href="{{ route('admin.edituser', $u->id) }}">{{ $u->id }}</a</td>
                             <td class="px-2 py-1">{{ $u->name }}</td>
                             <td class="px-2 py-1">{{ $u->email }}</td>
                             <th class="px-2 py-1"><input disabled type="checkbox" {{ $u->pick531 ? 'checked' : '' }}></th>
