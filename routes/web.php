@@ -56,4 +56,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::get('admin/changeuser', [GroupController::class, 'changeuser'])->name('admin.changeuser');
     Route::get('admin/changeweek', [ScheduleController::class, 'changeweek'])->name('admin.changeweek');
     Route::get('admin/getnflscores', [ScheduleController::class, 'getnflscores'])->name('admin.getnflscores');
+
+    Route::get('admin/users', [GroupController::class, 'index'])->name('admin.users');
 });

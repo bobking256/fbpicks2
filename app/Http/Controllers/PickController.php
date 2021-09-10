@@ -8,10 +8,12 @@ use App\Models\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Traits\SupportTrait;
+use App\Http\Traits\Pick531Trait;
+use App\Http\Traits\Result531Trait;
 
 class PickController extends Controller
 {
-    use SupportTrait;
+    use SupportTrait, Pick531Trait, Result531Trait;
     /**
      * Display a listing of the resource.
      *
@@ -35,7 +37,7 @@ class PickController extends Controller
         $picks = Pick::where('user_id',auth()->user()->id)->where('week_no',$weekno)->first();
         $teams = Team::all();
         $rembonus = $this->getRemainingBonus(auth()->user()->id);
-        $scheds = Schedule::where(['week_no'=>$weekno])->orderBy('id','ASC')->get();
+        $scheds = Schedule::where('week_no',$weekno)->orderBy('id','ASC')->get();
         $picktime = now();  //was session('picktime)
 
 
@@ -63,7 +65,7 @@ class PickController extends Controller
         Log::debug($request);
         //
         $weekno = $request->session()->get('weekno');
-        $scheds = Schedule::where(['week_no'=>$weekno])->orderBy('id','ASC')->get();
+        $scheds = Schedule::where('week_no',$weekno)->orderBy('id','ASC')->get();
         $rembonus = $this->getRemainingBonus();
 
         $cnt1=0;
@@ -137,7 +139,17 @@ class PickController extends Controller
                         if($picks == null){
                             Log::debug('creating new pick');
                             $picks = Pick::create($data);
+                        } else {
+                            $picks->update($data);
                         }
+
+                        $teams = Team::all();
+                        $rembonus = $this->getRemainingBonus();
+
+                        $success = 'The pick has been saved.';
+                        return view('pick531.complete',['weekno'=>$weekno, 'teams'=>$teams, 'pick5'=>$pick5, 'pick3'=>$pick3, 'pick1'=>$pick1, 'bonus'=>$picks->bonus, 'rembonus'=>$rembonus]);
+
+
                         $picks->user_id = auth()->user()->id;
                         $picks->week_no = $weekno;
                         $picks->pt5 = $pick5;
@@ -230,7 +242,9 @@ class PickController extends Controller
 
     public function notpick531()
     {
+        $users = $this->getNotPicked531();
 
+        return view('pick531.notpick531', ['users'=>$users]);
     }
 
     public function newweek()
@@ -262,7 +276,7 @@ class PickController extends Controller
                     else $end='';
                     if($picks['bonus'] > 0) $bonusteam = $teams[$picks['bonus']-1]['abbrev'];
                     else $bonusteam='';
-                    $x[$j][0]=$users[$i]['username'];
+                    $x[$j][0]=$users[$i]['name'];
                     $x[$j][1]=$teams[$picks['pt5']-1]['abbrev'].$end;
                     $x[$j][2]=$teams[$picks['pt3']-1]['abbrev'].$end;
                     $x[$j][3]=$teams[$picks['pt1']-1]['abbrev'].$end;
@@ -279,7 +293,7 @@ class PickController extends Controller
                     else $end='';
                     if($picks['bonus'] > 0) $bonusteam = $teams[$picks['bonus']-1]['abbrev'];
                     else $bonusteam='';
-                    $x[$i][0]=$users[$i]['username'];
+                    $x[$i][0]=$users[$i]['name'];
                     $x[$i][1]=$teams[$picks['pt5']-1]['abbrev'].$end;
                     $x[$i][2]=$teams[$picks['pt3']-1]['abbrev'].$end;
                     $x[$i][3]=$teams[$picks['pt1']-1]['abbrev'].$end;

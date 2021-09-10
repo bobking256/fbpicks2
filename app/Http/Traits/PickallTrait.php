@@ -18,9 +18,9 @@ trait PickallTrait {
 
 
 	public function getNotPickedAll(){
-		$week_no = $this->getCurrentWeek();
+		$week_no = request()->session()->get('weekno');
 
-		$users = $this->getUsers();
+		$users = $this->getUsersAll();
 
 		$picked = Pickall::where('week_no',$week_no)
 			->where('def',0)
@@ -37,7 +37,7 @@ trait PickallTrait {
 					if($puid == $uid) { $found=1; break; }
 				}
 				if($found == 0) {
-					$notpicked[$count]['name'] = $users[$i]['username'];
+					$notpicked[$count]['name'] = $users[$i]['name'];
 					$notpicked[$count]['id'] = $users[$i]['id'];
 					$notpicked[$count]['email'] = $users[$i]['email'];
 					$count++;

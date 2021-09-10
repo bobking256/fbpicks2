@@ -111,6 +111,18 @@
                                 {{ __('Point Spread') }}
                             </x-jet-dropdown-link>
 
+                            <x-jet-dropdown-link href="{{ route('admin.users') }}">
+                                {{ __('Users') }}
+                            </x-jet-dropdown-link>
+
+                            <x-jet-dropdown-link href="{{ route('admin.notpick531') }}">
+                                {{ __('Not Yet Pick 5-3-1') }}
+                            </x-jet-dropdown-link>
+
+                            <x-jet-dropdown-link href="{{ route('admin.notpickall') }}">
+                                {{ __('Not Yet Pick All') }}
+                            </x-jet-dropdown-link>
+
                         </x-slot>
                     </x-jet-dropdown>
                 </div>

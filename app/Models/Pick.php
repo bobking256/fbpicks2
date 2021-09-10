@@ -17,4 +17,8 @@ class Pick extends Model
         'def'
     ];
 
+    public function users()
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
 }

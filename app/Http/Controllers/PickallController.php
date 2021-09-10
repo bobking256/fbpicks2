@@ -325,7 +325,9 @@ class PickallController extends Controller
 
     public function notpickall()
     {
+        $users = $this->getNotPickedAll();
 
+        return view('pickall.notpickall',['users'=>$users]);
     }
 
     public function pickalllocked()
@@ -351,7 +353,7 @@ class PickallController extends Controller
 					$picks = $this->getpicks($users[$i]['id'],$weekno);
 					if($picks['def']==1) $end='*';
 					else $end='';
-					$x[$k][0]=$users[$i]['username'];
+					$x[$k][0]=$users[$i]['name'];
 					for($j=1;$j<=16;$j++){
 						$p='p'.$j;
 						if($picks[$p] == 0) $x[$k][$j] = ' ';
@@ -367,7 +369,7 @@ class PickallController extends Controller
 					$picks = $this->getpicks($users[$i]['id'],$weekno);
 					if($picks['def']==1) $end='*';
 					else $end='';
-					$x[$i][0]=$users[$i]['username'];
+					$x[$i][0]=$users[$i]['name'];
 					for($j=1;$j<=16;$j++){
 						$p='p'.$j;
 						if($picks[$p] == 0) $x[$i][$j] = ' ';

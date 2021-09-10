@@ -5,20 +5,19 @@ namespace App\Http\Traits;
 use App\Models\Pick;
 use App\Models\User;
 use App\Models\Result;
+use Illuminate\Support\Facades\Log;
 
 trait Pick531Trait {
     use SupportTrait;
 
 
 	public function getNotPicked531(){
-		$week_no = $this->getCurrentWeek();
-
-		$users = $this->getUsers();
-
+		$week_no = request()->session()->get('weekno');
+		$users = $this->getUsers531();
 //		$picked = $this->Pick->find('all',array('conditions'=>array('Pick.week_no'=>$week_no,'Pick.def'=>0)),array('user_id'));
 
-		$picked = Pick::where(['week_no',$week_no])
-			->andWhere(['def',0])
+		$picked = Pick::where('week_no',$week_no)
+			->where('def',0)
 			->get()->toArray();
 
 		$count=0;
@@ -31,7 +30,7 @@ trait Pick531Trait {
 					if($puid == $uid) { $found=1; break; }
 				}
 				if($found == 0) {
-					$notpicked[$count]['name'] = $users[$i]['username'];
+					$notpicked[$count]['name'] = $users[$i]['name'];
 					$notpicked[$count]['id'] = $users[$i]['id'];
 					$notpicked[$count]['email'] = $users[$i]['email'];
 					$count++;
@@ -48,11 +47,9 @@ trait Pick531Trait {
 
     public function getUsers531()
     {
+		$users = User::where('pick531',1)->get()->toArray();
 
-		$users = User::where('pick531',1)
-            ->get()
-			->toArray();
-		return $users;
+        return $users;
    	}
 
 
@@ -62,7 +59,7 @@ trait Pick531Trait {
 	{
 
 		$pick = Pick::where('user_id',$id)
-			->where(['week_no'=>$weekno])
+			->where('week_no',$weekno)
 			->first();
 		if($pick != null){
 			$pick->delete();
