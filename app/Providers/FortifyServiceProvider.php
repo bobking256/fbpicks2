@@ -44,9 +44,11 @@ class FortifyServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
 
+        /*
         $this->app->singleton(
             \Laravel\Fortify\Contracts\RegisterResponse::class,
             \App\Http\Responses\RegisterResponse::class,
         );
+        */
     }
 }

@@ -10,26 +10,22 @@ trait ResultallTrait {
     use SupportTrait, PickallTrait;
 
 
-	public function getResults(){
-		return Resultsall::with(['users'])->select(DB::raw('user_id, users.username, sum(p1+p2+p3+p4+p5+p6+p7+p8+p9+p10+p11+p12+p13+p14+p15+p16) as tot'))
-				->groupBy('user_id')
-				->orderBy('tot','DESC')
-                ->get()
-				->toArray();
+	public function getResultsAll(){
+        return DB::select(DB::raw("SELECT users.name, sum(p1+p2+p3+p4+p5+p6+p7+p8+p9+p10+p11+p12+p13+p14+p15+p16) as 'tot' FROM users, resultsalls WHERE users.id = resultsalls.user_id group by user_id order by tot desc"));
 
 	}
 
 
 
 
-	function processResults($week_no){
-		$weekres = $this->Support->getWeekResults($week_no);
-		$users = $this->Pickall->getUsers();
-		$sched = $this->Support->getSchedule($week_no);
+	function processResultsAll($week_no){
+		$weekres = $this->getWeekResults($week_no);
+		$users = $this->getUsersAll();
+		$sched = $this->getSchedule($week_no);
 
 		$user_res=array();
 		for($i=0;$i<sizeof($users);$i++){
-			$usr_picks = $this->Pickall->getpicks($users[$i]['id'],$week_no);
+			$usr_picks = $this->getpicksAll($users[$i]['id'],$week_no);
 			for($j=0;$j<16;$j++){
 				$usr_res[$j]=0;
 				$p = 'p'.($j+1);
@@ -69,11 +65,11 @@ trait ResultallTrait {
 
 		if(sizeof($result) > 0){
 			$sql = Resultsall::find($result['id']);
+            $sql->update($data);
 		} else {
-			$sql = Resultsall::create();
+			$sql = Resultsall::create($data);
 		}
 
-		$sql->update($data);
 
 	}
 
@@ -81,8 +77,7 @@ trait ResultallTrait {
 
 
 	public function getUserWeekResultsAll($id,$week_no=0){
-		$query = $this->Resultsalls->find();
-		$result = Resultsall::with(['users'])->select(DB::raw('users.username, user_id, sum(p1+p2+p3+p4+p5+p6+p7+p8+p9+p10+p11+p12+p13+p14+p15+p16) as tot'))
+		$result = Resultsall::with(['users'])->select(DB::raw('users.name, user_id, sum(p1+p2+p3+p4+p5+p6+p7+p8+p9+p10+p11+p12+p13+p14+p15+p16) as tot'))
 				->where('user_id',$id)
 				->where('week_no',$week_no)
 				->groupBy('user_id')

@@ -13,20 +13,20 @@
             <table class="table table-striped table-condensed">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>5 Pt</th>
-                        <th>3 Pt</th>
-                        <th>1 Pt</th>
-                        <th>Bonus</th>
-                        <th>Bonus Remaining</th>
-                        <th>Total Points</th>
+                        <th class="px-4 py-1">Name</th>
+                        <th class="px-4 py-1">5 Pt</th>
+                        <th class="px-4 py-1">3 Pt</th>
+                        <th class="px-4 py-1">1 Pt</th>
+                        <th class="px-4 py-1">Bonus</th>
+                        <th class="px-4 py-1">Bonus Remaining</th>
+                        <th class="px-4 py-1">Total Points</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($x as $i)
                     <tr>
                         @foreach($i as $k)
-                        <td><{{ $k }}</td>
+                        <td class="px-4 py-1">{{ $k }}</td>
                         @endforeach
                     </tr>
                     @endforeach

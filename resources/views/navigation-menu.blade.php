@@ -39,15 +39,15 @@
                         </x-slot>
 
                         <x-slot name="content">
-                            <x-jet-dropdown-link href="{{ route('results') }}">
+                            <x-jet-dropdown-link href="{{ route('results.results') }}">
                                 {{ __('Overall Results') }}
                             </x-jet-dropdown-link>
 
-                            <x-jet-dropdown-link href="{{ route('resultsbyweek') }}">
+                            <x-jet-dropdown-link href="{{ route('results.resultsbyweek',['id'=>0]) }}">
                                 {{ __('Results By Week') }}
                             </x-jet-dropdown-link>
 
-                            <x-jet-dropdown-link href="{{ route('seasonresults') }}">
+                            <x-jet-dropdown-link href="{{ route('results.standings') }}">
                                 {{ __('Season View') }}
                             </x-jet-dropdown-link>
 
@@ -78,12 +78,8 @@
                         </x-slot>
 
                         <x-slot name="content">
-                            <x-jet-dropdown-link href="{{ route('resultsall') }}">
+                            <x-jet-dropdown-link href="{{ route('resultsall.standings') }}">
                                 {{ __('Overall Results') }}
-                            </x-jet-dropdown-link>
-
-                            <x-jet-dropdown-link href="{{ route('resultsallbyweek') }}">
-                                {{ __('Results By Week') }}
                             </x-jet-dropdown-link>
 
                         </x-slot>

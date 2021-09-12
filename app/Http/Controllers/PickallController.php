@@ -38,10 +38,10 @@ class PickallController extends Controller
 //		$st = $this->requestAction('/weeknos/getState/'.$weekno);
 
         if($st==0) return view('pickall.newweek');
-        if($st > 2) return redirect( route('pickalllocked'));
+        if($st > 2) return redirect( route('pickall.pickslocked'));
 
         if($this->process_and_lock() == true){
-            return redirect( route('pickall.pickalllocked'));
+            return redirect( route('pickall.pickslocked'));
         }
 /*
 		if($st==0) $this->redirect('/pickalls/newweek/');
@@ -336,12 +336,11 @@ class PickallController extends Controller
 		$st = $this->getState($weekno);
 
         if($st < 3) redirect(route('pickall.pickall'));
-
-        $result = $this->getResults();
+        $result = $this->getResultsAll();
 //		$result = $this->requestAction('/resultsalls/getResultsAll/');
 
-        $teams = $this->Support->getTeams();
-        $users = $this->Pickall->getUsers();
+        $teams = $this->getTeams();
+        $users = $this->getUsersAll();
 //		$teams = $this->requestAction('/teams/getTeams');
 //		$users = $this->requestAction('/users/getPickAllUsers/');
 		$x=array(array());
@@ -350,7 +349,7 @@ class PickallController extends Controller
 			for($k=0;$k<sizeof($result);$k++){
 				for($i=0;$i<sizeof($users);$i++){
 					if($result[$k]['user_id'] != $users[$i]['id']) continue;
-					$picks = $this->getpicks($users[$i]['id'],$weekno);
+					$picks = $this->getpicksAll($users[$i]['id'],$weekno);
 					if($picks['def']==1) $end='*';
 					else $end='';
 					$x[$k][0]=$users[$i]['name'];
@@ -366,7 +365,7 @@ class PickallController extends Controller
 			}
 		} else {
 				for($i=0;$i<sizeof($users);$i++){
-					$picks = $this->getpicks($users[$i]['id'],$weekno);
+					$picks = $this->getpicksAll($users[$i]['id'],$weekno);
 					if($picks['def']==1) $end='*';
 					else $end='';
 					$x[$i][0]=$users[$i]['name'];

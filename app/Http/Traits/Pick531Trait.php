@@ -66,7 +66,7 @@ trait Pick531Trait {
 		}
 
 
-		$def_pick = Pick::create();
+		$def_pick = new Pick;
 
 		$def_pick->user_id = $id;
 		$def_pick->week_no = $weekno;
@@ -74,6 +74,7 @@ trait Pick531Trait {
 		$def_pick->pt3 = $p3;
 		$def_pick->pt1 = $p1;
 		$def_pick->def = true;
+        $def_pick->bonus = 0;
 
         $def_pick->save();
 	}
@@ -102,7 +103,7 @@ trait Pick531Trait {
         $weekres=array();
 		$weekres = $this->getWeekResults($week_no);
 
-		$users = $this->getUsers();
+		$users = $this->getUsers531();
 
         for($i=0;$i<sizeof($users);$i++){
 			$usr_picks = $this->getpicks($users[$i]['id'],$week_no);

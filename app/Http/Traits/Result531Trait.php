@@ -4,30 +4,39 @@ namespace App\Http\Traits;
 
 use Illuminate\Support\Facades\DB;
 use App\Models\Result;
+use Illuminate\Support\Facades\Log;
 
 trait Result531Trait {
 
     use SupportTrait, PickallTrait;
 
 
-	public function getresults(){
-		return Result::with(['users'])->select(DB::raw('sum(pt5 + pt3 + pt1 + bonus) as tot, user_id, username'))
+	public function getresults531(){
+        Log::debug('getting results');
+/*
+        $results = Result::with(['users'])->sum(function($row){
+            return $row->pt5 + $row->pt3 + $row->pt1 + $row->bonus;
+        })
 				->groupBy('user_id')
-				->orderBy('tot','DESC')
+//				->orderBy('tot','DESC')
                 ->get()
-				->toArray();
+                ->toArray();
+*/
+        $results = DB::select(DB::raw("SELECT users.name, sum(pt5 + pt3 + pt1 + bonus) as 'tot' FROM users, results WHERE users.id = results.user_id group by user_id order by tot desc"));
 
+        Log::debug($results);
+        return $results;
 	}
 
 
-	function processResults($week_no){
+	function processResults531($week_no){
 		$weekres = $this->getWeekResults($week_no);
-		$users = $this->getUsers();
+		$users = $this->getUsers531();
 		$sched = $this->getSchedule($week_no);
 
 		$err_msg = [];
 		for($i=0;$i<sizeof($users);$i++){
-			$usr_picks = $this->getPicks($users[$i]['id'],$week_no);
+			$usr_picks = $this->getPicks531($users[$i]['id'],$week_no);
 //			$usr_picks = request()Action('/picks/getpick531/'.$users[$i]['id'].'/'.$week_no);
 
 
@@ -74,12 +83,11 @@ trait Result531Trait {
 
 			$r = $this->getResultByUser($users[$i]['id'],$week_no);
 			if($r == null){
-				$sql = Result::create();
+				$sql = Result::create($usr_res);
 			} else {
 				$sql = Result::find($r['id']);
+                $sql->update($usr_res);
 			}
-
-			$sql->update($usr_res);
 
 		}
 	}

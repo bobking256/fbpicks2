@@ -262,7 +262,7 @@ class PickController extends Controller
         $results = $this->getresults();
 
         $teams = $this->getTeams();
-        $users = $this->getUsers();
+        $users = $this->getUsers531();
 
         $x=array(array());
 
@@ -288,7 +288,7 @@ class PickController extends Controller
             }
         } else {
                 for($i=0;$i<sizeof($users);$i++){
-                    $picks = $this->Pick531->getpicks($users[$i]['id'],$weekno);
+                    $picks = $this->getpicks531($users[$i]['id'],$weekno);
                     if($picks['def']==1) $end='*';
                     else $end='';
                     if($picks['bonus'] > 0) $bonusteam = $teams[$picks['bonus']-1]['abbrev'];

@@ -48,7 +48,7 @@ trait PickallTrait {
 
 	public function getUsersAllCount()
 	{
-		$users = $this->getUsers();
+		$users = $this->getUsersAll();
 		return sizeof($users);
    	}
 
@@ -81,7 +81,7 @@ trait PickallTrait {
 		}
 
 
-		$def_pick = Pickall::create();
+		$def_pick = new Pickall;
 
 		$def_pick->user_id = $id;
 		$def_pick->week_no = $weekno;
@@ -101,7 +101,7 @@ trait PickallTrait {
 		$def_pick->p14 = $p14;
 		$def_pick->p15 = $p15;
 		$def_pick->p16 = $p16;
-		$def_pick->tot = 0;
+		$def_pick->totpts = 0;
 		$def_pick->def = true;
 
         $def_pick->save();

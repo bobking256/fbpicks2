@@ -196,6 +196,8 @@ class ScheduleController extends Controller
             $state = 3; //move to next state;
 //lock picks and set default values
             $users = $this->getNotPicked531();
+            Log::debug('not picked');
+            Log::debug($users);
 //				$users = $requestAction('/picks/getNotPicked/');
             if(sizeof($users) > 0){
                 $sched = $this->getSchedule($weekno);
@@ -210,6 +212,8 @@ class ScheduleController extends Controller
                 }
             }
             $users = $this->getNotPickedAll();
+            Log::debug('Pick All Not Picked');
+            Log::debug($users);
 //				$users = $requestAction('/pickalls/getNotPicked/');
             if(sizeof($users) > 0){
                 $p=array();
