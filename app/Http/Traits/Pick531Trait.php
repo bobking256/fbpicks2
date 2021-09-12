@@ -106,7 +106,7 @@ trait Pick531Trait {
 		$users = $this->getUsers531();
 
         for($i=0;$i<sizeof($users);$i++){
-			$usr_picks = $this->getpicks($users[$i]['id'],$week_no);
+			$usr_picks = $this->getpicks531($users[$i]['id'],$week_no);
 //			$usr_picks = request()Action('/picks/getpick531/'.$users[$i]['User']['id'].'/'.$week_no);
 
 
@@ -157,13 +157,11 @@ trait Pick531Trait {
 			$r = $this->getResultByUser($users[$i]['id'],$week_no);
 
 			if($r == null){
-				$sql = Result::create();
+				$sql = Result::create($usr_res);
 			} else {
 				$sql = Result::find($r['id']);
+                $sql->update($usr_res);
 			}
-
-            $sql->update($usr_res);
-
 		}
 	}
 

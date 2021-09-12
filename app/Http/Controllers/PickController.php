@@ -259,7 +259,7 @@ class PickController extends Controller
         $st = $this->getState($weekno);
         if($st < 3) return redirect(route('pick531.create'));
 
-        $results = $this->getresults();
+        $results = $this->getresults531();
 
         $teams = $this->getTeams();
         $users = $this->getUsers531();
@@ -271,7 +271,7 @@ class PickController extends Controller
             for($j=0;$j<sizeof($results);$j++){
                 for($i=0;$i<sizeof($users);$i++){
                     if($results[$j]['user_id'] != $users[$i]['id']) continue;
-                    $picks = $this->Pick531->getpicks($users[$i]['id'],$weekno);
+                    $picks = $this->getpicks531($users[$i]['id'],$weekno);
                     if($picks['def']==1) $end='*';
                     else $end='';
                     if($picks['bonus'] > 0) $bonusteam = $teams[$picks['bonus']-1]['abbrev'];

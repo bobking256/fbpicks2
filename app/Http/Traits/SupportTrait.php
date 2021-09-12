@@ -120,8 +120,7 @@ trait SupportTrait {
 
 				request()->data['state'] = 3; //move to next state;
 //lock picks and set default values
-//				$users = request()Action('/picks/getNotPicked/');
-				$users = $this->Pick531->getNotPicked();
+				$users = $this->getNotPicked531();
 
 				if(!empty($users[0])){
 					$sched = $this->getSchedule($weekno);
@@ -131,12 +130,10 @@ trait SupportTrait {
 						else if($sched[$i]['default_game']==1) $def1 = $sched[$i]['favoriteteam_id'];
 					}
 					for($i=0;$i<sizeof($users);$i++){
-//						request()Action('/picks/setDefaultPicks/'.$users[$i]['id'].'/'.$weekno.'/'.$def5.'/'.$def3.'/'.$def1);
-                        $this->Pick531->setDefaultPicks($users[$i]['id'],$weekno,$def5,$def3,$def1);
+                        $this->setDefaultPicks531($users[$i]['id'],$weekno,$def5,$def3,$def1);
 					}
 				}
-//				$users = request()Action('/pickalls/getNotPicked/');
-                $users = $this->PickAll->getNotPicked();
+                $users = $this->getNotPickedAll();
 				if(!empty($users[0])){
 					$p=array();
 					for($i=0;$i<sizeof($sched);$i++){
@@ -152,8 +149,7 @@ trait SupportTrait {
 				        $p[14] = 0;
 					}
 					for($i=0;$i<sizeof($users);$i++){
-//						request()Action('/pickalls/setDefaultPicks/'.$users[$i]['id'].'/'.$weekno.'/'.$p[0].'/'.$p[1].'/'.$p[2].'/'.$p[3].'/'.$p[4].'/'.$p[5].'/'.$p[6].'/'.$p[7].'/'.$p[8].'/'.$p[9].'/'.$p[10].'/'.$p[11].'/'.$p[12].'/'.$p[13].'/'.$p[14].'/'.$p[15]);
-                        $this->PickAll->setDefaultPicks($users[$i]['id'],$weekno,$p[0],$p[1],$p[2],$p[3],$p[4],$p[5],$p[6],$p[7],$p[8],$p[9],$p[10],$p[11],$p[12],$p[13],$p[14],$p[15]);
+                        $this->setDefaultPicksAll($users[$i]['id'],$weekno,$p[0],$p[1],$p[2],$p[3],$p[4],$p[5],$p[6],$p[7],$p[8],$p[9],$p[10],$p[11],$p[12],$p[13],$p[14],$p[15]);
 					}
 				}
 			$this->updateState($weekno,request()->data['state']);

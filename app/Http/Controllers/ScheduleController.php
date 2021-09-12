@@ -198,7 +198,6 @@ class ScheduleController extends Controller
             $users = $this->getNotPicked531();
             Log::debug('not picked');
             Log::debug($users);
-//				$users = $requestAction('/picks/getNotPicked/');
             if(sizeof($users) > 0){
                 $sched = $this->getSchedule($weekno);
                 for($i=0;$i<sizeof($sched);$i++){
@@ -208,13 +207,11 @@ class ScheduleController extends Controller
                 }
                 for($i=0;$i<sizeof($users);$i++){
                     $this->setDefaultPicks531($users[$i]['id'],$weekno,$def5,$def3,$def1);
-//						$requestAction('/picks/setDefaultPicks/'.$users[$i]['id'].'/'.$weekno.'/'.$def5.'/'.$def3.'/'.$def1);
                 }
             }
             $users = $this->getNotPickedAll();
             Log::debug('Pick All Not Picked');
             Log::debug($users);
-//				$users = $requestAction('/pickalls/getNotPicked/');
             if(sizeof($users) > 0){
                 $p=array();
                 for($i=0;$i<sizeof($sched);$i++){
@@ -226,7 +223,6 @@ class ScheduleController extends Controller
                 for($i=0;$i<sizeof($users);$i++){
                     if(empty($users[$i])) continue;
                     $this->setDefaultPicksAll($users[$i]['id'],$weekno,$p[0], $p[1], $p[2], $p[3], $p[4], $p[5], $p[6], $p[7], $p[8], $p[9], $p[10], $p[11], $p[12], $p[13], $p[14], $p[15]);
-//						$requestAction('/pickalls/setDefaultPicks/'.$users[$i]['id'].'/'.$weekno.'/'.$p[0].'/'.$p[1].'/'.$p[2].'/'.$p[3].'/'.$p[4].'/'.$p[5].'/'.$p[6].'/'.$p[7].'/'.$p[8].'/'.$p[9].'/'.$p[10].'/'.$p[11].'/'.$p[12].'/'.$p[13].'/'.$p[14].'/'.$p[15]);
                 }
             }
 
@@ -235,26 +231,18 @@ class ScheduleController extends Controller
 //process results
             $this->processResults531($weekno);
             $this->processResultsAll($weekno);
-//				$requestAction('/results/processResults/'.$weekno);
-//				$requestAction('/resultsalls/processResults/'.$weekno);
 
         } else if($request['state'] == 6){
 //delete weekly default picks
             $this->deletedefaults531($weekno);
             $this->deletedefaultsAll($weekno);
-//					$requestAction('/picks/deletedefaults/'.$weekno);
-//					$requestAction('/pickalls/deletedefaults/'.$weekno);
         } else if($request['state'] == 7){
 //delete weekly results
             $this->deleteresults531($weekno);
             $this->deleteresultsAll($weekno);
-//					$requestAction('/results/deleteresults/'.$weekno);
-//					$requestAction('/resultsalls/deleteresults/'.$weekno);
         }
 
         $this->updateState($weekno,$state);
-//			$requestAction('/weeknos/updateState/'.$weekno.'/'.$request['state']);
-//			$this->redirect('/schedules/admin_pt_spread_post');
 
 
         return back()->with('success','Schedule updated.');

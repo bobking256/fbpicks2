@@ -99,7 +99,7 @@ trait ResultallTrait {
 
 	}
 
-	public function delete($user_id)
+	public function deleteuserresultall($user_id)
 	{
         $results = Resultsall::where('user_id',$user_id)->get(['id']);
         Resultsall::destroy($results);

@@ -29,7 +29,7 @@ trait Result531Trait {
 	}
 
 
-	function processResults531($week_no){
+	function processResults531_B($week_no){
 		$weekres = $this->getWeekResults($week_no);
 		$users = $this->getUsers531();
 		$sched = $this->getSchedule($week_no);
@@ -118,7 +118,7 @@ trait Result531Trait {
 
 
 
-	public function deleteresults($weekno=0){
+	public function deleteresults531($weekno=0){
 		if($weekno==0) return;
 
         $results = Result::where('week_no',$weekno)->get(['id']);
@@ -126,7 +126,7 @@ trait Result531Trait {
 	}
 
 
-	public function delete($user_id)
+	public function deleteuserresult531($user_id)
 	{
         $results = Result::where('user_id',$user_id)->get(['id']);
         Result::destroy($results);
