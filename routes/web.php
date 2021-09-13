@@ -8,8 +8,8 @@ use App\Http\Controllers\ResultController;
 use App\Http\Controllers\ResultsallController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\WeeknoController;
 use Illuminate\Support\Facades\Route;
-use phpDocumentor\Reflection\Types\Resource_;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,4 +64,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::post('admin/storepick531/{user}', [PickController::class, 'storeadminpick531'])->name('admin.storepick531');
     Route::get('admin/pickall/{user}', [PickallController::class, 'adminpickall'])->name('admin.pickall');
     Route::post('admin/storepickall/{user}', [PickallController::class, 'storeadminpickall'])->name('admin.storepickall');
+    Route::get('admin/weekno', [WeeknoController::class, 'weekno'])->name('admin.weekno');
+    Route::post('admin/storeweekno', [WeeknoController::class, 'storeweekno'])->name('admin.storeweekno');
 });

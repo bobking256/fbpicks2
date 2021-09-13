@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Pick 5-3-1') }}
+        <h2 class="font-semibold text-xl text-gray-700 leading-tight">
+            {{ __('Users') }} <a href="#" class="text-red-700">This is a test</a>
         </h2>
     </x-slot>
 
@@ -28,8 +28,8 @@
                             <th class="px-2 py-1"><input disabled type="checkbox" {{ $u->pick531 ? 'checked' : '' }}></th>
                             <th class="px-2 py-1"><input disabled type="checkbox" {{ $u->pickall ? 'checked' : '' }}></th>
                             <th class="px-2 py-1"><input disabled type="checkbox" {{ $u->admin ? 'checked' : '' }}></th>
-                            <th class="px-2 py-1"><a href="{{ route('admin.pick531', $u->id) }}" class="underline text-blue-700">Pick 5-3-1</a>
-                            <th class="px-2 py-1"><a href="{{ route('admin.pickall', $u->id) }}" class="underline text-blue-700">Pick All</a>
+                            <td class="px-2 py-1"><a href="{{ route('admin.pick531', $u->id) }}" class="underline text-blue-500 hover:text-red-700">Pick 5-3-1</a></td>
+                            <td class="px-2 py-1"><a href="{{ route('admin.pickall', $u->id) }}" class="underline text-blue-500 hover:text-red-700">Pick All</a></td>
                         </tr>
                         @endforeach
                     </tbody>

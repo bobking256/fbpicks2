@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Weekno;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class WeeknoController extends Controller
 {
@@ -58,7 +59,7 @@ class WeeknoController extends Controller
     public function edit(Weekno $weekno)
     {
         //
-
+        return view('admin.weekno',['weekno'=>$weekno]);
     }
 
     /**
@@ -72,6 +73,7 @@ class WeeknoController extends Controller
     {
         //
 
+        return view('dashboard');
     }
 
     /**
@@ -85,7 +87,7 @@ class WeeknoController extends Controller
         //
     }
 
-    public function weeknos()
+    public function weekno()
     {
         $res = Weekno::orderBy('id','ASC')->get()->toArray();
 
@@ -94,32 +96,36 @@ class WeeknoController extends Controller
             $weektime = 'weektime'.$i;
             $picktime = 'picktime'.$i;
             if(empty($r)){
-                $week[$weektime]='';
-                $week[$picktime]='';
+                $week[$weektime]='now';
+                $week[$picktime]='now';
             } else {
                 $week[$weektime]=$r['weektime'];
                 $week[$picktime]=$r['picktime'];
             }
         }
-        return view('weekno',['weeknos'=>$week]);
+        Log::debug($week);
+        return view('admin.weekno',['weekno'=>$week]);
 
     }
 
-    public function updateweeknos(Request $request){
+    public function storeweekno(Request $request){
             $err_msg = [];
-            forEach($request->data as $i=>$d){
+            for($i=0; $i<=18; $i++){
                 $weektime = 'weektime'.$i;
                 $picktime = 'picktime'.$i;
                 $data = [];
-                $data['id']=$i+1;
-                $data['weektime']=$d[$weektime];
-                $data['picktime']=$d[$picktime];
+//                $data['id']=$i+1;
+                $data['weektime']=$request[$weektime];
+                $data['picktime']=$request[$picktime];
 
                 $weekno = Weekno::find($i+1);
-
-                $weekno->update($data);
+                if($weekno){
+                    $weekno->update($data);
+                }
 
             }
         return back()->with('success','Week Updated.');
     }
+
+
 }

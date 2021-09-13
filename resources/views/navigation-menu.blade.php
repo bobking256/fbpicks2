@@ -107,6 +107,10 @@
                                 {{ __('Point Spread') }}
                             </x-jet-dropdown-link>
 
+                            <x-jet-dropdown-link href="{{ route('admin.weekno') }}">
+                                {{ __('Week No. Details') }}
+                            </x-jet-dropdown-link>
+
                             <x-jet-dropdown-link href="{{ route('admin.users') }}">
                                 {{ __('Users') }}
                             </x-jet-dropdown-link>
