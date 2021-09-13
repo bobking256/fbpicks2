@@ -330,6 +330,8 @@ class PickController extends Controller
 
     public function storeadminpick531(Request $request, User $user)
     {
+        Log::debug('Admin store request');
+        Log::debug($request);
         $weekno = $request->session()->get('weekno');
         $scheds = Schedule::where('week_no',$weekno)->orderBy('id','ASC')->get();
         $rembonus = $this->getRemainingBonus();
@@ -362,7 +364,7 @@ class PickController extends Controller
                 if($request[$sb]=="1") {
                     $cnt1++;
                     if($scheds[$j]['awayteam_id']==$scheds[$j]['favoriteteam_id']) {$pick1=$scheds[$j]['hometeam_id']; $notpick1=$scheds[$j]['awayteam_id'];}
-                    else {$pick1=$scheds[$j]['awayteam_id']; $notpick1=$scheds[$j][1];}
+                    else {$pick1=$scheds[$j]['awayteam_id']; $notpick1=$scheds[$j]["hometeam_id"];}
                 }
                 if($request[$sb]=="3") {
                     $cnt3++;
@@ -375,6 +377,9 @@ class PickController extends Controller
                     else {$pick5=$scheds[$j]['awayteam_id']; $notpick5=$scheds[$j]['hometeam_id'];}
                 }
             }
+
+        Log::debug($pick5 . " - " . $pick3 . " - " . $pick1);
+        Log::debug($notpick5 . " - " . $notpick3 . " - " . $notpick1);
 
         if($cnt1 != 1 || $cnt3 != 1 || $cnt5 !=1){
             $error = 'You must select one 5 pt, one 3 pt and one 1 pt game and an optional bonus pick!';
