@@ -28,7 +28,7 @@ trait PickallTrait {
 			->toArray();
 
 		$count=0;
-		$notpicked=array(array());
+		$notpicked=array();
 		for($i=0;$i<sizeof($users);$i++){
 				$found=0;
 				$uid = $users[$i]['id'];
@@ -37,6 +37,7 @@ trait PickallTrait {
 					if($puid == $uid) { $found=1; break; }
 				}
 				if($found == 0) {
+                    $notpicked[$count] = [];
 					$notpicked[$count]['name'] = $users[$i]['name'];
 					$notpicked[$count]['id'] = $users[$i]['id'];
 					$notpicked[$count]['email'] = $users[$i]['email'];

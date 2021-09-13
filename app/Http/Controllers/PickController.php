@@ -245,6 +245,8 @@ class PickController extends Controller
     {
         $users = $this->getNotPicked531();
 
+        Log::debug($users);
+
         return view('pick531.notpick531', ['users'=>$users]);
     }
 
