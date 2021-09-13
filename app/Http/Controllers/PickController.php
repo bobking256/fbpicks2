@@ -97,7 +97,7 @@ class PickController extends Controller
                 if($request[$sb]=="1") {
                     $cnt1++;
                     if($scheds[$j]['awayteam_id']==$scheds[$j]['favoriteteam_id']) {$pick1=$scheds[$j]['hometeam_id']; $notpick1=$scheds[$j]['awayteam_id'];}
-                    else {$pick1=$scheds[$j]['awayteam_id']; $notpick1=$scheds[$j][1];}
+                    else {$pick1=$scheds[$j]['awayteam_id']; $notpick1=$scheds[$j]["hometeam_id"];}
                 }
                 if($request[$sb]=="3") {
                     $cnt3++;
