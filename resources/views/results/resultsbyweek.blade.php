@@ -12,7 +12,7 @@
                 @php
                     for($i=1;$i<19;$i++){
                 @endphp
-                        <a href="{{ route('results.resultsbyweek',['id'=>$i]) }}">{{ $i }}</a> &nbsp; &nbsp;
+                        <a href="{{ route('results.resultsbyweek',$i) }}">{{ $i }}</a> &nbsp; &nbsp;
                 @php
                     }
                 @endphp
