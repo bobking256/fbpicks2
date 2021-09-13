@@ -16,6 +16,8 @@
                         <th class="px-2 py-1">Pick 5-3-1</th>
                         <th class="px-2 py-1">Pick All</th>
                         <th class="px-2 py-1">Admin</th>
+                        <th></th>
+                        <th></th>
                     </thead>
                     <tbody>
                         @foreach($users as $u)
@@ -26,6 +28,8 @@
                             <th class="px-2 py-1"><input disabled type="checkbox" {{ $u->pick531 ? 'checked' : '' }}></th>
                             <th class="px-2 py-1"><input disabled type="checkbox" {{ $u->pickall ? 'checked' : '' }}></th>
                             <th class="px-2 py-1"><input disabled type="checkbox" {{ $u->admin ? 'checked' : '' }}></th>
+                            <th class="px-2 py-1"><a href="{{ route('admin.pick531', $u->id) }}" class="underline text-blue-700">Pick 5-3-1</a>
+                            <th class="px-2 py-1"><a href="{{ route('admin.pickall', $u->id) }}" class="underline text-blue-700">Pick All</a>
                         </tr>
                         @endforeach
                     </tbody>
