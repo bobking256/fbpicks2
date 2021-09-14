@@ -165,6 +165,7 @@ class ResultController extends Controller
 
 		$rank = $this->getresults531();
 
+        Log::debug($rank);
 
 		$x=array(array());
 
@@ -183,7 +184,7 @@ class ResultController extends Controller
 				$x[$i]['name'] =$rank[$i]['name'];
 				for($j=1;$j<=18;$j++){
 //					$x[$i][$j] = $this->getuserresultbyweek2($rank[$i]['user_id'],$j);
-                    $x[$i][$j] = $this->Result531->getuserresultbyweek2($rank[$i]['user_id'],$j);
+                    $x[$i][$j] = $this->getuserresultbyweek($rank[$i]['user_id'],$j);
 				}
 				$x[$i][19] =$rank[$i]['tot'];
 			}

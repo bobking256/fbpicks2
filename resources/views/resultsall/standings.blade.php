@@ -8,7 +8,6 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-
                 <table class="table table-striped table-condensed">
                     <thead>
                         <tr>
@@ -42,7 +41,7 @@
                       <td class="px-2 py-1"  align="left"><?php echo $x[$i]['name'];?></td>
                        <?php for($j=1;$j<=18;$j++){ ?>
                       <td class="px-2 py-1"  align="center"><?php
-                              if (!empty($x[$i][$j])) echo $x[$i][$j]->tot;?></td>
+                              if (!empty($x[$i][$j])) echo $x[$i][$j];?></td>
                       <?php } ?>
                       <td class="px-2 py-1"  align="right"><?php echo $x[$i][$j];?></td>
                    </tr>

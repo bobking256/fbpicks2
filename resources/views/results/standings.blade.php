@@ -45,7 +45,7 @@
                             @endphp
                             <td class="px-2 py-1" align="center">
                                 @php
-                                    if (!empty($x[$i][$j])) { echo $x[$i][$j]->tot; }
+                                    if (!empty($x[$i][$j])) { echo $x[$i][$j]; }
                                 @endphp
                             </td>
                             @php

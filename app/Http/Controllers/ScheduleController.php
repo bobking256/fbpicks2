@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 use App\Http\Traits\SupportTrait;
 use App\Http\Traits\Pick531Trait;
 use App\Http\Traits\PickallTrait;
+use App\Http\Traits\Result531Trait;
+use App\Http\Traits\ResultallTrait;
 use Illuminate\Support\Facades\Log;
 
 class ScheduleController extends Controller
 {
-    use SupportTrait, PickallTrait, Pick531Trait;
+    use SupportTrait, PickallTrait, Pick531Trait, Result531Trait, ResultallTrait;
 
     /**
      * Display a listing of the resource.
@@ -257,4 +259,5 @@ class ScheduleController extends Controller
     {
 
     }
+
 }

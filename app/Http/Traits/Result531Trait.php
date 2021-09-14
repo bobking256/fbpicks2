@@ -22,7 +22,10 @@ trait Result531Trait {
                 ->get()
                 ->toArray();
 */
-        $results = DB::select(DB::raw("SELECT users.name, sum(pt5 + pt3 + pt1 + bonus) as 'tot' FROM users, results WHERE users.id = results.user_id group by user_id order by tot desc"));
+        $results = DB::select(DB::raw("SELECT users.name, results.user_id, sum(pt5 + pt3 + pt1 + bonus) as 'tot' FROM users, results WHERE users.id = results.user_id group by user_id order by tot desc"));
+        forEach($results as $i=>$r){
+            $results[$i] = (array) $r;
+        }
 
         Log::debug($results);
         return $results;
@@ -104,13 +107,8 @@ trait Result531Trait {
 
 
 	function getuserresultbyweek($id,$week_no){
-		return Result::with(['users'])->select(DB::raw('sum(pt5+p3+pt1+bonus) as tot'))
-				->where('user_id',$id)
-				->where('week_no <=',$week_no)
-				->groupBy('user_id')
-				->orderBy('tot','DESC')
-				->first();
-
+        $result = DB::select(DB::raw("select sum(pt1+pt3+pt5+bonus) as 'tot' from results where user_id=$id and week_no=$week_no"));
+        return $result[0]->tot;
 	}
 
 

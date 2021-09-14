@@ -11,8 +11,11 @@ trait ResultallTrait {
 
 
 	public function getResultsAll(){
-        return DB::select(DB::raw("SELECT users.name, sum(p1+p2+p3+p4+p5+p6+p7+p8+p9+p10+p11+p12+p13+p14+p15+p16) as 'tot' FROM users, resultsalls WHERE users.id = resultsalls.user_id group by user_id order by tot desc"));
-
+        $results = DB::select(DB::raw("SELECT users.name, sum(p1+p2+p3+p4+p5+p6+p7+p8+p9+p10+p11+p12+p13+p14+p15+p16) as 'tot' FROM users, resultsalls WHERE users.id = resultsalls.user_id group by user_id order by tot desc"));
+        forEach($results as $i=>$r){
+            $results[$i] = (array) $r;
+        }
+        return $results;
 	}
 
 
@@ -63,8 +66,8 @@ trait ResultallTrait {
 			$data[$name] = $weekres[$z];
 		}
 
-		if(sizeof($result) > 0){
-			$sql = Resultsall::find($result['id']);
+		if($result){
+			$sql = Resultsall::find($result->id);
             $sql->update($data);
 		} else {
 			$sql = Resultsall::create($data);
@@ -77,7 +80,8 @@ trait ResultallTrait {
 
 
 	public function getUserWeekResultsAll($id,$week_no=0){
-		$result = Resultsall::with(['users'])->select(DB::raw('users.name, user_id, sum(p1+p2+p3+p4+p5+p6+p7+p8+p9+p10+p11+p12+p13+p14+p15+p16) as tot'))
+        $result =  DB::select(DB::raw("SELECT sum(p1+p2+p3+p4+p5+p6+p7+p8+p9+p10+p11+p12+p13+p14+p15+p16) as 'tot' FROM resultsalls WHERE week_no = $week_no and user_id = $id"));
+/*        $result = Resultsall::with(['users'])->select(DB::raw('sum(p1+p2+p3+p4+p5+p6+p7+p8+p9+p10+p11+p12+p13+p14+p15+p16) as tot'))
 				->where('user_id',$id)
 				->where('week_no',$week_no)
 				->groupBy('user_id')
@@ -85,6 +89,9 @@ trait ResultallTrait {
 				->first()
                 ->toArray();
 		return $result['tot'];
+*/
+
+        return $result[0]->tot;
 
 	}
 

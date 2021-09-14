@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Traits\SupportTrait;
 use App\Http\Traits\PickallTrait;
 use App\Http\Traits\ResultallTrait;
+use Illuminate\Support\Facades\Log;
+
 
 class ResultsallController extends Controller
 {
@@ -99,6 +101,7 @@ class ResultsallController extends Controller
 //		$users = $this->requestAction('/users/getPickAllUsers');
 
 		$rank = $this->getResultsAll();
+        Log::debug($rank);
 
 		$x=array(array());
 
@@ -114,9 +117,17 @@ class ResultsallController extends Controller
 			for($i=0;$i<sizeof($rank);$i++){
 //				$y = $this->requestAction('/users/getUserName/'.$rank[$i]['Resultsall']['user_id']);
 //				$x[$i][0] =$y['User']['username'];
-                $x[$i]['name'] = $rank[$i]['user']['name'];
+                $x[$i]['name'] = $rank[$i]['name'];
 				for($j=1;$j<=18;$j++){
-					$x[$i][$j] = $this->getUserWeekResultsAll($rank[$i]['user_id'],$j);
+                    forEach($users as $u){
+                        if($u['name'] == $rank[$i]['name']){
+                            $id = $u['id'];
+                            break;
+                        }
+                    }
+                    Log::debug('ID: '.$id);
+					$x[$i][$j] = $this->getUserWeekResultsAll($id,$j);
+                    Log::debug('Week Result: '.$x[$i][$j]);
 				}
 				$x[$i][19]=$rank[$i]['tot'];
 			}
