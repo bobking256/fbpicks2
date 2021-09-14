@@ -8,7 +8,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <table class="table table-striped table-condensed">
+                <table class="table table-auto text-sm">
                     <thead>
                         <tr>
                         <th class="px-2 py-1">Name</th>
