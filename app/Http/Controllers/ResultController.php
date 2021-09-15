@@ -114,8 +114,9 @@ class ResultController extends Controller
 	    $users = $this->getUsers531();
 //		$users = $this->requestAction('/users/getPick531Users/');
 
-		if($week_no==0) $week_no = request()->session()->get('weekno');
-
+		if($week_no==0) {
+            $weekno = $this->getCurrentWeek();
+        }
 		for($i=0;$i<sizeof($users);$i++){
 			$res[$i][0]=$users[$i];
 			$res[$i][1]=0;

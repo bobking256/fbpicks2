@@ -18,7 +18,7 @@ trait PickallTrait {
 
 
 	public function getNotPickedAll(){
-		$week_no = request()->session()->get('weekno');
+        $week_no = $this->getCurrentWeek();
 
 		$users = $this->getUsersAll();
 

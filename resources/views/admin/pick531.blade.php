@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Pick 5-3-1') }}  for: {{ $user->name }}
+            {{ __('Pick 5-3-1') }}  for: {{ $user->name }}  for Week No. {{ $weekno }}
         </h2>
     </x-slot>
 

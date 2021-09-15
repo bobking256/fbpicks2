@@ -33,12 +33,12 @@ class PickallController extends Controller
     public function create()
     {
         //
-		$weekno = request()->session()->get('weekno');
+        $weekno = $this->getCurrentWeek();
 
         $st = $this->getState($weekno);
 //		$st = $this->requestAction('/weeknos/getState/'.$weekno);
 
-        if($st==0) return view('pickall.newweek');
+        if($st==0) return redirect(route('pickall.newweek'));
         if($st > 2) return redirect( route('pickall.pickslocked'));
 /*
         if($this->process_and_lock() == true){
@@ -109,6 +109,11 @@ class PickallController extends Controller
         return view('pickall.create',['scheds'=>$scheds, 'teams'=>$teams,'picks'=>$picks,'weekno'=>$weekno,'picktime'=>$picktime]);
     }
 
+    public function newweek(){
+        return view('pickall.newweek');
+    }
+
+
     /**
      * Store a newly created resource in storage.
      *
@@ -120,7 +125,7 @@ class PickallController extends Controller
         //
         Log::debug('Store pickall');
         Log::debug($request);
-        $weekno = request()->session()->get('weekno');
+        $weekno = $this->getCurrentWeek();
         $scheds = $this->getSchedule($weekno);
         $teams = $this->getTeams();
 
@@ -333,11 +338,12 @@ class PickallController extends Controller
 
     public function pickalllocked()
     {
-		$weekno = request()->session()->get('weekno');
+        $weekno = $this->getCurrentWeek();
 		$st = $this->getState($weekno);
 
-        if($st < 3) redirect(route('pickall.pickall'));
+        if($st == 1) redirect(route('pickall.pickall'));
         $result = $this->getResultsAll();
+        Log::debug(print_r($result,1));
 //		$result = $this->requestAction('/resultsalls/getResultsAll/');
 
         $teams = $this->getTeams();
@@ -379,13 +385,13 @@ class PickallController extends Controller
 					$x[$i][18]=0;
 				}
 		}
-		return view('pickall.pickslocked',['x' => $x]);
+		return view('pickall.pickslocked',['x' => $x, 'weekno'=>$weekno]);
     }
 
     public function adminpickall(User $user)
     {
         //
-		$weekno = request()->session()->get('weekno');
+        $weekno = $this->getCurrentWeek();
 
         $st = $this->getState($weekno);
 //		$st = $this->requestAction('/weeknos/getState/'.$weekno);
@@ -464,7 +470,7 @@ class PickallController extends Controller
         //
         Log::debug('Store pickall');
         Log::debug($request);
-        $weekno = request()->session()->get('weekno');
+        $weekno = $this->getCurrentWeek();
         $scheds = $this->getSchedule($weekno);
         $teams = $this->getTeams();
 

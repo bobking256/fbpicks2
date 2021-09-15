@@ -45,14 +45,22 @@ class PickController extends Controller
         $st = $this->getState($weekno);
 //        $pt = $this->getPickTime($weekno);
 
-        if($st==0) return view('pick531.newweek');
-        if($st > 2) return redirect(route('pick531.pickslocked'));
+
+        if($st==0) {
+            Log::debug('should be redirecting');
+            return redirect(route('pick531.newweek'));
+        }
+        if($st > 2) {
+            Log::debug('redirecting to picked locks');
+            return redirect(route('pick531.pickslocked'));
+        }
 
 
         Log::debug('Weekno: ' . $weekno);
 
         return view('pick531.create',['picks'=>$picks, 'teams'=>$teams, 'rembonus'=>$rembonus, 'picktime'=>$picktime, 'scheds'=>$scheds,'weekno'=>$weekno]);
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -65,7 +73,7 @@ class PickController extends Controller
         Log::debug('trying to save 531');
         Log::debug($request);
         //
-        $weekno = $request->session()->get('weekno');
+        $weekno = $this->getCurrentWeek();
         $scheds = Schedule::where('week_no',$weekno)->orderBy('id','ASC')->get();
         $rembonus = $this->getRemainingBonus();
 
@@ -252,15 +260,16 @@ class PickController extends Controller
 
     public function newweek()
     {
+        Log::debug('Showing new week');
         return view('pick531.newweek');
     }
 
     public function pick531locked()
     {
-        $weekno = request()->session()->get('weekno');
+        $weekno = $this->getCurrentWeek();
 
         $st = $this->getState($weekno);
-        if($st < 3) return redirect(route('pick531.create'));
+        if($st == 1) return redirect(route('pick531.create'));
 
         $results = $this->getresults531();
 
@@ -307,7 +316,7 @@ class PickController extends Controller
 
         }
 
-        return view('pick531.pickslocked',['x'=>$x]);
+        return view('pick531.pickslocked',['x'=>$x, 'weekno'=>$weekno]);
 
     }
 
@@ -334,7 +343,7 @@ class PickController extends Controller
     {
         Log::debug('Admin store request');
         Log::debug($request);
-        $weekno = $request->session()->get('weekno');
+        $weekno = $this->getCurrentWeek();
         $scheds = Schedule::where('week_no',$weekno)->orderBy('id','ASC')->get();
         $rembonus = $this->getRemainingBonus();
 

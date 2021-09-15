@@ -11,7 +11,7 @@ trait ResultallTrait {
 
 
 	public function getResultsAll(){
-        $results = DB::select(DB::raw("SELECT users.name, sum(p1+p2+p3+p4+p5+p6+p7+p8+p9+p10+p11+p12+p13+p14+p15+p16) as 'tot' FROM users, resultsalls WHERE users.id = resultsalls.user_id group by user_id order by tot desc"));
+        $results = DB::select(DB::raw("SELECT users.name, resultsalls.user_id, sum(p1+p2+p3+p4+p5+p6+p7+p8+p9+p10+p11+p12+p13+p14+p15+p16) as 'tot' FROM users, resultsalls WHERE users.id = resultsalls.user_id group by user_id order by tot desc"));
         forEach($results as $i=>$r){
             $results[$i] = (array) $r;
         }

@@ -12,7 +12,7 @@ trait Pick531Trait {
 
 
 	public function getNotPicked531(){
-		$week_no = request()->session()->get('weekno');
+        $week_no = $this->getCurrentWeek();
 		$users = $this->getUsers531();
 //		$picked = $this->Pick->find('all',array('conditions'=>array('Pick.week_no'=>$week_no,'Pick.def'=>0)),array('user_id'));
 

@@ -94,11 +94,11 @@ class ScheduleController extends Controller
     public function pointspread()
     {
         Log::debug("Point Spread... let's use trait");
-		$weekno = request()->session()->get('weekno');
+        $weekno = $this->getCurrentWeek();
 		$schedule = $this->getSchedule($weekno);
 		$teams = $this->getTeams();
 		$state = $this->getState($weekno);
-
+        Log::debug("State: ". $state . " Weekno: " . $weekno);
 
         forEach($schedule as $i => $s){
             $gamedate = "gamedate".$i;
@@ -144,7 +144,7 @@ class ScheduleController extends Controller
     {
         Log::debug($request);
 
-        $weekno = request()->session()->get('weekno');
+        $weekno = $this->getCurrentWeek();
 		$schedule = $this->getSchedule($weekno);
 
         $error_mgs = [];
