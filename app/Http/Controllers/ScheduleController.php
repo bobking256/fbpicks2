@@ -9,6 +9,9 @@ use App\Http\Traits\Pick531Trait;
 use App\Http\Traits\PickallTrait;
 use App\Http\Traits\Result531Trait;
 use App\Http\Traits\ResultallTrait;
+use App\Mail\PointSpreadLoaded;
+use Illuminate\Support\Facades\Mail;
+
 use Illuminate\Support\Facades\Log;
 
 class ScheduleController extends Controller
@@ -246,6 +249,13 @@ class ScheduleController extends Controller
 
         $this->updateState($weekno,$state);
 
+        if($state == 1){
+            $users = $this->getUsers531();
+            Log::debug('Sending email');
+            forEach ($users as $u){
+                Mail::to($u->email)->send(new PointSpreadLoaded());
+            }
+        }
 
         return back()->with('success','Schedule updated.');
     }

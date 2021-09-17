@@ -68,4 +68,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::post('admin/storeweekno', [WeeknoController::class, 'storeweekno'])->name('admin.storeweekno');
     Route::get('pick531newweek', [PickController::class, 'newweek'])->name('pick531.newweek');
     Route::get('pickallnewweek', [PickallController::class, 'newweek'])->name('pickall.newweek');
+    Route::get('emailnotpicked531', [PickController::class, 'emailnotpicked'])->name('pick531.emailnotpicked');
+    Route::get('emailnotpickedall', [PickallController::class, 'emailnotpicked'])->name('pickall.emailnotpicked');
+
 });

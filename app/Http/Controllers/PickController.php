@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Traits\SupportTrait;
 use App\Http\Traits\Pick531Trait;
 use App\Http\Traits\Result531Trait;
+use App\Mail\GetPicksIn;
+use Illuminate\Support\Facades\Mail;
 
 class PickController extends Controller
 {
@@ -462,5 +464,16 @@ class PickController extends Controller
             return redirect()->back()->withErrors([$error]);
         }
         return redirect()->back();
+    }
+
+    public function emailnotpicked()
+    {
+        $users = $this->getNotPicked531();
+
+        forEach ($users as $u){
+            Mail::to($u['email'])->send(new GetPicksIn());
+        }
+
+        return redirect(route('admin.notpick531'));
     }
 }

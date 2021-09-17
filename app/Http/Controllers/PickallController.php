@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Traits\SupportTrait;
 use App\Http\Traits\PickallTrait;
 use App\Http\Traits\ResultallTrait;
+use App\Mail\GetPicksIn;
+use Illuminate\Support\Facades\Mail;
 
 
 class PickallController extends Controller
@@ -626,4 +628,16 @@ class PickallController extends Controller
 
         return view('pickall.complete',['success'=>$msgcontent]);
     }
+
+    public function emailnotpicked()
+    {
+        $users = $this->getNotPickedAll();
+
+        forEach ($users as $u){
+            Mail::to($u['email'])->send(new GetPicksIn());
+        }
+
+        return redirect(route('admin.notpickall'));
+    }
+
 }

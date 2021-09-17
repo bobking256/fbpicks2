@@ -27,4 +27,10 @@
             </div>
         </div>
     </div>
+
+    <div class="py-4">
+        <div class="container mx-auto">
+            <a href="{{ route('pickall.emailnotpicked') }}"><button class="bg-red-200 font-bold hover:bg-red-500 px-4 py-2 border-2 border-gray-400 rounded-lg">Email Not Picked Users</button></a>
+    </div>
+
 </x-app-layout>
