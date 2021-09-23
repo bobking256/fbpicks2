@@ -6,8 +6,8 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 sm:text-xs md:text-xs lg:text-sm">
-            <div class="bg-white overflow-x-auto shadow-xl sm:rounded-lg px-6 py-4">
+        <div class="mx-auto overflow-x-auto sm:px-6 lg:px-8 sm:text-xs md:text-xs lg:text-sm">
+            <div class="bg-white  shadow-xl sm:rounded-lg px-6 py-4">
                 <table class="table table-auto w-full">
                     <thead>
                         <tr>
