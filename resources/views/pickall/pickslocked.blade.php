@@ -7,7 +7,6 @@
 
     <div class="py-12">
         <div class="mx-auto overflow-x-auto sm:px-6 lg:px-8 sm:text-xs md:text-xs lg:text-sm">
-            <div class="bg-white  shadow-xl sm:rounded-lg px-6 py-4">
                 <table class="table table-auto w-full">
                     <thead>
                         <tr>
@@ -50,7 +49,6 @@
                         @endphp
                     </tbody>
                 </table>
-            </div>
         </div>
     </div>
 </x-app-layout>
