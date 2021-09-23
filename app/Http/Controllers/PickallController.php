@@ -38,11 +38,11 @@ class PickallController extends Controller
         $weekno = $this->getCurrentWeek();
 
         $st = $this->getState($weekno);
-//		$st = $this->requestAction('/weeknos/getState/'.$weekno);
+        //		$st = $this->requestAction('/weeknos/getState/'.$weekno);
 
-        if($st==0) return redirect(route('pickall.newweek'));
-        if($st > 2) return redirect( route('pickall.pickslocked'));
-/*
+        if ($st == 0) return redirect(route('pickall.newweek'));
+        if ($st > 2) return redirect(route('pickall.pickslocked'));
+        /*
         if($this->process_and_lock() == true){
             return redirect( route('pickall.pickslocked'));
         }
@@ -61,57 +61,58 @@ class PickallController extends Controller
         $scheds = $this->getSchedule($weekno);
         $id = auth()->user()->id;
         $teams = $this->getTeams();
-        $picks = $this->getpicksAll($id,$weekno);
+        $picks = $this->getpicksAll($id, $weekno);
         $picktime = $this->getPickTime($weekno);
-/*
+        /*
 		$scheds = $this->requestAction('/schedules/getSchedule/'.$weekno);
 		$id = $this->Session->read('user_id');
 		$teams = $this->requestAction('/teams/getTeams');
 		$picks = $this->getpickall($id,$weekno);
 		$picktime = $this->requestAction('/weeknos/getPickTime/'.$weekno);
 */
-		$shortweek=0;
-		if(empty($picks)){
-		    $picks = [];
-			$picks['p1']=$scheds[0]['favoriteteam_id'];
-			$picks['p2']=$scheds[1]['favoriteteam_id'];
-			$picks['p3']=$scheds[2]['favoriteteam_id'];
-			$picks['p4']=$scheds[3]['favoriteteam_id'];
-			$picks['p5']=$scheds[4]['favoriteteam_id'];
-			$picks['p6']=$scheds[5]['favoriteteam_id'];
-			$picks['p7']=$scheds[6]['favoriteteam_id'];
-			$picks['p8']=$scheds[7]['favoriteteam_id'];
-			$picks['p9']=$scheds[8]['favoriteteam_id'];
-			$picks['p10']=$scheds[9]['favoriteteam_id'];
-			$picks['p11']=$scheds[10]['favoriteteam_id'];
-			$picks['p12']=$scheds[11]['favoriteteam_id'];
-//			$picks['p13']=$scheds[12]['favoriteteam_id'];
-			if(empty($scheds[13]['favoriteteam_id']))
-				$picks['p16']=$scheds[12]['favoriteteam_id'];
-			else {
-				$picks['p13']=$scheds[12]['favoriteteam_id'];
-				if(empty($scheds[14]['favoriteteam_id']))
-					$picks['p16']=$scheds[13]['favoriteteam_id'];
-				else {
-					$picks['p14']=$scheds[13]['favoriteteam_id'];
-					if(empty($scheds[15]['favoriteteam_id']))
-						$picks['p16']=$scheds[14]['favoriteteam_id'];
-					else {
-						$picks['p15']=$scheds[14]['favoriteteam_id'];
-						$picks['p16']=$scheds[15]['favoriteteam_id'];
-					}
-				}
-			}
+        $shortweek = 0;
+        if (empty($picks)) {
+            $picks = [];
+            $picks['p1'] = $scheds[0]['favoriteteam_id'];
+            $picks['p2'] = $scheds[1]['favoriteteam_id'];
+            $picks['p3'] = $scheds[2]['favoriteteam_id'];
+            $picks['p4'] = $scheds[3]['favoriteteam_id'];
+            $picks['p5'] = $scheds[4]['favoriteteam_id'];
+            $picks['p6'] = $scheds[5]['favoriteteam_id'];
+            $picks['p7'] = $scheds[6]['favoriteteam_id'];
+            $picks['p8'] = $scheds[7]['favoriteteam_id'];
+            $picks['p9'] = $scheds[8]['favoriteteam_id'];
+            $picks['p10'] = $scheds[9]['favoriteteam_id'];
+            $picks['p11'] = $scheds[10]['favoriteteam_id'];
+            $picks['p12'] = $scheds[11]['favoriteteam_id'];
+            //			$picks['p13']=$scheds[12]['favoriteteam_id'];
+            if (empty($scheds[13]['favoriteteam_id']))
+                $picks['p16'] = $scheds[12]['favoriteteam_id'];
+            else {
+                $picks['p13'] = $scheds[12]['favoriteteam_id'];
+                if (empty($scheds[14]['favoriteteam_id']))
+                    $picks['p16'] = $scheds[13]['favoriteteam_id'];
+                else {
+                    $picks['p14'] = $scheds[13]['favoriteteam_id'];
+                    if (empty($scheds[15]['favoriteteam_id']))
+                        $picks['p16'] = $scheds[14]['favoriteteam_id'];
+                    else {
+                        $picks['p15'] = $scheds[14]['favoriteteam_id'];
+                        $picks['p16'] = $scheds[15]['favoriteteam_id'];
+                    }
+                }
+            }
 
-//p16 is always for MNF
+            //p16 is always for MNF
 
-			$picks['totpts']=0;
-		}
+            $picks['totpts'] = 0;
+        }
 
-        return view('pickall.create',['scheds'=>$scheds, 'teams'=>$teams,'picks'=>$picks,'weekno'=>$weekno,'picktime'=>$picktime]);
+        return view('pickall.create', ['scheds' => $scheds, 'teams' => $teams, 'picks' => $picks, 'weekno' => $weekno, 'picktime' => $picktime]);
     }
 
-    public function newweek(){
+    public function newweek()
+    {
         return view('pickall.newweek');
     }
 
@@ -131,157 +132,159 @@ class PickallController extends Controller
         $scheds = $this->getSchedule($weekno);
         $teams = $this->getTeams();
 
-        $cnt1=0;
+        $cnt1 = 0;
         $data = [];
-        for($j=0;$j<sizeof($scheds);$j++){
-            $s = 'p'.($j+1);
-            if(!isset($request[$s])) {
+        for ($j = 0; $j < sizeof($scheds); $j++) {
+            $s = 'p' . ($j + 1);
+            if (!isset($request[$s])) {
                 $data[$s] = 0;
                 $cnt1++;
                 continue;
             }
-            if($request[$s] == null ) {
+            if ($request[$s] == null) {
                 $data[$s] = $scheds[$j]['favoriteteam_id'];
             } else {
                 $data[$s] = $request[$s];
             }
-            if(empty($data[$s]) && $scheds[$j]['noline']==1) { $cnt1++; continue; }
-            if(empty($data[$s])) {
+            if (empty($data[$s]) && $scheds[$j]['noline'] == 1) {
+                $cnt1++;
                 continue;
             }
-//				if($request[$s]=="") { $request[$s]=0; if($scheds[$j]['noline']==1) $cnt1++; continue; }
+            if (empty($data[$s])) {
+                continue;
+            }
+            //				if($request[$s]=="") { $request[$s]=0; if($scheds[$j]['noline']==1) $cnt1++; continue; }
             $cnt1++;
-//					if($scheds[$j]['awayteam_id']==$scheds[$j]['favoriteteam_id']) {$request[$p]=$scheds[$j]['awayteam_id']; }
-//					else {$request[$p]=$scheds[$j]['hometeam_id']; }
-//				}
-//				else if($request[$s]=="UND"){
-//					$cnt1++;
-//					if($scheds[$j]['awayteam_id']==$scheds[$j]['favoriteteam_id']) {$request[$p]=$scheds[$j]['hometeam_id']; }
-//					else {$request[$p]=$scheds[$j]['awayteam_id'];}
-//				} else $request[$p]=0;
+            //					if($scheds[$j]['awayteam_id']==$scheds[$j]['favoriteteam_id']) {$request[$p]=$scheds[$j]['awayteam_id']; }
+            //					else {$request[$p]=$scheds[$j]['hometeam_id']; }
+            //				}
+            //				else if($request[$s]=="UND"){
+            //					$cnt1++;
+            //					if($scheds[$j]['awayteam_id']==$scheds[$j]['favoriteteam_id']) {$request[$p]=$scheds[$j]['hometeam_id']; }
+            //					else {$request[$p]=$scheds[$j]['awayteam_id'];}
+            //				} else $request[$p]=0;
 
         }
-        if($cnt1 != sizeof($scheds)){
-            $warn ='Warning, you have not selected all games. Unmarked games count as loss!<br><br>';
-        } else $warn='';
+        if ($cnt1 != sizeof($scheds)) {
+            $warn = 'Warning, you have not selected all games. Unmarked games count as loss!<br><br>';
+        } else $warn = '';
         $data['user_id'] = auth()->user()->id;
         $data['week_no'] = $weekno;
         $data['def'] = 0;
-        if (empty($request['p16']) || $request['p16'] == null){
+        if (empty($request['p16']) || $request['p16'] == null) {
             $data['p16'] = 0;
         } else {
             $data['p16'] = $request['p16'];
         }
         $data['totpts'] = $request['totpts'];
-        $picks = $this->getpicksAll(auth()->user()->id,$weekno);
-        if($picks == null){
+        $picks = $this->getpicksAll(auth()->user()->id, $weekno);
+        if ($picks == null) {
             $pks = Pickall::create($data);
         } else {
             $pks = Pickall::find($picks['id']);
             $pks->update($data);
         }
 
-        $shortweek=0;
-        $msgsubject="Weekly Football Picks";
-        $msgfrom="From: Pjwasi@comcast.net";
-        $msgcontent = "Your picks for Week No: ".$weekno;
+        $shortweek = 0;
+        $msgsubject = "Weekly Football Picks";
+        $msgfrom = "From: Pjwasi@comcast.net";
+        $msgcontent = "Your picks for Week No: " . $weekno;
         $msgcontent .= "<br/><br/>";
-        if($scheds[0]['noline']==0){
-            $msgcontent .= $teams[$data['p1']-1]['name'];
+        if ($scheds[0]['noline'] == 0) {
+            $msgcontent .= $teams[$data['p1'] - 1]['name'];
             $msgcontent .= "<br/>";
         }
-        if($scheds[1]['noline']==0){
-            $msgcontent .= $teams[$data['p2']-1]['name'];
+        if ($scheds[1]['noline'] == 0) {
+            $msgcontent .= $teams[$data['p2'] - 1]['name'];
             $msgcontent .= "<br/>";
         }
-        if($scheds[2]['noline']==0){
-            $msgcontent .= $teams[$data['p3']-1]['name'];
+        if ($scheds[2]['noline'] == 0) {
+            $msgcontent .= $teams[$data['p3'] - 1]['name'];
             $msgcontent .= "<br/>";
         }
-        if($scheds[3]['noline']==0){
-            $msgcontent .= $teams[$data['p4']-1]['name'];
+        if ($scheds[3]['noline'] == 0) {
+            $msgcontent .= $teams[$data['p4'] - 1]['name'];
             $msgcontent .= "<br/>";
         }
-        if($scheds[4]['noline']==0){
-            $msgcontent .= $teams[$data['p5']-1]['name'];
+        if ($scheds[4]['noline'] == 0) {
+            $msgcontent .= $teams[$data['p5'] - 1]['name'];
             $msgcontent .= "<br/>";
         }
-        if($scheds[5]['noline']==0){
-            $msgcontent .= $teams[$data['p6']-1]['name'];
+        if ($scheds[5]['noline'] == 0) {
+            $msgcontent .= $teams[$data['p6'] - 1]['name'];
             $msgcontent .= "<br/>";
         }
-        if($scheds[6]['noline']==0){
-            $msgcontent .= $teams[$data['p7']-1]['name'];
+        if ($scheds[6]['noline'] == 0) {
+            $msgcontent .= $teams[$data['p7'] - 1]['name'];
             $msgcontent .= "<br/>";
         }
-        if($scheds[7]['noline']==0){
-            $msgcontent .= $teams[$data['p8']-1]['name'];
+        if ($scheds[7]['noline'] == 0) {
+            $msgcontent .= $teams[$data['p8'] - 1]['name'];
             $msgcontent .= "<br/>";
         }
-        if($scheds[8]['noline']==0){
-            $msgcontent .= $teams[$data['p9']-1]['name'];
+        if ($scheds[8]['noline'] == 0) {
+            $msgcontent .= $teams[$data['p9'] - 1]['name'];
             $msgcontent .= "<br/>";
         }
-        if($scheds[9]['noline']==0){
-            $msgcontent .= $teams[$data['p10']-1]['name'];
+        if ($scheds[9]['noline'] == 0) {
+            $msgcontent .= $teams[$data['p10'] - 1]['name'];
             $msgcontent .= "<br/>";
         }
-        if($scheds[10]['noline']==0){
-            $msgcontent .= $teams[$data['p11']-1]['name'];
+        if ($scheds[10]['noline'] == 0) {
+            $msgcontent .= $teams[$data['p11'] - 1]['name'];
             $msgcontent .= "<br/>";
         }
-        if($scheds[11]['noline']==0){
-            $msgcontent .= $teams[$data['p12']-1]['name'];
+        if ($scheds[11]['noline'] == 0) {
+            $msgcontent .= $teams[$data['p12'] - 1]['name'];
             $msgcontent .= "<br/>";
         }
-//			if($scheds[12]['noline']==0){
-//				$msgcontent .= $teams[$request['p13']-1]['name'];
-//				$msgcontent .= "\n";
-//			}
+        //			if($scheds[12]['noline']==0){
+        //				$msgcontent .= $teams[$request['p13']-1]['name'];
+        //				$msgcontent .= "\n";
+        //			}
 
-        if(empty($scheds[13]['favoriteteam_id'])){
-            if($scheds[12]['noline']==0){
+        if (empty($scheds[13]['favoriteteam_id'])) {
+            if ($scheds[12]['noline'] == 0) {
                 $msgcontent .= "Monday Night Football:<br/>";
-                $msgcontent .= $teams[$data['p16']-1]['name'];
+                $msgcontent .= $teams[$data['p16'] - 1]['name'];
                 $msgcontent .= "<br/>";
             }
         } else {
-            if($scheds[12]['noline']==0){
-                $msgcontent .= $teams[$data['p13']-1]['name'];
+            if ($scheds[12]['noline'] == 0) {
+                $msgcontent .= $teams[$data['p13'] - 1]['name'];
                 $msgcontent .= "<br/>";
             }
-            if(empty($scheds[14]['favoriteteam_id'])){
-                if($scheds[13]['noline']==0){
+            if (empty($scheds[14]['favoriteteam_id'])) {
+                if ($scheds[13]['noline'] == 0) {
                     $msgcontent .= "Monday Night Football:\n";
-                    $msgcontent .= $teams[$data['p16']-1]['name'];
+                    $msgcontent .= $teams[$data['p16'] - 1]['name'];
                     $msgcontent .= "<br/>";
                 }
             } else {
-                if($scheds[13]['noline']==0){
-                    $msgcontent .= $teams[$data['p14']-1]['name'];
+                if ($scheds[13]['noline'] == 0) {
+                    $msgcontent .= $teams[$data['p14'] - 1]['name'];
                     $msgcontent .= "<br/>";
                 }
-                if(empty($scheds[15]['favoriteteam_id'])){
-                    if($scheds[14]['noline']==0){
+                if (empty($scheds[15]['favoriteteam_id'])) {
+                    if ($scheds[14]['noline'] == 0) {
                         $msgcontent .= "Monday Night Football:\n";
-                        $msgcontent .= $teams[$data['p16']-1]['name'];
+                        $msgcontent .= $teams[$data['p16'] - 1]['name'];
                         $msgcontent .= "<br/>";
                     }
-                }
-                else {
-                    $msgcontent .= $teams[$data['p15']-1]['name'];
+                } else {
+                    $msgcontent .= $teams[$data['p15'] - 1]['name'];
                     $msgcontent .= "<br/>";
                     $msgcontent .= "<br/>Monday Night Football:<br/>";
-                    $msgcontent .= $teams[$data['p16']-1]['name'];
+                    $msgcontent .= $teams[$data['p16'] - 1]['name'];
                     $msgcontent .= "<br/>";
                 }
             }
         }
 
 
-        $msgcontent .= "Total Points: ".$data['totpts']."<br/>";
+        $msgcontent .= "Total Points: " . $data['totpts'] . "<br/>";
 
-        return view('pickall.complete',['success'=>$msgcontent]);
+        return view('pickall.complete', ['success' => $msgcontent]);
     }
 
 
@@ -335,59 +338,58 @@ class PickallController extends Controller
     {
         $users = $this->getNotPickedAll();
 
-        return view('pickall.notpickall',['users'=>$users]);
+        return view('pickall.notpickall', ['users' => $users]);
     }
 
     public function pickalllocked()
     {
         $weekno = $this->getCurrentWeek();
-		$st = $this->getState($weekno);
+        $st = $this->getState($weekno);
 
-        if($st == 1) redirect(route('pickall.pickall'));
+        if ($st == 1) redirect(route('pickall.pickall'));
         $result = $this->getResultsAll();
-        Log::debug(print_r($result,1));
-//		$result = $this->requestAction('/resultsalls/getResultsAll/');
+        //		$result = $this->requestAction('/resultsalls/getResultsAll/');
 
         $teams = $this->getTeams();
         $users = $this->getUsersAll();
-//		$teams = $this->requestAction('/teams/getTeams');
-//		$users = $this->requestAction('/users/getPickAllUsers/');
-		$x=array(array());
+        //		$teams = $this->requestAction('/teams/getTeams');
+        //		$users = $this->requestAction('/users/getPickAllUsers/');
+        $x = array(array());
 
-		if(sizeof($result) > 0){
-			for($k=0;$k<sizeof($result);$k++){
-				for($i=0;$i<sizeof($users);$i++){
-					if($result[$k]['user_id'] != $users[$i]['id']) continue;
-					$picks = $this->getpicksAll($users[$i]['id'],$weekno);
-					if($picks['def']==1) $end='*';
-					else $end='';
-					$x[$k][0]=$users[$i]['name'];
-					for($j=1;$j<=16;$j++){
-						$p='p'.$j;
-						if($picks[$p] == 0) $x[$k][$j] = ' ';
-						else $x[$k][$j]=$teams[$picks[$p]-1]['abbrev'].$end;
-					}
-					$x[$k][17]=$picks['totpts'];
-					$x[$k][18]=$result[$k]['tot'];
-					break;
-				}
-			}
-		} else {
-				for($i=0;$i<sizeof($users);$i++){
-					$picks = $this->getpicksAll($users[$i]['id'],$weekno);
-					if($picks['def']==1) $end='*';
-					else $end='';
-					$x[$i][0]=$users[$i]['name'];
-					for($j=1;$j<=16;$j++){
-						$p='p'.$j;
-						if($picks[$p] == 0) $x[$i][$j] = ' ';
-						else $x[$i][$j]=$teams[$picks[$p]-1]['abbrev'].$end;
-					}
-					$x[$i][17]=$picks['totpts'];
-					$x[$i][18]=0;
-				}
-		}
-		return view('pickall.pickslocked',['x' => $x, 'weekno'=>$weekno]);
+        if (sizeof($result) > 0) {
+            for ($k = 0; $k < sizeof($result); $k++) {
+                for ($i = 0; $i < sizeof($users); $i++) {
+                    if ($result[$k]['user_id'] != $users[$i]['id']) continue;
+                    $picks = $this->getpicksAll($users[$i]['id'], $weekno);
+                    if ($picks['def'] == 1) $end = '*';
+                    else $end = '';
+                    $x[$k][0] = $users[$i]['name'];
+                    for ($j = 1; $j <= 16; $j++) {
+                        $p = 'p' . $j;
+                        if ($picks[$p] == 0) $x[$k][$j] = ' ';
+                        else $x[$k][$j] = $teams[$picks[$p] - 1]['abbrev'] . $end;
+                    }
+                    $x[$k][17] = $picks['totpts'];
+                    $x[$k][18] = $result[$k]['tot'];
+                    break;
+                }
+            }
+        } else {
+            for ($i = 0; $i < sizeof($users); $i++) {
+                $picks = $this->getpicksAll($users[$i]['id'], $weekno);
+                if ($picks['def'] == 1) $end = '*';
+                else $end = '';
+                $x[$i][0] = $users[$i]['name'];
+                for ($j = 1; $j <= 16; $j++) {
+                    $p = 'p' . $j;
+                    if ($picks[$p] == 0) $x[$i][$j] = ' ';
+                    else $x[$i][$j] = $teams[$picks[$p] - 1]['abbrev'] . $end;
+                }
+                $x[$i][17] = $picks['totpts'];
+                $x[$i][18] = 0;
+            }
+        }
+        return view('pickall.pickslocked', ['x' => $x, 'weekno' => $weekno]);
     }
 
     public function adminpickall(User $user)
@@ -396,9 +398,9 @@ class PickallController extends Controller
         $weekno = $this->getCurrentWeek();
 
         $st = $this->getState($weekno);
-//		$st = $this->requestAction('/weeknos/getState/'.$weekno);
+        //		$st = $this->requestAction('/weeknos/getState/'.$weekno);
 
-/*
+        /*
         if($this->process_and_lock() == true){
             return redirect( route('pickall.pickslocked'));
         }
@@ -417,54 +419,54 @@ class PickallController extends Controller
         $scheds = $this->getSchedule($weekno);
         $id = $user->id;
         $teams = $this->getTeams();
-        $picks = $this->getpicksAll($id,$weekno);
+        $picks = $this->getpicksAll($id, $weekno);
         $picktime = $this->getPickTime($weekno);
-/*
+        /*
 		$scheds = $this->requestAction('/schedules/getSchedule/'.$weekno);
 		$id = $this->Session->read('user_id');
 		$teams = $this->requestAction('/teams/getTeams');
 		$picks = $this->getpickall($id,$weekno);
 		$picktime = $this->requestAction('/weeknos/getPickTime/'.$weekno);
 */
-		$shortweek=0;
-		if(empty($picks)){
-		    $picks = [];
-			$picks['p1']=$scheds[0]['favoriteteam_id'];
-			$picks['p2']=$scheds[1]['favoriteteam_id'];
-			$picks['p3']=$scheds[2]['favoriteteam_id'];
-			$picks['p4']=$scheds[3]['favoriteteam_id'];
-			$picks['p5']=$scheds[4]['favoriteteam_id'];
-			$picks['p6']=$scheds[5]['favoriteteam_id'];
-			$picks['p7']=$scheds[6]['favoriteteam_id'];
-			$picks['p8']=$scheds[7]['favoriteteam_id'];
-			$picks['p9']=$scheds[8]['favoriteteam_id'];
-			$picks['p10']=$scheds[9]['favoriteteam_id'];
-			$picks['p11']=$scheds[10]['favoriteteam_id'];
-			$picks['p12']=$scheds[11]['favoriteteam_id'];
-//			$picks['p13']=$scheds[12]['favoriteteam_id'];
-			if(empty($scheds[13]['favoriteteam_id']))
-				$picks['p16']=$scheds[12]['favoriteteam_id'];
-			else {
-				$picks['p13']=$scheds[12]['favoriteteam_id'];
-				if(empty($scheds[14]['favoriteteam_id']))
-					$picks['p16']=$scheds[13]['favoriteteam_id'];
-				else {
-					$picks['p14']=$scheds[13]['favoriteteam_id'];
-					if(empty($scheds[15]['favoriteteam_id']))
-						$picks['p16']=$scheds[14]['favoriteteam_id'];
-					else {
-						$picks['p15']=$scheds[14]['favoriteteam_id'];
-						$picks['p16']=$scheds[15]['favoriteteam_id'];
-					}
-				}
-			}
+        $shortweek = 0;
+        if (empty($picks)) {
+            $picks = [];
+            $picks['p1'] = $scheds[0]['favoriteteam_id'];
+            $picks['p2'] = $scheds[1]['favoriteteam_id'];
+            $picks['p3'] = $scheds[2]['favoriteteam_id'];
+            $picks['p4'] = $scheds[3]['favoriteteam_id'];
+            $picks['p5'] = $scheds[4]['favoriteteam_id'];
+            $picks['p6'] = $scheds[5]['favoriteteam_id'];
+            $picks['p7'] = $scheds[6]['favoriteteam_id'];
+            $picks['p8'] = $scheds[7]['favoriteteam_id'];
+            $picks['p9'] = $scheds[8]['favoriteteam_id'];
+            $picks['p10'] = $scheds[9]['favoriteteam_id'];
+            $picks['p11'] = $scheds[10]['favoriteteam_id'];
+            $picks['p12'] = $scheds[11]['favoriteteam_id'];
+            //			$picks['p13']=$scheds[12]['favoriteteam_id'];
+            if (empty($scheds[13]['favoriteteam_id']))
+                $picks['p16'] = $scheds[12]['favoriteteam_id'];
+            else {
+                $picks['p13'] = $scheds[12]['favoriteteam_id'];
+                if (empty($scheds[14]['favoriteteam_id']))
+                    $picks['p16'] = $scheds[13]['favoriteteam_id'];
+                else {
+                    $picks['p14'] = $scheds[13]['favoriteteam_id'];
+                    if (empty($scheds[15]['favoriteteam_id']))
+                        $picks['p16'] = $scheds[14]['favoriteteam_id'];
+                    else {
+                        $picks['p15'] = $scheds[14]['favoriteteam_id'];
+                        $picks['p16'] = $scheds[15]['favoriteteam_id'];
+                    }
+                }
+            }
 
-//p16 is always for MNF
+            //p16 is always for MNF
 
-			$picks['totpts']=0;
-		}
+            $picks['totpts'] = 0;
+        }
 
-        return view('admin.pickall',['scheds'=>$scheds, 'teams'=>$teams,'picks'=>$picks,'weekno'=>$weekno,'picktime'=>$picktime,'user'=>$user]);
+        return view('admin.pickall', ['scheds' => $scheds, 'teams' => $teams, 'picks' => $picks, 'weekno' => $weekno, 'picktime' => $picktime, 'user' => $user]);
     }
 
     public function storeadminpickall(Request $request, User $user)
@@ -476,168 +478,169 @@ class PickallController extends Controller
         $scheds = $this->getSchedule($weekno);
         $teams = $this->getTeams();
 
-        $cnt1=0;
+        $cnt1 = 0;
         $data = [];
-        for($j=0;$j<sizeof($scheds);$j++){
-            $s = 'p'.($j+1);
-            if(!isset($request[$s])) {
+        for ($j = 0; $j < sizeof($scheds); $j++) {
+            $s = 'p' . ($j + 1);
+            if (!isset($request[$s])) {
                 $data[$s] = 0;
                 $cnt1++;
                 continue;
             }
-            if($request[$s] == null ) {
+            if ($request[$s] == null) {
                 $data[$s] = $scheds[$j]['favoriteteam_id'];
             } else {
                 $data[$s] = $request[$s];
             }
-            if(empty($data[$s]) && $scheds[$j]['noline']==1) { $cnt1++; continue; }
-            if(empty($data[$s])) {
+            if (empty($data[$s]) && $scheds[$j]['noline'] == 1) {
+                $cnt1++;
                 continue;
             }
-//				if($request[$s]=="") { $request[$s]=0; if($scheds[$j]['noline']==1) $cnt1++; continue; }
+            if (empty($data[$s])) {
+                continue;
+            }
+            //				if($request[$s]=="") { $request[$s]=0; if($scheds[$j]['noline']==1) $cnt1++; continue; }
             $cnt1++;
-//					if($scheds[$j]['awayteam_id']==$scheds[$j]['favoriteteam_id']) {$request[$p]=$scheds[$j]['awayteam_id']; }
-//					else {$request[$p]=$scheds[$j]['hometeam_id']; }
-//				}
-//				else if($request[$s]=="UND"){
-//					$cnt1++;
-//					if($scheds[$j]['awayteam_id']==$scheds[$j]['favoriteteam_id']) {$request[$p]=$scheds[$j]['hometeam_id']; }
-//					else {$request[$p]=$scheds[$j]['awayteam_id'];}
-//				} else $request[$p]=0;
+            //					if($scheds[$j]['awayteam_id']==$scheds[$j]['favoriteteam_id']) {$request[$p]=$scheds[$j]['awayteam_id']; }
+            //					else {$request[$p]=$scheds[$j]['hometeam_id']; }
+            //				}
+            //				else if($request[$s]=="UND"){
+            //					$cnt1++;
+            //					if($scheds[$j]['awayteam_id']==$scheds[$j]['favoriteteam_id']) {$request[$p]=$scheds[$j]['hometeam_id']; }
+            //					else {$request[$p]=$scheds[$j]['awayteam_id'];}
+            //				} else $request[$p]=0;
 
         }
-        if($cnt1 != sizeof($scheds)){
-            $warn ='Warning, you have not selected all games. Unmarked games count as loss!<br><br>';
-        } else $warn='';
+        if ($cnt1 != sizeof($scheds)) {
+            $warn = 'Warning, you have not selected all games. Unmarked games count as loss!<br><br>';
+        } else $warn = '';
         $data['user_id'] = $user->id;
         $data['week_no'] = $weekno;
         $data['def'] = 0;
-        if (empty($request['p16']) || $request['p16'] == null){
+        if (empty($request['p16']) || $request['p16'] == null) {
             $data['p16'] = 0;
         } else {
             $data['p16'] = $request['p16'];
         }
         $data['totpts'] = $request['totpts'];
-        $picks = $this->getpicksAll($user->id,$weekno);
-        if($picks == null){
+        $picks = $this->getpicksAll($user->id, $weekno);
+        if ($picks == null) {
             $pks = Pickall::create($data);
         } else {
             $pks = Pickall::find($picks['id']);
             $pks->update($data);
         }
 
-        $shortweek=0;
-        $msgsubject="Weekly Football Picks";
-        $msgfrom="From: Pjwasi@comcast.net";
-        $msgcontent = "Your picks for Week No: ".$weekno;
+        $shortweek = 0;
+        $msgsubject = "Weekly Football Picks";
+        $msgfrom = "From: Pjwasi@comcast.net";
+        $msgcontent = "Your picks for Week No: " . $weekno;
         $msgcontent .= "<br/><br/>";
-        if($scheds[0]['noline']==0){
-            $msgcontent .= $teams[$data['p1']-1]['name'];
+        if ($scheds[0]['noline'] == 0) {
+            $msgcontent .= $teams[$data['p1'] - 1]['name'];
             $msgcontent .= "<br/>";
         }
-        if($scheds[1]['noline']==0){
-            $msgcontent .= $teams[$data['p2']-1]['name'];
+        if ($scheds[1]['noline'] == 0) {
+            $msgcontent .= $teams[$data['p2'] - 1]['name'];
             $msgcontent .= "<br/>";
         }
-        if($scheds[2]['noline']==0){
-            $msgcontent .= $teams[$data['p3']-1]['name'];
+        if ($scheds[2]['noline'] == 0) {
+            $msgcontent .= $teams[$data['p3'] - 1]['name'];
             $msgcontent .= "<br/>";
         }
-        if($scheds[3]['noline']==0){
-            $msgcontent .= $teams[$data['p4']-1]['name'];
+        if ($scheds[3]['noline'] == 0) {
+            $msgcontent .= $teams[$data['p4'] - 1]['name'];
             $msgcontent .= "<br/>";
         }
-        if($scheds[4]['noline']==0){
-            $msgcontent .= $teams[$data['p5']-1]['name'];
+        if ($scheds[4]['noline'] == 0) {
+            $msgcontent .= $teams[$data['p5'] - 1]['name'];
             $msgcontent .= "<br/>";
         }
-        if($scheds[5]['noline']==0){
-            $msgcontent .= $teams[$data['p6']-1]['name'];
+        if ($scheds[5]['noline'] == 0) {
+            $msgcontent .= $teams[$data['p6'] - 1]['name'];
             $msgcontent .= "<br/>";
         }
-        if($scheds[6]['noline']==0){
-            $msgcontent .= $teams[$data['p7']-1]['name'];
+        if ($scheds[6]['noline'] == 0) {
+            $msgcontent .= $teams[$data['p7'] - 1]['name'];
             $msgcontent .= "<br/>";
         }
-        if($scheds[7]['noline']==0){
-            $msgcontent .= $teams[$data['p8']-1]['name'];
+        if ($scheds[7]['noline'] == 0) {
+            $msgcontent .= $teams[$data['p8'] - 1]['name'];
             $msgcontent .= "<br/>";
         }
-        if($scheds[8]['noline']==0){
-            $msgcontent .= $teams[$data['p9']-1]['name'];
+        if ($scheds[8]['noline'] == 0) {
+            $msgcontent .= $teams[$data['p9'] - 1]['name'];
             $msgcontent .= "<br/>";
         }
-        if($scheds[9]['noline']==0){
-            $msgcontent .= $teams[$data['p10']-1]['name'];
+        if ($scheds[9]['noline'] == 0) {
+            $msgcontent .= $teams[$data['p10'] - 1]['name'];
             $msgcontent .= "<br/>";
         }
-        if($scheds[10]['noline']==0){
-            $msgcontent .= $teams[$data['p11']-1]['name'];
+        if ($scheds[10]['noline'] == 0) {
+            $msgcontent .= $teams[$data['p11'] - 1]['name'];
             $msgcontent .= "<br/>";
         }
-        if($scheds[11]['noline']==0){
-            $msgcontent .= $teams[$data['p12']-1]['name'];
+        if ($scheds[11]['noline'] == 0) {
+            $msgcontent .= $teams[$data['p12'] - 1]['name'];
             $msgcontent .= "<br/>";
         }
-//			if($scheds[12]['noline']==0){
-//				$msgcontent .= $teams[$request['p13']-1]['name'];
-//				$msgcontent .= "\n";
-//			}
+        //			if($scheds[12]['noline']==0){
+        //				$msgcontent .= $teams[$request['p13']-1]['name'];
+        //				$msgcontent .= "\n";
+        //			}
 
-        if(empty($scheds[13]['favoriteteam_id'])){
-            if($scheds[12]['noline']==0){
+        if (empty($scheds[13]['favoriteteam_id'])) {
+            if ($scheds[12]['noline'] == 0) {
                 $msgcontent .= "Monday Night Football:<br/>";
-                $msgcontent .= $teams[$data['p16']-1]['name'];
+                $msgcontent .= $teams[$data['p16'] - 1]['name'];
                 $msgcontent .= "<br/>";
             }
         } else {
-            if($scheds[12]['noline']==0){
-                $msgcontent .= $teams[$data['p13']-1]['name'];
+            if ($scheds[12]['noline'] == 0) {
+                $msgcontent .= $teams[$data['p13'] - 1]['name'];
                 $msgcontent .= "<br/>";
             }
-            if(empty($scheds[14]['favoriteteam_id'])){
-                if($scheds[13]['noline']==0){
+            if (empty($scheds[14]['favoriteteam_id'])) {
+                if ($scheds[13]['noline'] == 0) {
                     $msgcontent .= "Monday Night Football:\n";
-                    $msgcontent .= $teams[$data['p16']-1]['name'];
+                    $msgcontent .= $teams[$data['p16'] - 1]['name'];
                     $msgcontent .= "<br/>";
                 }
             } else {
-                if($scheds[13]['noline']==0){
-                    $msgcontent .= $teams[$data['p14']-1]['name'];
+                if ($scheds[13]['noline'] == 0) {
+                    $msgcontent .= $teams[$data['p14'] - 1]['name'];
                     $msgcontent .= "<br/>";
                 }
-                if(empty($scheds[15]['favoriteteam_id'])){
-                    if($scheds[14]['noline']==0){
+                if (empty($scheds[15]['favoriteteam_id'])) {
+                    if ($scheds[14]['noline'] == 0) {
                         $msgcontent .= "Monday Night Football:\n";
-                        $msgcontent .= $teams[$data['p16']-1]['name'];
+                        $msgcontent .= $teams[$data['p16'] - 1]['name'];
                         $msgcontent .= "<br/>";
                     }
-                }
-                else {
-                    $msgcontent .= $teams[$data['p15']-1]['name'];
+                } else {
+                    $msgcontent .= $teams[$data['p15'] - 1]['name'];
                     $msgcontent .= "<br/>";
                     $msgcontent .= "<br/>Monday Night Football:<br/>";
-                    $msgcontent .= $teams[$data['p16']-1]['name'];
+                    $msgcontent .= $teams[$data['p16'] - 1]['name'];
                     $msgcontent .= "<br/>";
                 }
             }
         }
 
 
-        $msgcontent .= "Total Points: ".$data['totpts']."<br/>";
+        $msgcontent .= "Total Points: " . $data['totpts'] . "<br/>";
 
-        return view('pickall.complete',['success'=>$msgcontent]);
+        return view('pickall.complete', ['success' => $msgcontent]);
     }
 
     public function emailnotpicked()
     {
         $users = $this->getNotPickedAll();
 
-        forEach ($users as $u){
+        foreach ($users as $u) {
             Mail::to($u['email'])->send(new GetPicksIn());
         }
 
         return redirect(route('admin.notpickall'));
     }
-
 }

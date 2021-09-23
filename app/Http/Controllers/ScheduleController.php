@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Schedule;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Traits\SupportTrait;
 use App\Http\Traits\Pick531Trait;
@@ -11,7 +12,8 @@ use App\Http\Traits\Result531Trait;
 use App\Http\Traits\ResultallTrait;
 use App\Mail\PointSpreadLoaded;
 use Illuminate\Support\Facades\Mail;
-
+use App\Jobs\SendEmailJob;
+use App\Mail\PicksLocked;
 use Illuminate\Support\Facades\Log;
 
 class ScheduleController extends Controller
@@ -253,8 +255,109 @@ class ScheduleController extends Controller
             $users = $this->getUsers531();
             Log::debug('Sending email');
             forEach ($users as $u){
-                Mail::to($u->email)->send(new PointSpreadLoaded());
+                dispatch(new SendEmailJob($u->email, new PointSpreadLoaded()));
+//                Mail::to($u->email)->send(new PointSpreadLoaded());
             }
+        } else if($state == 3){
+
+            //this gets pick531
+            $weekno = $this->getCurrentWeek();
+
+            $results = $this->getresults531();
+
+            $teams = $this->getTeams();
+            $users = $this->getUsers531();
+
+            $x=array(array());
+
+            if(sizeof($results) > 0){
+
+                for($j=0;$j<sizeof($results);$j++){
+                    for($i=0;$i<sizeof($users);$i++){
+                        if($results[$j]['user_id'] != $users[$i]['id']) continue;
+                        $picks = $this->getpicks531($users[$i]['id'],$weekno);
+                        if($picks['def']==1) $end='*';
+                        else $end='';
+                        if($picks['bonus'] > 0) $bonusteam = $teams[$picks['bonus']-1]['abbrev'];
+                        else $bonusteam='';
+                        $x[$j][0]=$users[$i]['name'];
+                        $x[$j][1]=$teams[$picks['pt5']-1]['abbrev'].$end;
+                        $x[$j][2]=$teams[$picks['pt3']-1]['abbrev'].$end;
+                        $x[$j][3]=$teams[$picks['pt1']-1]['abbrev'].$end;
+                        $x[$j][4]=$bonusteam;
+                        $x[$j][5]=$this->getRemainingBonus($users[$i]['id']);
+                        $x[$j][6]=$results[$j]['tot'];
+                        break;
+                    }
+                }
+            } else {
+                    for($i=0;$i<sizeof($users);$i++){
+                        $picks = $this->getpicks531($users[$i]['id'],$weekno);
+                        if($picks['def']==1) $end='*';
+                        else $end='';
+                        if($picks['bonus'] > 0) $bonusteam = $teams[$picks['bonus']-1]['abbrev'];
+                        else $bonusteam='';
+                        $x[$i][0]=$users[$i]['name'];
+                        $x[$i][1]=$teams[$picks['pt5']-1]['abbrev'].$end;
+                        $x[$i][2]=$teams[$picks['pt3']-1]['abbrev'].$end;
+                        $x[$i][3]=$teams[$picks['pt1']-1]['abbrev'].$end;
+                        $x[$i][4]=$bonusteam;
+                        $x[$i][5]=$this->getRemainingBonus($users[$i]['id']);
+                        $x[$i][6]=0;
+                    }
+
+            }
+
+            //this gets pickall
+            $result = $this->getResultsAll();
+    //		$result = $this->requestAction('/resultsalls/getResultsAll/');
+
+            $users = $this->getUsersAll();
+    //		$teams = $this->requestAction('/teams/getTeams');
+    //		$users = $this->requestAction('/users/getPickAllUsers/');
+            $y=array(array());
+
+            if(sizeof($result) > 0){
+                for($k=0;$k<sizeof($result);$k++){
+                    for($i=0;$i<sizeof($users);$i++){
+                        if($result[$k]['user_id'] != $users[$i]['id']) continue;
+                        $picks = $this->getpicksAll($users[$i]['id'],$weekno);
+                        if($picks['def']==1) $end='*';
+                        else $end='';
+                        $y[$k][0]=$users[$i]['name'];
+                        for($j=1;$j<=16;$j++){
+                            $p='p'.$j;
+                            if($picks[$p] == 0) $y[$k][$j] = ' ';
+                            else $y[$k][$j]=$teams[$picks[$p]-1]['abbrev'].$end;
+                        }
+                        $y[$k][17]=$picks['totpts'];
+                        $y[$k][18]=$result[$k]['tot'];
+                        break;
+                    }
+                }
+            } else {
+                    for($i=0;$i<sizeof($users);$i++){
+                        $picks = $this->getpicksAll($users[$i]['id'],$weekno);
+                        if($picks['def']==1) $end='*';
+                        else $end='';
+                        $y[$i][0]=$users[$i]['name'];
+                        for($j=1;$j<=16;$j++){
+                            $p='p'.$j;
+                            if($picks[$p] == 0) $y[$i][$j] = ' ';
+                            else $y[$i][$j]=$teams[$picks[$p]-1]['abbrev'].$end;
+                        }
+                        $y[$i][17]=$picks['totpts'];
+                        $y[$i][18]=0;
+                    }
+            }
+
+            //send to all users
+            $users = User::all();
+
+            forEach($users as $u){
+                dispatch(new SendEmailJob($u->email, new PicksLocked($weekno,$u->pick531, $u->pickall, $x, $y)));
+            }
+
         }
 
         return back()->with('success','Schedule updated.');

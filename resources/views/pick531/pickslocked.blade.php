@@ -9,29 +9,28 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-6 py-4">
 
-
-            <table class="table table-striped table-condensed">
-                <thead>
-                    <tr>
-                        <th class="px-4 py-1">Name</th>
-                        <th class="px-4 py-1">5 Pt</th>
-                        <th class="px-4 py-1">3 Pt</th>
-                        <th class="px-4 py-1">1 Pt</th>
-                        <th class="px-4 py-1">Bonus</th>
-                        <th class="px-4 py-1">Bonus Remaining</th>
-                        <th class="px-4 py-1">Total Points</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($x as $i)
-                    <tr>
-                        @foreach($i as $k)
-                        <td class="px-4 py-1">{{ $k }}</td>
+                <table class="table table-striped table-condensed">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-1">Name</th>
+                            <th class="px-4 py-1">5 Pt</th>
+                            <th class="px-4 py-1">3 Pt</th>
+                            <th class="px-4 py-1">1 Pt</th>
+                            <th class="px-4 py-1">Bonus</th>
+                            <th class="px-4 py-1">Bonus Remaining</th>
+                            <th class="px-4 py-1">Total Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($x as $i)
+                        <tr>
+                            @foreach($i as $k)
+                            <td class="px-4 py-1">{{ $k }}</td>
+                            @endforeach
+                        </tr>
                         @endforeach
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
 
             </div>
         </div>

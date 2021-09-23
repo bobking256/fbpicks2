@@ -33,21 +33,23 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @php
-                        for($i=0;$i<sizeof($x);$i++){
-                    @endphp
-                        <tr>
                         @php
-                            for($k=0;$k<19;$k++){
+                            for($i=0;$i<sizeof($x);$i++){
                         @endphp
-                            <td class="px-2 py-1">{{ $x[$i][$k] }}</td>
+                            <tr>
+                            @php
+                                for($k=0;$k<19;$k++){
+                            @endphp
+                                <td class="px-2 py-1">{{ $x[$i][$k] }}</td>
+                            @php
+                                }
+                            @endphp
+                            </tr>
                         @php
                             }
                         @endphp
-                        </tr>
-                    @php
-                        }
-                    @endphp
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

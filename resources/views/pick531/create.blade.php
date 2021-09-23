@@ -115,6 +115,7 @@
                                 if($weekno > 2 && $weekno < 18) {
                             @endphp
                                 <select name="bonus">
+                                    <option  value=0></option>
                                 @foreach($teams as $t)
                                     <option value="{{ $t['id'] }}" {{ $gp['bonus'] == $t['id'] ? 'selected' : ''}}>{{ $t['name'] }}</option>
                                 @endforeach
