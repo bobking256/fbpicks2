@@ -58,6 +58,7 @@ class OptionController extends Controller
     public function edit(Option $option)
     {
         //
+        return view('admin.option', ['option' => $option]);
     }
 
     /**
@@ -70,6 +71,11 @@ class OptionController extends Controller
     public function update(Request $request, Option $option)
     {
         //
+        $option->message = $request->message;
+        $option->register = $request->register == 'on' ? 1 : 0;
+        $option->save();
+
+        return view('dashboard');
     }
 
     /**
@@ -85,6 +91,5 @@ class OptionController extends Controller
 
     public function lockoption()
     {
-
     }
 }

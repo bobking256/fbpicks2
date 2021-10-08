@@ -9,6 +9,7 @@ use App\Http\Controllers\ResultsallController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\WeeknoController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,17 +22,20 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+/*
 Route::get('/', function () {
     return view('welcome');
 });
+*/
+
+Route::get('/', [WelcomeController::class, 'index']);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function() {
-    Route::resources(['teams'=>TeamController::class]);
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::resources(['teams' => TeamController::class]);
     Route::get('pick531', [PickController::class, 'create'])->name('pick531.create');
     Route::post('pick531', [PickController::class, 'store'])->name('pick531.store');
     Route::get('complete', [PickController::class, 'complete'])->name('pick531.complete');
@@ -44,7 +48,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::get('pickalllocked', [PickallController::class, 'pickalllocked'])->name('pickall.pickslocked');
     Route::get('resultsall', [ResultsallController::class, 'resultsall'])->name('resultsall.results');
     Route::get('standingsall', [ResultsallController::class, 'standings'])->name('resultsall.standings');
-    Route::get('completeall', [PickallController:: class, 'complete'])->name('pickall.complete');
+    Route::get('completeall', [PickallController::class, 'complete'])->name('pickall.complete');
     Route::get('notpick531', [PickController::class, 'notpick531'])->name('notpick531');
     Route::get('notpickall', [PickallController::class, 'notpickall'])->name('notpickall');
 
@@ -56,6 +60,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::get('admin/changeuser', [GroupController::class, 'changeuser'])->name('admin.changeuser');
     Route::get('admin/changeweek', [ScheduleController::class, 'changeweek'])->name('admin.changeweek');
     Route::get('admin/getnflscores', [ScheduleController::class, 'getnflscores'])->name('admin.getnflscores');
+    Route::get('admin/option/edit/{option}', [OptionController::class, 'edit'])->name(('admin.option.edit'));
+    Route::put('admin/option/edit/{option}', [OptionController::class, 'update'])->name('admin.option.update');
 
     Route::get('admin/users', [GroupController::class, 'index'])->name('admin.users');
     Route::get('admin/edituser/{user}', [GroupController::class, 'edituser'])->name('admin.edituser');
@@ -70,5 +76,4 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::get('pickallnewweek', [PickallController::class, 'newweek'])->name('pickall.newweek');
     Route::get('emailnotpicked531', [PickController::class, 'emailnotpicked'])->name('pick531.emailnotpicked');
     Route::get('emailnotpickedall', [PickallController::class, 'emailnotpicked'])->name('pickall.emailnotpicked');
-
 });

@@ -123,6 +123,10 @@
                                 {{ __('Not Yet Pick All') }}
                             </x-jet-dropdown-link>
 
+                            <x-jet-dropdown-link href="{{ route('admin.option.edit', 1) }}">
+                                {{ __('Options') }}
+                            </x-jet-dropdown-link>
+
                         </x-slot>
                     </x-jet-dropdown>
                 </div>

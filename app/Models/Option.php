@@ -12,5 +12,6 @@ class Option extends Model
         'message',
         'lockoption',
         'lock',
+        'register',
     ];
 }
