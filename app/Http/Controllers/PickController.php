@@ -37,22 +37,22 @@ class PickController extends Controller
         //
         Log::debug('show pick531');
         $weekno = $this->getCurrentWeek();
-        $picks = Pick::where('user_id',auth()->user()->id)->where('week_no',$weekno)->first();
+        $picks = Pick::where('user_id', auth()->user()->id)->where('week_no', $weekno)->first();
         $teams = Team::all();
         $rembonus = $this->getRemainingBonus(auth()->user()->id);
-        $scheds = Schedule::where('week_no',$weekno)->orderBy('id','ASC')->get();
+        $scheds = Schedule::where('week_no', $weekno)->orderBy('id', 'ASC')->get();
         $picktime = now();  //was session('picktime)
 
 
         $st = $this->getState($weekno);
-//        $pt = $this->getPickTime($weekno);
+        //        $pt = $this->getPickTime($weekno);
 
 
-        if($st==0) {
+        if ($st == 0) {
             Log::debug('should be redirecting');
             return redirect(route('pick531.newweek'));
         }
-        if($st > 2) {
+        if ($st > 2) {
             Log::debug('redirecting to picked locks');
             return redirect(route('pick531.pickslocked'));
         }
@@ -60,7 +60,7 @@ class PickController extends Controller
 
         Log::debug('Weekno: ' . $weekno);
 
-        return view('pick531.create',['picks'=>$picks, 'teams'=>$teams, 'rembonus'=>$rembonus, 'picktime'=>$picktime, 'scheds'=>$scheds,'weekno'=>$weekno]);
+        return view('pick531.create', ['picks' => $picks, 'teams' => $teams, 'rembonus' => $rembonus, 'picktime' => $picktime, 'scheds' => $scheds, 'weekno' => $weekno]);
     }
 
 
@@ -76,65 +76,97 @@ class PickController extends Controller
         Log::debug($request);
         //
         $weekno = $this->getCurrentWeek();
-        $scheds = Schedule::where('week_no',$weekno)->orderBy('id','ASC')->get();
+        $scheds = Schedule::where('week_no', $weekno)->orderBy('id', 'ASC')->get();
         $rembonus = $this->getRemainingBonus();
 
-        $cnt1=0;
-        $cnt3=0;
-        $cnt5=0;
-        for($j=0;$j<sizeof($scheds);$j++){
-            $sa = "sela".$j;
-            $sb = "selb".$j;
+        $cnt1 = 0;
+        $cnt3 = 0;
+        $cnt5 = 0;
+        for ($j = 0; $j < sizeof($scheds); $j++) {
+            $sa = "sela" . $j;
+            $sb = "selb" . $j;
 
-            if(!isset($request[$sa])) { continue;}
-                if($request[$sa]=="" || $request[$sb]=="") continue;
-                if($request[$sa]==0 && $request[$sb]==0) continue;
-                if($request[$sa]=="1") {
-                    $cnt1++;
-                    if($scheds[$j]['awayteam_id']==$scheds[$j]['favoriteteam_id']) {$pick1=$scheds[$j]['awayteam_id']; $notpick1=$scheds[$j]['hometeam_id'];}
-                    else {$pick1=$scheds[$j]['hometeam_id']; $notpick1=$scheds[$j]['awayteam_id'];}
-                }
-                if($request[$sa]=="3") {
-                    $cnt3++;
-                    if($scheds[$j]['awayteam_id']==$scheds[$j]['favoriteteam_id']) {$pick3=$scheds[$j]['awayteam_id']; $notpick3=$scheds[$j]['hometeam_id'];}
-                    else {$pick3=$scheds[$j]['hometeam_id']; $notpick3=$scheds[$j]['awayteam_id'];}
-                }
-                if($request[$sa]=="5") {
-                    $cnt5++;
-                    if($scheds[$j]['awayteam_id']==$scheds[$j]['favoriteteam_id']) {$pick5=$scheds[$j]['awayteam_id']; $notpick5=$scheds[$j]['hometeam_id'];}
-                    else {$pick5=$scheds[$j]['hometeam_id']; $notpick5=$scheds[$j]['awayteam_id'];}
-                }
-                if($request[$sb]=="1") {
-                    $cnt1++;
-                    if($scheds[$j]['awayteam_id']==$scheds[$j]['favoriteteam_id']) {$pick1=$scheds[$j]['hometeam_id']; $notpick1=$scheds[$j]['awayteam_id'];}
-                    else {$pick1=$scheds[$j]['awayteam_id']; $notpick1=$scheds[$j]["hometeam_id"];}
-                }
-                if($request[$sb]=="3") {
-                    $cnt3++;
-                    if($scheds[$j]['awayteam_id']==$scheds[$j]['favoriteteam_id']) {$pick3=$scheds[$j]['hometeam_id']; $notpick3=$scheds[$j]['awayteam_id'];}
-                    else {$pick3=$scheds[$j]['awayteam_id']; $notpick3=$scheds[$j]['hometeam_id'];}
-                }
-                if($request[$sb]=="5") {
-                    $cnt5++;
-                    if($scheds[$j]['awayteam_id']==$scheds[$j]['favoriteteam_id']) {$pick5=$scheds[$j]['hometeam_id']; $notpick5=$scheds[$j]['awayteam_id'];}
-                    else {$pick5=$scheds[$j]['awayteam_id']; $notpick5=$scheds[$j]['hometeam_id'];}
+            if (!isset($request[$sa])) {
+                continue;
+            }
+            if ($request[$sa] == "" || $request[$sb] == "") continue;
+            if ($request[$sa] == 0 && $request[$sb] == 0) continue;
+            if ($request[$sa] == "1") {
+                $cnt1++;
+                if ($scheds[$j]['awayteam_id'] == $scheds[$j]['favoriteteam_id']) {
+                    $pick1 = $scheds[$j]['awayteam_id'];
+                    $notpick1 = $scheds[$j]['hometeam_id'];
+                } else {
+                    $pick1 = $scheds[$j]['hometeam_id'];
+                    $notpick1 = $scheds[$j]['awayteam_id'];
                 }
             }
+            if ($request[$sa] == "3") {
+                $cnt3++;
+                if ($scheds[$j]['awayteam_id'] == $scheds[$j]['favoriteteam_id']) {
+                    $pick3 = $scheds[$j]['awayteam_id'];
+                    $notpick3 = $scheds[$j]['hometeam_id'];
+                } else {
+                    $pick3 = $scheds[$j]['hometeam_id'];
+                    $notpick3 = $scheds[$j]['awayteam_id'];
+                }
+            }
+            if ($request[$sa] == "5") {
+                $cnt5++;
+                if ($scheds[$j]['awayteam_id'] == $scheds[$j]['favoriteteam_id']) {
+                    $pick5 = $scheds[$j]['awayteam_id'];
+                    $notpick5 = $scheds[$j]['hometeam_id'];
+                } else {
+                    $pick5 = $scheds[$j]['hometeam_id'];
+                    $notpick5 = $scheds[$j]['awayteam_id'];
+                }
+            }
+            if ($request[$sb] == "1") {
+                $cnt1++;
+                if ($scheds[$j]['awayteam_id'] == $scheds[$j]['favoriteteam_id']) {
+                    $pick1 = $scheds[$j]['hometeam_id'];
+                    $notpick1 = $scheds[$j]['awayteam_id'];
+                } else {
+                    $pick1 = $scheds[$j]['awayteam_id'];
+                    $notpick1 = $scheds[$j]["hometeam_id"];
+                }
+            }
+            if ($request[$sb] == "3") {
+                $cnt3++;
+                if ($scheds[$j]['awayteam_id'] == $scheds[$j]['favoriteteam_id']) {
+                    $pick3 = $scheds[$j]['hometeam_id'];
+                    $notpick3 = $scheds[$j]['awayteam_id'];
+                } else {
+                    $pick3 = $scheds[$j]['awayteam_id'];
+                    $notpick3 = $scheds[$j]['hometeam_id'];
+                }
+            }
+            if ($request[$sb] == "5") {
+                $cnt5++;
+                if ($scheds[$j]['awayteam_id'] == $scheds[$j]['favoriteteam_id']) {
+                    $pick5 = $scheds[$j]['hometeam_id'];
+                    $notpick5 = $scheds[$j]['awayteam_id'];
+                } else {
+                    $pick5 = $scheds[$j]['awayteam_id'];
+                    $notpick5 = $scheds[$j]['hometeam_id'];
+                }
+            }
+        }
 
-        if($cnt1 != 1 || $cnt3 != 1 || $cnt5 !=1){
+        if ($cnt1 != 1 || $cnt3 != 1 || $cnt5 != 1) {
             $error = 'You must select one 5 pt, one 3 pt and one 1 pt game and an optional bonus pick!';
         } else {
-            if($request['bonus']==$notpick5 || $request['bonus']==$notpick3 || $request['bonus']==$notpick1) {
+            if ($request['bonus'] == $notpick5 || $request['bonus'] == $notpick3 || $request['bonus'] == $notpick1) {
                 $error = 'The bonus pick may not be the opposite of one of your regular picks!';
             } else {
-                if($pick3==$notpick5 || $pick3==$notpick1 || $pick5==$notpick1 || $pick5==$notpick3 || $pick1==$notpick5 || $pick1==$notpick3){
+                if ($pick3 == $notpick5 || $pick3 == $notpick1 || $pick5 == $notpick1 || $pick5 == $notpick3 || $pick1 == $notpick5 || $pick1 == $notpick3) {
                     $error = 'You may not pick the opposite team of a previous selected team!';
                 } else {
-                    if($rembonus == 0 && $request->data['bonus'] != 0){
+                    if ($rembonus == 0 && $request->data['bonus'] != 0) {
                         $error = 'You have run out of Bonus picks.  Please unselect your bonus pick!';
                     } else {
-//write code to save picks here!
-                        $data=[];
+                        //write code to save picks here!
+                        $data = [];
                         $data['user_id'] = auth()->user()->id;
                         $data['week_no'] = $weekno;
                         $data['pt5'] = $pick5;
@@ -145,9 +177,9 @@ class PickController extends Controller
 
                         Log::debug('Getting picks');
                         Log::debug($request);
-                        $picks = Pick::where('user_id',auth()->user()->id)->where('week_no',$weekno)->first();
+                        $picks = Pick::where('user_id', auth()->user()->id)->where('week_no', $weekno)->first();
                         Log::debug($picks);
-                        if($picks == null){
+                        if ($picks == null) {
                             Log::debug('creating new pick');
                             $picks = Pick::create($data);
                         } else {
@@ -158,7 +190,7 @@ class PickController extends Controller
                         $rembonus = $this->getRemainingBonus();
 
                         $success = 'The pick has been saved.';
-                        return view('pick531.complete',['weekno'=>$weekno, 'teams'=>$teams, 'pick5'=>$pick5, 'pick3'=>$pick3, 'pick1'=>$pick1, 'bonus'=>$picks->bonus, 'rembonus'=>$rembonus]);
+                        return view('pick531.complete', ['weekno' => $weekno, 'teams' => $teams, 'pick5' => $pick5, 'pick3' => $pick3, 'pick1' => $pick1, 'bonus' => $picks->bonus, 'rembonus' => $rembonus]);
 
 
                         $picks->user_id = auth()->user()->id;
@@ -174,12 +206,12 @@ class PickController extends Controller
                             $rembonus = $this->getRemainingBonus();
 
                             $success = 'The pick has been saved.';
-                            return view('pick531.complete',['weekno'=>$weekno, 'teams'=>$teams, 'pick5'=>$pick5, 'pick3'=>$pick3, 'pick1'=>$pick1, 'bonus'=>$picks->bonus, 'rembonus'=>$rembonus]);
+                            return view('pick531.complete', ['weekno' => $weekno, 'teams' => $teams, 'pick5' => $pick5, 'pick3' => $pick3, 'pick1' => $pick1, 'bonus' => $picks->bonus, 'rembonus' => $rembonus]);
                         } else {
                             $error = 'The pick could not be saved. Please, try again.';
                             return redirect()->back()->withErrors([$error]);
                         }
-//                            $this->redirect('/picks/postpick531/'.$pick5.'/'.$pick3.'/'.$pick1.'/'.$request->data['bonus']);
+                        //                            $this->redirect('/picks/postpick531/'.$pick5.'/'.$pick3.'/'.$pick1.'/'.$request->data['bonus']);
                     }
                 }
             }
@@ -187,7 +219,7 @@ class PickController extends Controller
 
 
 
-        if(isset($error)){
+        if (isset($error)) {
             return redirect()->back()->withErrors([$error]);
         }
         return redirect()->back();
@@ -240,7 +272,7 @@ class PickController extends Controller
         //
     }
 
-
+    /*
 	public function getRemainingBonus() {
         //		$condition='Pick.user_id='.$user.' and bonus <> 0';
         //		$result = $this->Pick->find('all',array('conditions'=> array('AND' =>array('Pick.user_id = '=>$user, 'Pick.bonus <>'=>0))));
@@ -249,7 +281,7 @@ class PickController extends Controller
 
         return (3 - sizeof($result));
     }
-
+*/
 
     public function notpick531()
     {
@@ -257,7 +289,7 @@ class PickController extends Controller
 
         Log::debug($users);
 
-        return view('pick531.notpick531', ['users'=>$users]);
+        return view('pick531.notpick531', ['users' => $users]);
     }
 
     public function newweek()
@@ -271,74 +303,72 @@ class PickController extends Controller
         $weekno = $this->getCurrentWeek();
 
         $st = $this->getState($weekno);
-        if($st == 1) return redirect(route('pick531.create'));
+        if ($st == 1) return redirect(route('pick531.create'));
 
         $results = $this->getresults531();
 
         $teams = $this->getTeams();
         $users = $this->getUsers531();
 
-        $x=array(array());
+        $x = array(array());
 
-        if(sizeof($results) > 0){
+        if (sizeof($results) > 0) {
 
-            for($j=0;$j<sizeof($results);$j++){
-                for($i=0;$i<sizeof($users);$i++){
-                    if($results[$j]['user_id'] != $users[$i]['id']) continue;
-                    $picks = $this->getpicks531($users[$i]['id'],$weekno);
-                    if($picks['def']==1) $end='*';
-                    else $end='';
-                    if($picks['bonus'] > 0) $bonusteam = $teams[$picks['bonus']-1]['abbrev'];
-                    else $bonusteam='';
-                    $x[$j][0]=$users[$i]['name'];
-                    $x[$j][1]=$teams[$picks['pt5']-1]['abbrev'].$end;
-                    $x[$j][2]=$teams[$picks['pt3']-1]['abbrev'].$end;
-                    $x[$j][3]=$teams[$picks['pt1']-1]['abbrev'].$end;
-                    $x[$j][4]=$bonusteam;
-                    $x[$j][5]=$this->getRemainingBonus($users[$i]['id']);
-                    $x[$j][6]=$results[$j]['tot'];
+            for ($j = 0; $j < sizeof($results); $j++) {
+                for ($i = 0; $i < sizeof($users); $i++) {
+                    if ($results[$j]['user_id'] != $users[$i]['id']) continue;
+                    $picks = $this->getpicks531($users[$i]['id'], $weekno);
+                    if ($picks['def'] == 1) $end = '*';
+                    else $end = '';
+                    if ($picks['bonus'] > 0) $bonusteam = $teams[$picks['bonus'] - 1]['abbrev'];
+                    else $bonusteam = '';
+                    $x[$j][0] = $users[$i]['name'];
+                    $x[$j][1] = $teams[$picks['pt5'] - 1]['abbrev'] . $end;
+                    $x[$j][2] = $teams[$picks['pt3'] - 1]['abbrev'] . $end;
+                    $x[$j][3] = $teams[$picks['pt1'] - 1]['abbrev'] . $end;
+                    $x[$j][4] = $bonusteam;
+                    $x[$j][5] = $this->getRemainingBonus($users[$i]['id']);
+                    $x[$j][6] = $results[$j]['tot'];
                     break;
                 }
             }
         } else {
-                for($i=0;$i<sizeof($users);$i++){
-                    $picks = $this->getpicks531($users[$i]['id'],$weekno);
-                    if($picks['def']==1) $end='*';
-                    else $end='';
-                    if($picks['bonus'] > 0) $bonusteam = $teams[$picks['bonus']-1]['abbrev'];
-                    else $bonusteam='';
-                    $x[$i][0]=$users[$i]['name'];
-                    $x[$i][1]=$teams[$picks['pt5']-1]['abbrev'].$end;
-                    $x[$i][2]=$teams[$picks['pt3']-1]['abbrev'].$end;
-                    $x[$i][3]=$teams[$picks['pt1']-1]['abbrev'].$end;
-                    $x[$i][4]=$bonusteam;
-                    $x[$i][5]=$this->getRemainingBonus($users[$i]['id']);
-                    $x[$i][6]=0;
-                }
-
+            for ($i = 0; $i < sizeof($users); $i++) {
+                $picks = $this->getpicks531($users[$i]['id'], $weekno);
+                if ($picks['def'] == 1) $end = '*';
+                else $end = '';
+                if ($picks['bonus'] > 0) $bonusteam = $teams[$picks['bonus'] - 1]['abbrev'];
+                else $bonusteam = '';
+                $x[$i][0] = $users[$i]['name'];
+                $x[$i][1] = $teams[$picks['pt5'] - 1]['abbrev'] . $end;
+                $x[$i][2] = $teams[$picks['pt3'] - 1]['abbrev'] . $end;
+                $x[$i][3] = $teams[$picks['pt1'] - 1]['abbrev'] . $end;
+                $x[$i][4] = $bonusteam;
+                $x[$i][5] = $this->getRemainingBonus($users[$i]['id']);
+                $x[$i][6] = 0;
+            }
         }
 
-        return view('pick531.pickslocked',['x'=>$x, 'weekno'=>$weekno]);
-
+        return view('pick531.pickslocked', ['x' => $x, 'weekno' => $weekno]);
     }
 
     public function adminpick531(User $user)
     {
         $weekno = $this->getCurrentWeek();
-        $picks = Pick::where('user_id',$user->id)->where('week_no',$weekno)->first();
+        $picks = Pick::where('user_id', $user->id)->where('week_no', $weekno)->first();
         $teams = Team::all();
         $rembonus = $this->getRemainingBonus($user->id);
-        $scheds = Schedule::where('week_no',$weekno)->orderBy('id','ASC')->get();
+        $scheds = Schedule::where('week_no', $weekno)->orderBy('id', 'ASC')->get();
         $picktime = now();  //was session('picktime)
 
 
         $st = $this->getState($weekno);
-//        $pt = $this->getPickTime($weekno);
+        //        $pt = $this->getPickTime($weekno);
 
 
         Log::debug('Weekno: ' . $weekno);
 
-        return view('admin.pick531',['picks'=>$picks, 'teams'=>$teams, 'rembonus'=>$rembonus, 'picktime'=>$picktime, 'scheds'=>$scheds,'weekno'=>$weekno, 'user'=>$user]);
+        return view('admin.pick531', ['picks' => $picks, 'teams' => $teams, 'rembonus' => $rembonus, 'picktime' => $picktime, 'scheds' => $scheds, 'weekno' => $weekno, 'user' => $user]);
     }
 
     public function storeadminpick531(Request $request, User $user)
@@ -346,68 +376,100 @@ class PickController extends Controller
         Log::debug('Admin store request');
         Log::debug($request);
         $weekno = $this->getCurrentWeek();
-        $scheds = Schedule::where('week_no',$weekno)->orderBy('id','ASC')->get();
+        $scheds = Schedule::where('week_no', $weekno)->orderBy('id', 'ASC')->get();
         $rembonus = $this->getRemainingBonus();
 
-        $cnt1=0;
-        $cnt3=0;
-        $cnt5=0;
-        for($j=0;$j<sizeof($scheds);$j++){
-            $sa = "sela".$j;
-            $sb = "selb".$j;
+        $cnt1 = 0;
+        $cnt3 = 0;
+        $cnt5 = 0;
+        for ($j = 0; $j < sizeof($scheds); $j++) {
+            $sa = "sela" . $j;
+            $sb = "selb" . $j;
 
-            if(!isset($request[$sa])) { continue;}
-                if($request[$sa]=="" || $request[$sb]=="") continue;
-                if($request[$sa]==0 && $request[$sb]==0) continue;
-                if($request[$sa]=="1") {
-                    $cnt1++;
-                    if($scheds[$j]['awayteam_id']==$scheds[$j]['favoriteteam_id']) {$pick1=$scheds[$j]['awayteam_id']; $notpick1=$scheds[$j]['hometeam_id'];}
-                    else {$pick1=$scheds[$j]['hometeam_id']; $notpick1=$scheds[$j]['awayteam_id'];}
-                }
-                if($request[$sa]=="3") {
-                    $cnt3++;
-                    if($scheds[$j]['awayteam_id']==$scheds[$j]['favoriteteam_id']) {$pick3=$scheds[$j]['awayteam_id']; $notpick3=$scheds[$j]['hometeam_id'];}
-                    else {$pick3=$scheds[$j]['hometeam_id']; $notpick3=$scheds[$j]['awayteam_id'];}
-                }
-                if($request[$sa]=="5") {
-                    $cnt5++;
-                    if($scheds[$j]['awayteam_id']==$scheds[$j]['favoriteteam_id']) {$pick5=$scheds[$j]['awayteam_id']; $notpick5=$scheds[$j]['hometeam_id'];}
-                    else {$pick5=$scheds[$j]['hometeam_id']; $notpick5=$scheds[$j]['awayteam_id'];}
-                }
-                if($request[$sb]=="1") {
-                    $cnt1++;
-                    if($scheds[$j]['awayteam_id']==$scheds[$j]['favoriteteam_id']) {$pick1=$scheds[$j]['hometeam_id']; $notpick1=$scheds[$j]['awayteam_id'];}
-                    else {$pick1=$scheds[$j]['awayteam_id']; $notpick1=$scheds[$j]["hometeam_id"];}
-                }
-                if($request[$sb]=="3") {
-                    $cnt3++;
-                    if($scheds[$j]['awayteam_id']==$scheds[$j]['favoriteteam_id']) {$pick3=$scheds[$j]['hometeam_id']; $notpick3=$scheds[$j]['awayteam_id'];}
-                    else {$pick3=$scheds[$j]['awayteam_id']; $notpick3=$scheds[$j]['hometeam_id'];}
-                }
-                if($request[$sb]=="5") {
-                    $cnt5++;
-                    if($scheds[$j]['awayteam_id']==$scheds[$j]['favoriteteam_id']) {$pick5=$scheds[$j]['hometeam_id']; $notpick5=$scheds[$j]['awayteam_id'];}
-                    else {$pick5=$scheds[$j]['awayteam_id']; $notpick5=$scheds[$j]['hometeam_id'];}
+            if (!isset($request[$sa])) {
+                continue;
+            }
+            if ($request[$sa] == "" || $request[$sb] == "") continue;
+            if ($request[$sa] == 0 && $request[$sb] == 0) continue;
+            if ($request[$sa] == "1") {
+                $cnt1++;
+                if ($scheds[$j]['awayteam_id'] == $scheds[$j]['favoriteteam_id']) {
+                    $pick1 = $scheds[$j]['awayteam_id'];
+                    $notpick1 = $scheds[$j]['hometeam_id'];
+                } else {
+                    $pick1 = $scheds[$j]['hometeam_id'];
+                    $notpick1 = $scheds[$j]['awayteam_id'];
                 }
             }
+            if ($request[$sa] == "3") {
+                $cnt3++;
+                if ($scheds[$j]['awayteam_id'] == $scheds[$j]['favoriteteam_id']) {
+                    $pick3 = $scheds[$j]['awayteam_id'];
+                    $notpick3 = $scheds[$j]['hometeam_id'];
+                } else {
+                    $pick3 = $scheds[$j]['hometeam_id'];
+                    $notpick3 = $scheds[$j]['awayteam_id'];
+                }
+            }
+            if ($request[$sa] == "5") {
+                $cnt5++;
+                if ($scheds[$j]['awayteam_id'] == $scheds[$j]['favoriteteam_id']) {
+                    $pick5 = $scheds[$j]['awayteam_id'];
+                    $notpick5 = $scheds[$j]['hometeam_id'];
+                } else {
+                    $pick5 = $scheds[$j]['hometeam_id'];
+                    $notpick5 = $scheds[$j]['awayteam_id'];
+                }
+            }
+            if ($request[$sb] == "1") {
+                $cnt1++;
+                if ($scheds[$j]['awayteam_id'] == $scheds[$j]['favoriteteam_id']) {
+                    $pick1 = $scheds[$j]['hometeam_id'];
+                    $notpick1 = $scheds[$j]['awayteam_id'];
+                } else {
+                    $pick1 = $scheds[$j]['awayteam_id'];
+                    $notpick1 = $scheds[$j]["hometeam_id"];
+                }
+            }
+            if ($request[$sb] == "3") {
+                $cnt3++;
+                if ($scheds[$j]['awayteam_id'] == $scheds[$j]['favoriteteam_id']) {
+                    $pick3 = $scheds[$j]['hometeam_id'];
+                    $notpick3 = $scheds[$j]['awayteam_id'];
+                } else {
+                    $pick3 = $scheds[$j]['awayteam_id'];
+                    $notpick3 = $scheds[$j]['hometeam_id'];
+                }
+            }
+            if ($request[$sb] == "5") {
+                $cnt5++;
+                if ($scheds[$j]['awayteam_id'] == $scheds[$j]['favoriteteam_id']) {
+                    $pick5 = $scheds[$j]['hometeam_id'];
+                    $notpick5 = $scheds[$j]['awayteam_id'];
+                } else {
+                    $pick5 = $scheds[$j]['awayteam_id'];
+                    $notpick5 = $scheds[$j]['hometeam_id'];
+                }
+            }
+        }
 
         Log::debug($pick5 . " - " . $pick3 . " - " . $pick1);
         Log::debug($notpick5 . " - " . $notpick3 . " - " . $notpick1);
 
-        if($cnt1 != 1 || $cnt3 != 1 || $cnt5 !=1){
+        if ($cnt1 != 1 || $cnt3 != 1 || $cnt5 != 1) {
             $error = 'You must select one 5 pt, one 3 pt and one 1 pt game and an optional bonus pick!';
         } else {
-            if($request['bonus']==$notpick5 || $request['bonus']==$notpick3 || $request['bonus']==$notpick1) {
+            if ($request['bonus'] == $notpick5 || $request['bonus'] == $notpick3 || $request['bonus'] == $notpick1) {
                 $error = 'The bonus pick may not be the opposite of one of your regular picks!';
             } else {
-                if($pick3==$notpick5 || $pick3==$notpick1 || $pick5==$notpick1 || $pick5==$notpick3 || $pick1==$notpick5 || $pick1==$notpick3){
+                if ($pick3 == $notpick5 || $pick3 == $notpick1 || $pick5 == $notpick1 || $pick5 == $notpick3 || $pick1 == $notpick5 || $pick1 == $notpick3) {
                     $error = 'You may not pick the opposite team of a previous selected team!';
                 } else {
-                    if($rembonus == 0 && $request->data['bonus'] != 0){
+                    if ($rembonus == 0 && $request->data['bonus'] != 0) {
                         $error = 'You have run out of Bonus picks.  Please unselect your bonus pick!';
                     } else {
-//write code to save picks here!
-                        $data=[];
+                        //write code to save picks here!
+                        $data = [];
                         $data['user_id'] = $user->id;
                         $data['week_no'] = $weekno;
                         $data['pt5'] = $pick5;
@@ -418,9 +480,9 @@ class PickController extends Controller
 
                         Log::debug('Admin Getting picks');
                         Log::debug($request);
-                        $picks = Pick::where('user_id',$user->id)->where('week_no',$weekno)->first();
+                        $picks = Pick::where('user_id', $user->id)->where('week_no', $weekno)->first();
                         Log::debug($picks);
-                        if($picks == null){
+                        if ($picks == null) {
                             Log::debug('creating new pick');
                             $picks = Pick::create($data);
                         } else {
@@ -431,7 +493,7 @@ class PickController extends Controller
                         $rembonus = $this->getRemainingBonus();
 
                         $success = 'The pick has been saved.';
-                        return view('pick531.complete',['weekno'=>$weekno, 'teams'=>$teams, 'pick5'=>$pick5, 'pick3'=>$pick3, 'pick1'=>$pick1, 'bonus'=>$picks->bonus, 'rembonus'=>$rembonus]);
+                        return view('pick531.complete', ['weekno' => $weekno, 'teams' => $teams, 'pick5' => $pick5, 'pick3' => $pick3, 'pick1' => $pick1, 'bonus' => $picks->bonus, 'rembonus' => $rembonus]);
 
 
                         $picks->user_id = $user->id;
@@ -447,12 +509,12 @@ class PickController extends Controller
                             $rembonus = $this->getRemainingBonus();
 
                             $success = 'The pick has been saved.';
-                            return view('pick531.complete',['weekno'=>$weekno, 'teams'=>$teams, 'pick5'=>$pick5, 'pick3'=>$pick3, 'pick1'=>$pick1, 'bonus'=>$picks->bonus, 'rembonus'=>$rembonus]);
+                            return view('pick531.complete', ['weekno' => $weekno, 'teams' => $teams, 'pick5' => $pick5, 'pick3' => $pick3, 'pick1' => $pick1, 'bonus' => $picks->bonus, 'rembonus' => $rembonus]);
                         } else {
                             $error = 'The pick could not be saved. Please, try again.';
                             return redirect()->back()->withErrors([$error]);
                         }
-//                            $this->redirect('/picks/postpick531/'.$pick5.'/'.$pick3.'/'.$pick1.'/'.$request->data['bonus']);
+                        //                            $this->redirect('/picks/postpick531/'.$pick5.'/'.$pick3.'/'.$pick1.'/'.$request->data['bonus']);
                     }
                 }
             }
@@ -460,7 +522,7 @@ class PickController extends Controller
 
 
 
-        if(isset($error)){
+        if (isset($error)) {
             return redirect()->back()->withErrors([$error]);
         }
         return redirect()->back();
@@ -470,7 +532,7 @@ class PickController extends Controller
     {
         $users = $this->getNotPicked531();
 
-        forEach ($users as $u){
+        foreach ($users as $u) {
             Mail::to($u['email'])->send(new GetPicksIn());
         }
 

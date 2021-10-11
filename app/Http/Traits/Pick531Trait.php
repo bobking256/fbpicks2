@@ -185,4 +185,17 @@ trait Pick531Trait
         $picks = Pick::where('user_id', $user_id)->get(['id']);
         Pick::destroy($picks);
     }
+
+    public function getRemainingBonus($user_id = 0)
+    {
+        //		$condition='Pick.user_id='.$user.' and bonus <> 0';
+        //		$result = $this->Pick->find('all',array('conditions'=> array('AND' =>array('Pick.user_id = '=>$user, 'Pick.bonus <>'=>0))));
+
+        if ($user_id == 0) {
+            $user_id = auth()->user()->id;
+        }
+
+        $result = Pick::where('user_id', $user_id)->where('bonus', '>', 0)->get();
+        return (3 - sizeof($result));
+    }
 }
