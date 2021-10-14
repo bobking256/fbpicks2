@@ -171,6 +171,11 @@ class PickallController extends Controller
         $data['user_id'] = auth()->user()->id;
         $data['week_no'] = $weekno;
         $data['def'] = 0;
+        if (empty($request['p15']) || $request['p15'] == null) {
+            $data['p15'] = 0;
+        } else {
+            $data['p15'] = $request['p15'];
+        }
         if (empty($request['p16']) || $request['p16'] == null) {
             $data['p16'] = 0;
         } else {
