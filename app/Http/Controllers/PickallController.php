@@ -171,6 +171,11 @@ class PickallController extends Controller
         $data['user_id'] = auth()->user()->id;
         $data['week_no'] = $weekno;
         $data['def'] = 0;
+        if (empty($request['p14']) || $request['p14'] == null) {
+            $data['p14'] = 0;
+        } else {
+            $data['p14'] = $request['p14'];
+        }
         if (empty($request['p15']) || $request['p15'] == null) {
             $data['p15'] = 0;
         } else {
@@ -522,6 +527,11 @@ class PickallController extends Controller
         $data['user_id'] = $user->id;
         $data['week_no'] = $weekno;
         $data['def'] = 0;
+        if (empty($request['p14']) || $request['p14'] == null) {
+            $data['p14'] = 0;
+        } else {
+            $data['p14'] = $request['p14'];
+        }
         if (empty($request['p15']) || $request['p15'] == null) {
             $data['p15'] = 0;
         } else {
