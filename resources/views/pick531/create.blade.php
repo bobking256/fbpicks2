@@ -14,6 +14,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-6 py-4">
+
                 <table class="table table-fixed">
                     <thead>
                         <tr>
@@ -53,15 +54,23 @@
                             if($s['default_game']==3) $fav.=' [3]';
                             if($s['default_game']==1) $fav.=' [1]';
                         @endphp
+                        @php
+                            if($gp == null){
+                                $gp['pt5']='';
+                                $gp['pt3']='';
+                                $gp['pt1']='';
+                                $gp['bonus']='';
+                            }
+                        @endphp
                         <tr>
                             <td class="px-2 py-1"  valign="middle" align="right">
                                 @php
                                     if($s['noline'] == 0) {
                                         $name = "sela".$i;
-                                        if($fc == $gp['pt5']) $seld='5';
-                                        else if($fc == $gp['pt3']) $seld='3';
-                                        else if($fc == $gp['pt1']) $seld='1';
-                                        else $seld = '0';
+                                        if($fc == $gp['pt5']) {$seld='5'; }
+                                        else if($fc == $gp['pt3']) { $seld='3'; }
+                                        else if($fc == $gp['pt1']) {$seld='1'; }
+                                        else { $seld = '0'; }
                                 @endphp
                                 <select name="{{ $name }}">
                                     <option value='0' {{ $seld == '0' ? 'selected' : ''}}>0</option>

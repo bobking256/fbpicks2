@@ -59,6 +59,12 @@ class PickController extends Controller
 
 
         Log::debug('Weekno: ' . $weekno);
+        Log::debug('Picks');
+        Log::debug($picks);
+        Log::debug('Teams');
+        Log::debug($teams);
+        Log::debug('scheds');
+        Log::debug($scheds);
 
         return view('pick531.create', ['picks' => $picks, 'teams' => $teams, 'rembonus' => $rembonus, 'picktime' => $picktime, 'scheds' => $scheds, 'weekno' => $weekno]);
     }

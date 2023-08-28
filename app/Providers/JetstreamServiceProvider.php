@@ -38,14 +38,19 @@ class JetstreamServiceProvider extends ServiceProvider
         Fortify::authenticateUsing(function (Request $request) {
             $user = User::where('name', $request->name)->first();
 
-            if ($user &&
-                Hash::check($request->password, $user->password)) {
-                $weekno =  Weekno::where('weektime','>',date('Y-m-d H:m:s'))->first();
-                $request->session()->put('weekno',$weekno->id);
+            if (
+                $user &&
+                Hash::check($request->password, $user->password)
+            ) {
+                $weekno =  Weekno::where('weektime', '>', date('Y-m-d H:m:s'))->first();
+                if ($weekno == null) {
+                    $request->session()->put('weekno', 1);
+                } else {
+                    $request->session()->put('weekno', $weekno->id);
+                }
                 return $user;
             }
         });
-
     }
 
     /**
