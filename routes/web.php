@@ -76,4 +76,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('pickallnewweek', [PickallController::class, 'newweek'])->name('pickall.newweek');
     Route::get('emailnotpicked531', [PickController::class, 'emailnotpicked'])->name('pick531.emailnotpicked');
     Route::get('emailnotpickedall', [PickallController::class, 'emailnotpicked'])->name('pickall.emailnotpicked');
+
+    Route::delete('destroyuser/{user}', [GroupController::class, 'destroyuser'])->name('admin.destroyuser');
 });
