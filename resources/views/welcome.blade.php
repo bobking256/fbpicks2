@@ -420,7 +420,7 @@
             </div>
 
             <div class="mt-8 bg-white overflow-hidden shadow text-center sm:rounded-lg px-6 py-4">
-                Paulie's Football Picks 2023/24 Season. {{ app()->version() }}
+                Paulie's Football Picks 2025/26 Season. {{ app()->version() }}
             </div>
 
 

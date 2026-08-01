@@ -84,6 +84,7 @@ class PickController extends Controller
         $weekno = $this->getCurrentWeek();
         $scheds = Schedule::where('week_no', $weekno)->orderBy('id', 'ASC')->get();
         $rembonus = $this->getRemainingBonus();
+	$request['bonus'] = isset($request['bonus']) ? $request['bonus'] : 0;
 
         $cnt1 = 0;
         $cnt3 = 0;
@@ -168,7 +169,7 @@ class PickController extends Controller
                 if ($pick3 == $notpick5 || $pick3 == $notpick1 || $pick5 == $notpick1 || $pick5 == $notpick3 || $pick1 == $notpick5 || $pick1 == $notpick3) {
                     $error = 'You may not pick the opposite team of a previous selected team!';
                 } else {
-                    if ($rembonus == 0 && $request->data['bonus'] != 0) {
+                    if ($rembonus == 0 && $request['bonus'] != 0) {
                         $error = 'You have run out of Bonus picks.  Please unselect your bonus pick!';
                     } else {
                         //write code to save picks here!
@@ -471,7 +472,7 @@ class PickController extends Controller
                 if ($pick3 == $notpick5 || $pick3 == $notpick1 || $pick5 == $notpick1 || $pick5 == $notpick3 || $pick1 == $notpick5 || $pick1 == $notpick3) {
                     $error = 'You may not pick the opposite team of a previous selected team!';
                 } else {
-                    if ($rembonus == 0 && $request->data['bonus'] != 0) {
+                    if ($rembonus == 0 && $request['bonus'] != 0) {
                         $error = 'You have run out of Bonus picks.  Please unselect your bonus pick!';
                     } else {
                         //write code to save picks here!

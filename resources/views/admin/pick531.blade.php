@@ -52,6 +52,14 @@
                             if($s['default_game']==5) $fav.=' [5]';
                             if($s['default_game']==3) $fav.=' [3]';
                             if($s['default_game']==1) $fav.=' [1]';
+
+                            if($gp == null){
+                                $gp['pt5']='';
+                                $gp['pt3']='';
+                                $gp['pt1']='';
+                                $gp['bonus']='';
+                            }
+
                         @endphp
                         <tr>
                             <td class="px-2 py-1"  valign="middle" align="right">
