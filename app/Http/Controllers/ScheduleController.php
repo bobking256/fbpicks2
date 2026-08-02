@@ -2,208 +2,73 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Schedule;
-use App\Models\User;
-use Illuminate\Http\Request;
-use App\Http\Traits\SupportTrait;
+use App\Http\Requests\UpdatePointSpreadRequest;
 use App\Http\Traits\Pick531Trait;
 use App\Http\Traits\PickallTrait;
 use App\Http\Traits\Result531Trait;
 use App\Http\Traits\ResultallTrait;
-use App\Mail\PointSpreadLoaded;
-use Illuminate\Support\Facades\Mail;
+use App\Http\Traits\SupportTrait;
 use App\Jobs\SendEmailJob;
 use App\Mail\PicksLocked;
-use Illuminate\Support\Facades\Log;
+use App\Mail\PointSpreadLoaded;
+use App\Models\Schedule;
+use App\Models\User;
+use Inertia\Inertia;
 
 class ScheduleController extends Controller
 {
     use SupportTrait, PickallTrait, Pick531Trait, Result531Trait, ResultallTrait;
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Schedule  $schedule
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Schedule $schedule)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Schedule  $schedule
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Schedule $schedule)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Schedule  $schedule
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Schedule $schedule)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Schedule  $schedule
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Schedule $schedule)
-    {
-        //
-    }
-
     public function pointspread()
     {
-        Log::debug("Point Spread... let's use trait");
         $weekno = $this->getCurrentWeek();
         $schedule = $this->getSchedule($weekno);
         $teams = $this->getTeams();
         $state = $this->getState($weekno);
-        Log::debug("State: " . $state . " Weekno: " . $weekno);
 
-        foreach ($schedule as $i => $s) {
-            $gamedate = "gamedate" . $i;
-            $default_game = "default_game" . $i;
-            $hometeam_id = "hometeam_id" . $i;
-            $awayteam_id = "awayteam_id" . $i;
-            $favoriteteam_id = "favteam_id" . $i;
-            $point_spread = "point_spread" . $i;
-            $hometeam_pts = "hometeam_pts" . $i;
-            $awayteam_pts = "awayteam_pts" . $i;
-            $noline = "noline" . $i;
-
-            if ($s['favoriteteam_id'] == 0) {
-                $data[$favoriteteam_id] = $s['hometeam_id'];
-            } else {
-                $data[$favoriteteam_id] = $s['favoriteteam_id'];
-            }
-            if (isset($s['noline'])) {
-                if ($s['noline'] == 1) {
-                    $data[$noline] = true;
-                } else {
-                    $data[$noline] = false;
-                }
-            } else {
-                $data[$noline] = false;
-            }
-            $data[$default_game] = $s['default_game'];
-            $data[$hometeam_id] = $s['hometeam_id'];
-            $data[$awayteam_id] = $s['awayteam_id'];
-            $data[$point_spread] = $s['point_spread'];
-            $data[$hometeam_pts] = $s['hometeam_pts'];
-            $data[$awayteam_pts] = $s['awayteam_pts'];
-        }
-        $data['state'] = $state;
-
-        Log::debug('view');
-
-        return view('admin/pt_spread', ['schedule' => $schedule, 'teams' => $teams, 'weekno' => $weekno, 'state' => $state, 'data' => $data]);
+        return Inertia::render('Admin/PointSpread', [
+            'schedule' => $schedule,
+            'teams' => $teams,
+            'weekno' => $weekno,
+            'state' => $state,
+        ]);
     }
 
-    public function updatepointspread(Request $request)
+    public function updatepointspread(UpdatePointSpreadRequest $request)
     {
-        Log::debug($request);
-
         $weekno = $this->getCurrentWeek();
         $schedule = $this->getSchedule($weekno);
 
-        $error_mgs = [];
+        foreach ($request->games as $i => $g) {
+            $noline = (bool) ($g['noline'] ?? false);
 
-        foreach ($schedule as $i => $s) {
-            $gamedate = "gamedate" . $i;
-            $default_game = "default_game" . $i;
-            $hometeam_id = "hometeam_id" . $i;
-            $awayteam_id = "awayteam_id" . $i;
-            $favoriteteam_id = "favteam_id" . $i;
-            $point_spread = "point_spread" . $i;
-            $hometeam_pts = "hometeam_pts" . $i;
-            $awayteam_pts = "awayteam_pts" . $i;
-            $noline = "noline" . $i;
+            $data = [
+                'id' => $g['id'],
+                'gamedate' => $g['gamedate'] ?? null,
+                'week_no' => $schedule[$i]['week_no'],
+                'default_game' => $g['default_game'] ?? null,
+                'hometeam_id' => $g['hometeam_id'] ?? null,
+                'awayteam_id' => $g['awayteam_id'] ?? null,
+                'point_spread' => $g['point_spread'] ?? null,
+                'hometeam_pts' => $g['hometeam_pts'] ?? null,
+                'awayteam_pts' => $g['awayteam_pts'] ?? null,
+                'noline' => $noline,
+            ];
 
-            if (!isset($request[$noline])) {
-                $request[$noline] = 0;
+            if (empty($g['favteam_id'])) {
+                $data['favoriteteam_id'] = $noline ? null : $schedule[$i]['awayteam_id'];
             } else {
-                if ($request[$noline] == 'on') {
-                    $request[$noline] = 1;
-                } else {
-                    $request[$noline] = 0;
-                }
+                $data['favoriteteam_id'] = $g['favteam_id'];
             }
 
-            $data['id'] = $s['id'];
-            $data['gamedate'] = $request[$gamedate];
-            $data['week_no'] = $s['week_no'];
-            $data['default_game'] = $request[$default_game];
-            $data['hometeam_id'] = $request[$hometeam_id];
-            $data['awayteam_id'] = $request[$awayteam_id];
-            if ($request[$favoriteteam_id] == null) {
-                if ($request[$noline] == 0) {
-                    $data['favoriteteam_id'] = $schedule[$i]['awayteam_id'];
-                } else {
-                    $data['favotoreteam_id'] = null;
-                }
-            } else {
-                $data['favoriteteam_id'] = $request[$favoriteteam_id];
-            }
-            $data['point_spread'] = $request[$point_spread];
-            $data['hometeam_pts'] = $request[$hometeam_pts];
-            $data['awayteam_pts'] = $request[$awayteam_pts];
-            $data['noline'] = $request[$noline];
-
-            $sched = Schedule::find($s['id']);
-            $sched->update($data);
+            Schedule::find($g['id'])->update($data);
         }
-        $state = $request['state'];
-        if ($request['state'] == 2) {
-            $state = 3; //move to next state;
-            //lock picks and set default values
+
+        $state = $request->state;
+        if ($request->state == 2) {
+            $state = 3; // move to next state
+            // lock picks and set default values
             $users = $this->getNotPicked531();
-            Log::debug('not picked');
-            Log::debug($users);
             if (sizeof($users) > 0) {
                 $sched = $this->getSchedule($weekno);
                 for ($i = 0; $i < sizeof($sched); $i++) {
@@ -216,9 +81,8 @@ class ScheduleController extends Controller
                 }
             }
             $users = $this->getNotPickedAll();
-            Log::debug('Pick All Not Picked');
-            Log::debug($users);
             if (sizeof($users) > 0) {
+                $sched = $this->getSchedule($weekno);
                 $p = array();
                 for ($i = 0; $i < sizeof($sched); $i++) {
                     if (rand(0, 1) == 0) $p[$i] = $sched[$i]['hometeam_id'];
@@ -231,44 +95,37 @@ class ScheduleController extends Controller
                     $this->setDefaultPicksAll($users[$i]['id'], $weekno, $p[0], $p[1], $p[2], $p[3], $p[4], $p[5], $p[6], $p[7], $p[8], $p[9], $p[10], $p[11], $p[12], $p[13], $p[14], $p[15]);
                 }
             }
-        } else if ($request['state'] == 4) {
-            $state = 5; //move to next state;
-            //process results
+        } elseif ($request->state == 4) {
+            $state = 5; // move to next state
+            // process results
             $this->processResults531($weekno);
             $this->processResultsAll($weekno);
-        } else if ($request['state'] == 6) {
-            //delete weekly default picks
+        } elseif ($request->state == 6) {
+            // delete weekly default picks
             $this->deletedefaults531($weekno);
             $this->deletedefaultsAll($weekno);
-        } else if ($request['state'] == 7) {
-            //delete weekly results
+        } elseif ($request->state == 7) {
+            // delete weekly results
             $this->deleteresults531($weekno);
-            $this->deleteresultsAll($weekno);
+            $this->deleteresults($weekno);
         }
 
         $this->updateState($weekno, $state);
 
         if ($state == 1) {
             $users = $this->getUsers531();
-            Log::debug('Sending email');
             foreach ($users as $u) {
                 dispatch(new SendEmailJob($u['email'], new PointSpreadLoaded()));
-                //                Mail::to($u->email)->send(new PointSpreadLoaded());
             }
-        } else if ($state == 3) {
-
-            //this gets pick531
+        } elseif ($state == 3) {
             $weekno = $this->getCurrentWeek();
 
             $results = $this->getresults531();
-
             $teams = $this->getTeams();
             $users = $this->getUsers531();
-
             $x = array(array());
 
             if (sizeof($results) > 0) {
-
                 for ($j = 0; $j < sizeof($results); $j++) {
                     for ($i = 0; $i < sizeof($users); $i++) {
                         if ($results[$j]['user_id'] != $users[$i]['id']) continue;
@@ -304,13 +161,8 @@ class ScheduleController extends Controller
                 }
             }
 
-            //this gets pickall
             $result = $this->getResultsAll();
-            //		$result = $this->requestAction('/resultsalls/getResultsAll/');
-
             $users = $this->getUsersAll();
-            //		$teams = $this->requestAction('/teams/getTeams');
-            //		$users = $this->requestAction('/users/getPickAllUsers/');
             $y = array(array());
 
             if (sizeof($result) > 0) {
@@ -347,22 +199,12 @@ class ScheduleController extends Controller
                 }
             }
 
-            //send to all users
             $users = User::all();
-
             foreach ($users as $u) {
                 dispatch(new SendEmailJob($u->email, new PicksLocked($weekno, $u->pick531, $u->pickall, $x, $y)));
             }
         }
 
         return back()->with('success', 'Schedule updated.');
-    }
-
-    public function changeweek()
-    {
-    }
-
-    public function getnflscores()
-    {
     }
 }

@@ -46,14 +46,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('notpick531', [PickController::class, 'notpick531'])->name('notpick531');
     Route::get('notpickall', [PickallController::class, 'notpickall'])->name('notpickall');
 
-    Route::get('admin/lockoption', [OptionController::class, 'lockoption'])->name('admin.lockoption');
     Route::get('admin/pointspread', [ScheduleController::class, 'pointspread'])->name('admin.pointspread');
     Route::post('admin/pointspead', [ScheduleController::class, 'updatepointspread'])->name('admin.updatepointspread');
     Route::get('admin/notpick531', [PickController::class, 'notpick531'])->name('admin.notpick531');
     Route::get('admin/notpickall', [PickallController::class, 'notpickall'])->name('admin.notpickall');
-    Route::get('admin/changeuser', [GroupController::class, 'changeuser'])->name('admin.changeuser');
-    Route::get('admin/changeweek', [ScheduleController::class, 'changeweek'])->name('admin.changeweek');
-    Route::get('admin/getnflscores', [ScheduleController::class, 'getnflscores'])->name('admin.getnflscores');
     Route::get('admin/option/edit/{option}', [OptionController::class, 'edit'])->name(('admin.option.edit'));
     Route::put('admin/option/edit/{option}', [OptionController::class, 'update'])->name('admin.option.update');
 
