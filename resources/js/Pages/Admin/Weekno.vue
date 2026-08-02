@@ -52,6 +52,7 @@ const submit = () => {
 
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <form @submit.prevent="submit">
+                        <div class="overflow-x-auto">
                         <table class="table table-auto">
                             <thead>
                                 <tr>
@@ -86,6 +87,7 @@ const submit = () => {
                                 </tr>
                             </tbody>
                         </table>
+                        </div>
                     </form>
                 </div>
             </div>

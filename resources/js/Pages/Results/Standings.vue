@@ -20,6 +20,7 @@ const weeks = Array.from({ length: 18 }, (_, i) => i + 1);
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                    <div class="overflow-x-auto">
                     <table class="table table-striped table-condensed text-sm">
                         <thead>
                             <tr>
@@ -36,6 +37,7 @@ const weeks = Array.from({ length: 18 }, (_, i) => i + 1);
                             </tr>
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
         </div>
