@@ -39,6 +39,10 @@ trait SupportTrait {
 
         $result = Weekno::where('weektime','>',date('Y-m-d H:m:s'))->first();
 
+        if ($result == null) {
+            $result = Weekno::orderBy('id', 'DESC')->first();
+        }
+
 		return $result->id;
 
   	}
