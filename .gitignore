@@ -1,5 +1,9 @@
 /node_modules
+/public/build
 /public/hot
+/resources/js/actions
+/resources/js/routes
+/resources/js/wayfinder
 /public/storage
 /storage/*.key
 /vendor
@@ -14,3 +18,4 @@ yarn-error.log
 /.idea
 /.vscode
 fbpickssql
+/storage/app/backups

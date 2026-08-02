@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
-use Illuminate\Support\Facades\Log;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -16,41 +15,23 @@ class CreateNewUser implements CreatesNewUsers
     /**
      * Validate and create a newly registered user.
      *
-     * @param  array  $input
-     * @return \App\Models\User
+     * @param  array<string, string>  $input
      */
-    public function create(array $input)
+    public function create(array $input): User
     {
-
-        $pick531 = 0;
-        $pickall = 0;
-
-        if(isset($input['pick531'])){
-            if($input['pick531'] == 'on'){
-                $pick531 = 1;
-            }
-        }
-        if(isset($input['pickall'])){
-            if($input['pickall'] == 'on'){
-                $pickall = 1;
-            }
-        }
-
-
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255', 'unique:users'],
-            'email' => ['required', 'string', 'email', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => $this->passwordRules(),
-            'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
+            'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
-
 
         return User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
-            'pick531' => $pick531,
-            'pickall' => $pickall
+            'pick531' => filter_var($input['pick531'] ?? false, FILTER_VALIDATE_BOOL),
+            'pickall' => filter_var($input['pickall'] ?? false, FILTER_VALIDATE_BOOL),
         ]);
     }
 }
