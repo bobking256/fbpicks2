@@ -28,7 +28,7 @@ const page = usePage();
                 <img src="/assets/pauliefbp.png" />
             </div>
 
-            <div class="mt-8 bg-white overflow-hidden shadow text-center sm:rounded-lg px-6 py-4">
+            <div class="mt-8 bg-white overflow-hidden shadow-sm text-center sm:rounded-lg px-6 py-4">
                 Paulie's Football Picks 2025/26 Season. {{ appVersion }}
             </div>
         </div>
