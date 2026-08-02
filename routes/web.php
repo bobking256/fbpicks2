@@ -43,7 +43,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('pickalllocked', [PickallController::class, 'pickalllocked'])->name('pickall.pickslocked');
     Route::get('resultsall', [ResultsallController::class, 'resultsall'])->name('resultsall.results');
     Route::get('standingsall', [ResultsallController::class, 'standings'])->name('resultsall.standings');
-    Route::get('completeall', [PickallController::class, 'complete'])->name('pickall.complete');
     Route::get('notpick531', [PickController::class, 'notpick531'])->name('notpick531');
     Route::get('notpickall', [PickallController::class, 'notpickall'])->name('notpickall');
 
