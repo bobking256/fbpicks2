@@ -20,7 +20,7 @@ const teamName = (id) => props.teams[id - 1]?.name ?? '';
 
     <AppLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Pick 5-3-1</h2>
+            <h2 class="font-display font-semibold text-xl text-nfl-navy-800 tracking-wide leading-tight">Pick 5-3-1</h2>
         </template>
 
         <div class="py-12">

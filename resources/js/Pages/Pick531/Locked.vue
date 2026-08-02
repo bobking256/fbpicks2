@@ -13,7 +13,7 @@ defineProps({
 
     <AppLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Pick 5-3-1 for Week No. {{ weekno }}</h2>
+            <h2 class="font-display font-semibold text-xl text-nfl-navy-800 tracking-wide leading-tight">Pick 5-3-1 for Week No. {{ weekno }}</h2>
         </template>
 
         <div class="py-12">

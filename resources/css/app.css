@@ -11,6 +11,30 @@
   --font-sans:
     Figtree, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
     'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-display: 'Oswald', ui-sans-serif, system-ui, sans-serif;
+
+  /* NFL-inspired brand palette: shield navy + league red */
+  --color-nfl-navy-50: #eef3f8;
+  --color-nfl-navy-100: #d3e0ec;
+  --color-nfl-navy-200: #a7c1d9;
+  --color-nfl-navy-300: #6f97ba;
+  --color-nfl-navy-400: #3d6a93;
+  --color-nfl-navy-500: #1f4573;
+  --color-nfl-navy-600: #0f2e57;
+  --color-nfl-navy-700: #0b2245;
+  --color-nfl-navy-800: #081a36;
+  --color-nfl-navy-900: #04101f;
+
+  --color-nfl-red-50: #fdecec;
+  --color-nfl-red-100: #fac9c9;
+  --color-nfl-red-200: #f39a9a;
+  --color-nfl-red-300: #e96a6a;
+  --color-nfl-red-400: #dc3333;
+  --color-nfl-red-500: #d50a0a;
+  --color-nfl-red-600: #af0707;
+  --color-nfl-red-700: #8a0505;
+  --color-nfl-red-800: #650303;
+  --color-nfl-red-900: #400202;
 }
 
 /*

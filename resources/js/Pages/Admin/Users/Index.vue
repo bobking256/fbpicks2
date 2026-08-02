@@ -38,7 +38,7 @@ defineProps({
                         <tbody>
                             <tr v-for="u in users" :key="u.id">
                                 <td class="px-2 py-1">
-                                    <Link class="underline text-blue-700" :href="admin.edituser(u.id)">{{ u.id }}</Link>
+                                    <Link class="underline text-nfl-navy-700" :href="admin.edituser(u.id)">{{ u.id }}</Link>
                                 </td>
                                 <td class="px-2 py-1">{{ u.name }}</td>
                                 <td class="px-2 py-1">{{ u.email }}</td>
@@ -46,10 +46,10 @@ defineProps({
                                 <td class="px-2 py-1"><input disabled type="checkbox" :checked="!!u.pickall" /></td>
                                 <td class="px-2 py-1"><input disabled type="checkbox" :checked="!!u.admin" /></td>
                                 <td class="px-2 py-1">
-                                    <Link :href="admin.pick531(u.id)" class="underline text-blue-500 hover:text-red-700">Pick 5-3-1</Link>
+                                    <Link :href="admin.pick531(u.id)" class="underline text-nfl-navy-600 hover:text-nfl-red-600">Pick 5-3-1</Link>
                                 </td>
                                 <td class="px-2 py-1">
-                                    <Link :href="admin.pickall(u.id)" class="underline text-blue-500 hover:text-red-700">Pick All</Link>
+                                    <Link :href="admin.pickall(u.id)" class="underline text-nfl-navy-600 hover:text-nfl-red-600">Pick All</Link>
                                 </td>
                                 <td class="px-2 py-1">
                                     <ConfirmDeleteButton :action="admin.destroyuser(u.id).url" />

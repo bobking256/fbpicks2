@@ -24,7 +24,7 @@ const submit = () => {
 
     <AppLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Admin Options</h2>
+            <h2 class="font-display font-semibold text-xl text-nfl-navy-800 tracking-wide leading-tight">Admin Options</h2>
         </template>
 
         <div class="py-12">
@@ -61,7 +61,7 @@ const submit = () => {
                             <div class="md:w-1/3"></div>
                             <div class="md:w-2/3">
                                 <button
-                                    class="shadow-sm bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-hidden text-blue-800 font-bold py-2 px-4 rounded-sm"
+                                    class="shadow-sm bg-nfl-navy-700 hover:bg-nfl-navy-600 focus:shadow-outline focus:outline-hidden text-white font-bold py-2 px-4 rounded-sm disabled:opacity-50 transition"
                                     type="submit"
                                     :disabled="form.processing"
                                 >

@@ -31,7 +31,7 @@ const submit = () => {
 
     <AppLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Edit User</h2>
+            <h2 class="font-display font-semibold text-xl text-nfl-navy-800 tracking-wide leading-tight">Edit User</h2>
         </template>
 
         <div class="py-12">

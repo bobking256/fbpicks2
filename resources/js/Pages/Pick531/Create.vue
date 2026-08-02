@@ -80,7 +80,7 @@ const submit = () => {
 
     <AppLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h2 class="font-display font-semibold text-xl text-nfl-navy-800 tracking-wide leading-tight">
                 Pick 5-3-1 for Week No. {{ weekno }}
                 <span v-if="adminUser"> &mdash; {{ adminUser.name }}</span>
             </h2>
@@ -147,7 +147,7 @@ const submit = () => {
                                 <tr class="my-2">
                                     <td align="center" colspan="8">
                                         <button
-                                            class="font-bold rounded-lg border-2 text-black bg-red-800 hover:bg-red-500 px-4 py-2"
+                                            class="font-bold rounded-lg text-white bg-nfl-navy-700 hover:bg-nfl-navy-600 disabled:opacity-50 transition px-4 py-2"
                                             type="submit"
                                             :disabled="form.processing"
                                         >

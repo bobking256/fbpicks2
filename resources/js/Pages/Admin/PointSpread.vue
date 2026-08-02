@@ -36,7 +36,7 @@ const submit = () => {
 <template>
     <AppLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Admin Point Spreads</h2>
+            <h2 class="font-display font-semibold text-xl text-nfl-navy-800 tracking-wide leading-tight">Admin Point Spreads</h2>
         </template>
 
         <div class="py-12">
@@ -138,7 +138,7 @@ const submit = () => {
                                 </tr>
                                 <tr>
                                     <td align="center" colspan="10">
-                                        <button type="submit" class="border-gray-500 rounded-lg px-4 py-2 text-black hover:bg-red-500" :disabled="form.processing">
+                                        <button type="submit" class="font-bold rounded-lg px-4 py-2 text-white bg-nfl-navy-700 hover:bg-nfl-navy-600 disabled:opacity-50 transition" :disabled="form.processing">
                                             Submit
                                         </button>
                                     </td>

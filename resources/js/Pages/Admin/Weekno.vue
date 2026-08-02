@@ -33,7 +33,7 @@ const submit = () => {
 
     <AppLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h2 class="font-display font-semibold text-xl text-nfl-navy-800 tracking-wide leading-tight">
                 Weekly Schedule
                 <div class="mt-4 text-lg">
                     Week Time is the date and time that starts a ends a week and begins the next. Typically this is a
@@ -77,7 +77,7 @@ const submit = () => {
                                 <tr>
                                     <td align="center" colspan="3">
                                         <button
-                                            class="px-4 py-2 text-blue-800 border-2 border-gray-400 hover:bg-red-400 font-bold rounded-lg"
+                                            class="px-4 py-2 text-white bg-nfl-navy-700 hover:bg-nfl-navy-600 disabled:opacity-50 transition font-bold rounded-lg"
                                             type="submit"
                                             :disabled="form.processing"
                                         >
