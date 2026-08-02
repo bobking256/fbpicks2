@@ -3,37 +3,35 @@
 namespace App\Providers;
 
 use App\Actions\Jetstream\DeleteUser;
-use Illuminate\Support\ServiceProvider;
-use Laravel\Jetstream\Jetstream;
-use Laravel\Fortify\Fortify;
-use Illuminate\Support\Facades\Hash;
-use App\Models\Weekno;
 use App\Models\User;
+use App\Models\Weekno;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Vite;
+use Illuminate\Support\ServiceProvider;
+use Laravel\Fortify\Fortify;
+use Laravel\Jetstream\Jetstream;
 
 class JetstreamServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         //
     }
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->configurePermissions();
 
         Jetstream::deleteUsersUsing(DeleteUser::class);
 
+        Vite::prefetch(concurrency: 3);
 
         Fortify::authenticateUsing(function (Request $request) {
             $user = User::where('name', $request->name)->first();
@@ -42,12 +40,13 @@ class JetstreamServiceProvider extends ServiceProvider
                 $user &&
                 Hash::check($request->password, $user->password)
             ) {
-                $weekno =  Weekno::where('weektime', '>', date('Y-m-d H:m:s'))->first();
+                $weekno = Weekno::where('weektime', '>', date('Y-m-d H:m:s'))->first();
                 if ($weekno == null) {
                     $request->session()->put('weekno', 1);
                 } else {
                     $request->session()->put('weekno', $weekno->id);
                 }
+
                 return $user;
             }
         });
@@ -55,10 +54,8 @@ class JetstreamServiceProvider extends ServiceProvider
 
     /**
      * Configure the permissions that are available within the application.
-     *
-     * @return void
      */
-    protected function configurePermissions()
+    protected function configurePermissions(): void
     {
         Jetstream::defaultApiTokenPermissions(['read']);
 
