@@ -2,18 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Models\Option;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 class WelcomeController extends Controller
 {
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $option = Option::find(1);
@@ -22,6 +16,11 @@ class WelcomeController extends Controller
             $option->register = 1;
             $option->save();
         }
-        return view('welcome', ['option' => $option]);
+
+        return Inertia::render('Welcome', [
+            'canLogin' => Route::has('login'),
+            'canRegister' => $option->register && Route::has('register'),
+            'appVersion' => app()->version(),
+        ]);
     }
 }
