@@ -14,44 +14,47 @@ defineProps({
 
     <AppLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-700 leading-tight">Users</h2>
+            <h2 class="font-display font-semibold text-xl text-nfl-navy-800 tracking-wide leading-tight">Users</h2>
         </template>
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <div class="overflow-x-auto">
-                    <table class="table table-auto px-8 py-4">
+                    <table class="w-full text-sm">
                         <thead>
-                            <tr>
-                                <th class="px-2 py-1">Id</th>
-                                <th class="px-2 py-1">Name</th>
-                                <th class="px-2 py-1">eMail</th>
-                                <th class="px-2 py-1">Pick 5-3-1</th>
-                                <th class="px-2 py-1">Pick All</th>
-                                <th class="px-2 py-1">Admin</th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
+                            <tr class="bg-nfl-navy-800 text-white text-xs uppercase tracking-wide">
+                                <th class="px-3 py-2 text-left">Id</th>
+                                <th class="px-3 py-2 text-left">Name</th>
+                                <th class="px-3 py-2 text-left">Email</th>
+                                <th class="px-3 py-2 text-center">Pick 5-3-1</th>
+                                <th class="px-3 py-2 text-center">Pick All</th>
+                                <th class="px-3 py-2 text-center">Admin</th>
+                                <th class="px-3 py-2 text-center" colspan="3">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="u in users" :key="u.id">
-                                <td class="px-2 py-1">
+                            <tr
+                                v-for="(u, i) in users"
+                                :key="u.id"
+                                class="border-t border-gray-200"
+                                :class="i % 2 === 1 ? 'bg-gray-50' : 'bg-white'"
+                            >
+                                <td class="px-3 py-2 text-left">
                                     <Link class="underline text-nfl-navy-700" :href="admin.edituser(u.id)">{{ u.id }}</Link>
                                 </td>
-                                <td class="px-2 py-1">{{ u.name }}</td>
-                                <td class="px-2 py-1">{{ u.email }}</td>
-                                <td class="px-2 py-1"><input disabled type="checkbox" :checked="!!u.pick531" /></td>
-                                <td class="px-2 py-1"><input disabled type="checkbox" :checked="!!u.pickall" /></td>
-                                <td class="px-2 py-1"><input disabled type="checkbox" :checked="!!u.admin" /></td>
-                                <td class="px-2 py-1">
+                                <td class="px-3 py-2 text-left font-semibold text-nfl-navy-800">{{ u.name }}</td>
+                                <td class="px-3 py-2 text-left text-gray-600">{{ u.email }}</td>
+                                <td class="px-3 py-2 text-center" :class="u.pick531 ? 'text-green-600' : 'text-gray-300'">{{ u.pick531 ? '✓' : '—' }}</td>
+                                <td class="px-3 py-2 text-center" :class="u.pickall ? 'text-green-600' : 'text-gray-300'">{{ u.pickall ? '✓' : '—' }}</td>
+                                <td class="px-3 py-2 text-center" :class="u.admin ? 'text-green-600' : 'text-gray-300'">{{ u.admin ? '✓' : '—' }}</td>
+                                <td class="px-3 py-2 text-center">
                                     <Link :href="admin.pick531(u.id)" class="underline text-nfl-navy-600 hover:text-nfl-red-600">Pick 5-3-1</Link>
                                 </td>
-                                <td class="px-2 py-1">
+                                <td class="px-3 py-2 text-center">
                                     <Link :href="admin.pickall(u.id)" class="underline text-nfl-navy-600 hover:text-nfl-red-600">Pick All</Link>
                                 </td>
-                                <td class="px-2 py-1">
+                                <td class="px-3 py-2 text-center">
                                     <ConfirmDeleteButton :action="admin.destroyuser(u.id).url" />
                                 </td>
                             </tr>

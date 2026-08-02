@@ -41,110 +41,101 @@ const submit = () => {
 
         <div class="py-12">
             <div class="container max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div v-if="page.props.flash.success" class="mb-4 text-green-700 font-bold px-4">
+                <div v-if="page.props.flash.success" class="mx-4 mb-4 text-green-700 font-bold px-4">
                     {{ page.props.flash.success }}
                 </div>
 
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <div class="font-bold py-6 px-4">Week No.: {{ weekno }}</div>
+                    <div class="font-bold my-6 mx-6">Week No.: {{ weekno }}</div>
                     <form @submit.prevent="submit">
-                        <div class="overflow-x-auto">
-                        <table class="table table-auto">
+                        <div class="mx-6 overflow-x-auto">
+                        <table class="w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
                             <thead>
-                                <tr>
-                                    <th>Default</th>
-                                    <th>No<br />Line</th>
-                                    <th align="center">Away Team</th>
-                                    <th align="center">F A V</th>
-                                    <th align="center">Final<br />Score</th>
-                                    <th align="center">Point<br />Spread</th>
-                                    <th align="center">F A V</th>
-                                    <th align="center">Home Team</th>
-                                    <th align="center">Final<br />Score</th>
-                                    <th align="center">Game Date</th>
+                                <tr class="bg-nfl-navy-800 text-white text-xs uppercase tracking-wide">
+                                    <th class="px-3 py-2 text-center">Default</th>
+                                    <th class="px-3 py-2 text-center">No<br />Line</th>
+                                    <th class="px-3 py-2 text-left">Away Team</th>
+                                    <th class="px-3 py-2 text-center">Final<br />Score</th>
+                                    <th class="px-3 py-2 text-center">Point<br />Spread</th>
+                                    <th class="px-3 py-2 text-left">Home Team</th>
+                                    <th class="px-3 py-2 text-center">Final<br />Score</th>
+                                    <th class="px-3 py-2 text-center">Favorite</th>
+                                    <th class="px-3 py-2 text-center">Game Date</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(game, i) in form.games" :key="game.id">
-                                    <td align="right">
-                                        <select v-model="game.default_game">
+                                <tr v-for="(game, i) in form.games" :key="game.id" class="border-t border-gray-200" :class="i % 2 === 1 ? 'bg-gray-50' : 'bg-white'">
+                                    <td class="px-3 py-2 text-center">
+                                        <select v-model="game.default_game" class="rounded border-gray-300 text-sm focus:border-nfl-navy-500 focus:ring-nfl-navy-500">
                                             <option value="0">0</option>
                                             <option value="5">5</option>
                                             <option value="3">3</option>
                                             <option value="1">1</option>
                                         </select>
                                     </td>
-                                    <td align="center">
-                                        <input v-model="game.noline" type="checkbox" />
+                                    <td class="px-3 py-2 text-center">
+                                        <input v-model="game.noline" type="checkbox" class="rounded border-gray-300 text-nfl-navy-700 focus:ring-nfl-navy-500" />
                                     </td>
-                                    <td align="left">
-                                        <select v-model="game.awayteam_id">
+                                    <td class="px-3 py-2">
+                                        <select v-model="game.awayteam_id" class="w-full rounded border-gray-300 text-sm focus:border-nfl-navy-500 focus:ring-nfl-navy-500">
                                             <option v-for="t in teams" :key="t.id" :value="t.id">{{ t.name }}</option>
                                         </select>
                                     </td>
-                                    <td align="center">
-                                        <input type="radio" :value="game.awayteam_id" v-model="game.favteam_id" />
+                                    <td class="px-3 py-2 text-center">
+                                        <input v-model="game.awayteam_pts" type="text" size="4" class="w-16 rounded border-gray-300 text-sm text-center focus:border-nfl-navy-500 focus:ring-nfl-navy-500" />
                                     </td>
-                                    <td align="center">
-                                        <input v-model="game.awayteam_pts" type="text" size="4" />
+                                    <td class="px-3 py-2 text-center">
+                                        <input v-model="game.point_spread" type="text" size="4" class="w-16 rounded border-gray-300 text-sm text-center focus:border-nfl-navy-500 focus:ring-nfl-navy-500" />
                                     </td>
-                                    <td align="center">
-                                        <input v-model="game.point_spread" type="text" size="4" />
-                                    </td>
-                                    <td align="center">
-                                        <input type="radio" :value="game.hometeam_id" v-model="game.favteam_id" />
-                                    </td>
-                                    <td align="left">
-                                        <select v-model="game.hometeam_id">
+                                    <td class="px-3 py-2">
+                                        <select v-model="game.hometeam_id" class="w-full rounded border-gray-300 text-sm focus:border-nfl-navy-500 focus:ring-nfl-navy-500">
                                             <option v-for="t in teams" :key="t.id" :value="t.id">{{ t.name }}</option>
                                         </select>
                                     </td>
-                                    <td align="center">
-                                        <input v-model="game.hometeam_pts" type="text" size="4" />
+                                    <td class="px-3 py-2 text-center">
+                                        <input v-model="game.hometeam_pts" type="text" size="4" class="w-16 rounded border-gray-300 text-sm text-center focus:border-nfl-navy-500 focus:ring-nfl-navy-500" />
                                     </td>
-                                    <td align="center">
-                                        <input v-model="game.gamedate" type="datetime-local" />
+                                    <td class="px-3 py-2 text-center">
+                                        <select v-model="game.favteam_id" class="rounded border-gray-300 text-sm focus:border-nfl-navy-500 focus:ring-nfl-navy-500">
+                                            <option :value="game.awayteam_id">Away</option>
+                                            <option :value="game.hometeam_id">Home</option>
+                                        </select>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="10">&nbsp;</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="10">Current Weekly State</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="10">
-                                        <div class="mt-2">
-                                            <div v-for="option in [
-                                                [0, 'Initial State, Schedule Entered, No Point Spread'],
-                                                [1, 'Point Spread Added, Users Can Enter Picks'],
-                                                [2, 'Lock Picks, Process Default Picks'],
-                                                [3, 'Picks are Locked'],
-                                                [4, 'Final Scores Entered, Process Results'],
-                                                [5, 'Results Processed'],
-                                                [6, 'Delete Weekly Default Picks'],
-                                                [7, 'Delete Weekly Results'],
-                                            ]" :key="option[0]">
-                                                <label class="inline-flex items-center">
-                                                    <input class="form-radio" type="radio" :value="option[0]" v-model="form.state" />
-                                                    <span class="ml-2">{{ option[1] }}</span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="10">&nbsp;</td>
-                                </tr>
-                                <tr>
-                                    <td align="center" colspan="10">
-                                        <button type="submit" class="font-bold rounded-lg px-4 py-2 text-white bg-nfl-navy-700 hover:bg-nfl-navy-600 disabled:opacity-50 transition" :disabled="form.processing">
-                                            Submit
-                                        </button>
+                                    <td class="px-3 py-2 text-center">
+                                        <input v-model="game.gamedate" type="datetime-local" class="rounded border-gray-300 text-sm focus:border-nfl-navy-500 focus:ring-nfl-navy-500" />
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
+                        </div>
+
+                        <div class="mx-6 mt-6">
+                            <div class="font-bold">Current Weekly State</div>
+                            <div class="mt-2 space-y-1">
+                                <label
+                                    v-for="option in [
+                                        [0, 'Initial State, Schedule Entered, No Point Spread'],
+                                        [1, 'Point Spread Added, Users Can Enter Picks'],
+                                        [2, 'Lock Picks, Process Default Picks'],
+                                        [3, 'Picks are Locked'],
+                                        [4, 'Final Scores Entered, Process Results'],
+                                        [5, 'Results Processed'],
+                                        [6, 'Delete Weekly Default Picks'],
+                                        [7, 'Delete Weekly Results'],
+                                    ]"
+                                    :key="option[0]"
+                                    class="flex items-center"
+                                >
+                                    <input class="border-gray-300 text-nfl-navy-700 focus:ring-nfl-navy-500" type="radio" :value="option[0]" v-model="form.state" />
+                                    <span class="ml-2 text-sm">{{ option[1] }}</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mx-6 my-6 text-center">
+                            <button type="submit" class="font-bold rounded-lg px-4 py-2 text-white bg-nfl-navy-700 hover:bg-nfl-navy-600 disabled:opacity-50 transition" :disabled="form.processing">
+                                Submit
+                            </button>
                         </div>
                     </form>
                 </div>

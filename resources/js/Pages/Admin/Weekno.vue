@@ -33,19 +33,18 @@ const submit = () => {
 
     <AppLayout>
         <template #header>
-            <h2 class="font-display font-semibold text-xl text-nfl-navy-800 tracking-wide leading-tight">
-                Weekly Schedule
-                <div class="mt-4 text-lg">
-                    Week Time is the date and time that starts a ends a week and begins the next. Typically this is a
-                    Wednesday 9am or noon time where the point spread is entered for the next week and users can
-                    begin selecting picks.
-                </div>
-                <div class="mt-4 text-lg">Pick Time is the dead line for getting picks in.</div>
-            </h2>
+            <h2 class="font-display font-semibold text-xl text-nfl-navy-800 tracking-wide leading-tight">Weekly Schedule</h2>
         </template>
 
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+                <p class="mb-2 text-sm text-gray-600">
+                    Week Time is the date and time that ends a week and begins the next. Typically this is a
+                    Wednesday 9am or noon time where the point spread is entered for the next week and users can
+                    begin selecting picks.
+                </p>
+                <p class="mb-4 text-sm text-gray-600">Pick Time is the deadline for getting picks in.</p>
+
                 <div v-if="page.props.flash.success" class="mb-4 text-green-700 font-bold px-4">
                     {{ page.props.flash.success }}
                 </div>
@@ -53,40 +52,41 @@ const submit = () => {
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <form @submit.prevent="submit">
                         <div class="overflow-x-auto">
-                        <table class="table table-auto">
+                        <table class="w-full text-sm">
                             <thead>
-                                <tr>
-                                    <th class="px-2 py-1">Wk No</th>
-                                    <th class="px-2 py-1">Week Time</th>
-                                    <th class="px-2 py-1">Pick Time</th>
+                                <tr class="bg-nfl-navy-800 text-white text-xs uppercase tracking-wide">
+                                    <th class="px-3 py-2 text-center">Wk No</th>
+                                    <th class="px-3 py-2 text-left">Week Time</th>
+                                    <th class="px-3 py-2 text-left">Pick Time</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="i in 18" :key="i">
-                                    <td class="px-2 py-1" align="center">{{ i }}</td>
-                                    <td class="px-2 py-1">
-                                        <input type="datetime-local" v-model="form[`weektime${i - 1}`]" />
+                                <tr
+                                    v-for="i in 18"
+                                    :key="i"
+                                    class="border-t border-gray-200"
+                                    :class="i % 2 === 0 ? 'bg-gray-50' : 'bg-white'"
+                                >
+                                    <td class="px-3 py-2 text-center font-semibold text-nfl-navy-800">{{ i }}</td>
+                                    <td class="px-3 py-2">
+                                        <input type="datetime-local" v-model="form[`weektime${i - 1}`]" class="rounded border-gray-300 text-sm focus:border-nfl-navy-500 focus:ring-nfl-navy-500" />
                                     </td>
-                                    <td class="px-2 py-1">
-                                        <input type="datetime-local" v-model="form[`picktime${i - 1}`]" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="10">&nbsp;</td>
-                                </tr>
-                                <tr>
-                                    <td align="center" colspan="3">
-                                        <button
-                                            class="px-4 py-2 text-white bg-nfl-navy-700 hover:bg-nfl-navy-600 disabled:opacity-50 transition font-bold rounded-lg"
-                                            type="submit"
-                                            :disabled="form.processing"
-                                        >
-                                            Submit
-                                        </button>
+                                    <td class="px-3 py-2">
+                                        <input type="datetime-local" v-model="form[`picktime${i - 1}`]" class="rounded border-gray-300 text-sm focus:border-nfl-navy-500 focus:ring-nfl-navy-500" />
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
+                        </div>
+
+                        <div class="mt-6 mb-4 text-center">
+                            <button
+                                class="px-4 py-2 text-white bg-nfl-navy-700 hover:bg-nfl-navy-600 disabled:opacity-50 transition font-bold rounded-lg"
+                                type="submit"
+                                :disabled="form.processing"
+                            >
+                                Submit
+                            </button>
                         </div>
                     </form>
                 </div>

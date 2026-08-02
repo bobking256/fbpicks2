@@ -35,9 +35,9 @@ const submit = () => {
         </template>
 
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-8 py-4">
-                    <form class="w-full max-w-sm" @submit.prevent="submit">
+            <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-8 py-6">
+                    <form @submit.prevent="submit">
                         <div class="md:flex md:items-center mb-6">
                             <div class="md:w-1/3">
                                 <InputLabel value="Username" />
@@ -67,23 +67,23 @@ const submit = () => {
                         </div>
                         <div class="md:flex md:items-center mb-6">
                             <div class="md:w-1/3"></div>
-                            <label class="md:w-2/3 block text-gray-500 font-bold">
+                            <label class="md:w-2/3 flex items-center gap-2 text-gray-500 font-bold">
                                 <Checkbox v-model:checked="form.pick531" />
-                                <span class="text-sm ml-2">Pick 5-3-1</span>
+                                <span class="text-sm">Pick 5-3-1</span>
                             </label>
                         </div>
                         <div class="md:flex md:items-center mb-6">
                             <div class="md:w-1/3"></div>
-                            <label class="md:w-2/3 block text-gray-500 font-bold">
+                            <label class="md:w-2/3 flex items-center gap-2 text-gray-500 font-bold">
                                 <Checkbox v-model:checked="form.pickall" />
-                                <span class="text-sm ml-2">Pick All</span>
+                                <span class="text-sm">Pick All</span>
                             </label>
                         </div>
                         <div class="md:flex md:items-center mb-6">
                             <div class="md:w-1/3"></div>
-                            <label class="md:w-2/3 block text-gray-500 font-bold">
+                            <label class="md:w-2/3 flex items-center gap-2 text-gray-500 font-bold">
                                 <Checkbox v-model:checked="form.admin" />
-                                <span class="text-sm ml-2">Admin</span>
+                                <span class="text-sm">Admin</span>
                             </label>
                         </div>
                         <div class="md:flex md:items-center">

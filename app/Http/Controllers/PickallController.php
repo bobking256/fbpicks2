@@ -118,7 +118,7 @@ class PickallController extends Controller
             }
         }
 
-        return Inertia::render('Pickall/Locked', ['x' => $x, 'weekno' => $weekno]);
+        return Inertia::render('Pickall/Locked', ['rows' => $x, 'weekno' => $weekno]);
     }
 
     public function adminpickall(User $user)

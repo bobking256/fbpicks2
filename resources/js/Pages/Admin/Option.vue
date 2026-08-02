@@ -28,12 +28,12 @@ const submit = () => {
         </template>
 
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
                 <div v-if="page.props.flash.success" class="mb-4 text-green-700 font-bold px-4">
                     {{ page.props.flash.success }}
                 </div>
 
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-6 py-4">
+                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-6 py-6">
                     <form @submit.prevent="submit">
                         <div class="md:flex md:items-center mb-6">
                             <div class="md:w-1/3">
@@ -46,14 +46,14 @@ const submit = () => {
                                     id="message"
                                     v-model="form.message"
                                     type="text"
-                                    class="bg-gray-200 appearance-none border-2 border-gray-200 rounded-sm w-full py-2 px-4 text-gray-700 leading-tight focus:outline-hidden focus:bg-white focus:border-purple-500"
+                                    class="w-full rounded border-gray-300 text-gray-700 focus:border-nfl-navy-500 focus:ring-nfl-navy-500"
                                 />
                             </div>
                         </div>
                         <div class="md:flex md:items-center mb-6">
                             <div class="md:w-1/3"></div>
-                            <label class="md:w-2/3 block text-gray-500 font-bold">
-                                <input v-model="form.register" class="mr-2 leading-tight" type="checkbox" />
+                            <label class="md:w-2/3 flex items-center gap-2 text-gray-500 font-bold">
+                                <input v-model="form.register" type="checkbox" class="rounded border-gray-300 text-nfl-navy-700 focus:ring-nfl-navy-500" />
                                 <span class="text-sm">Allow Registration</span>
                             </label>
                         </div>
@@ -61,7 +61,7 @@ const submit = () => {
                             <div class="md:w-1/3"></div>
                             <div class="md:w-2/3">
                                 <button
-                                    class="shadow-sm bg-nfl-navy-700 hover:bg-nfl-navy-600 focus:shadow-outline focus:outline-hidden text-white font-bold py-2 px-4 rounded-sm disabled:opacity-50 transition"
+                                    class="font-bold rounded-lg px-4 py-2 text-white bg-nfl-navy-700 hover:bg-nfl-navy-600 disabled:opacity-50 transition"
                                     type="submit"
                                     :disabled="form.processing"
                                 >

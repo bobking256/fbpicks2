@@ -67,56 +67,52 @@ const submit = () => {
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-6 py-4">
+                    <p class="text-sm text-gray-500 mb-4">Picks must be entered by: <span class="font-semibold text-nfl-navy-800">{{ picktime }}</span></p>
+
                     <form @submit.prevent="submit">
                         <div class="overflow-x-auto">
-                        <table class="table table-striped table-condensed">
+                        <table class="w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
                             <thead>
-                                <tr>
-                                    <th class="px-2 py-1"></th>
-                                    <th class="px-2 py-1" colspan="2"><span class="style1">Favorite</span></th>
-                                    <th class="px-2 py-1"><div align="center" class="style1">Points</div></th>
-                                    <th class="px-2 py-1" colspan="2"><div align="right" class="style1">Underdog</div></th>
-                                    <th class="px-2 py-1"></th>
-                                    <th class="px-2 py-1"><span class="style4">Picks must be entered by: {{ picktime }}</span></th>
+                                <tr class="bg-nfl-navy-800 text-white text-xs uppercase tracking-wide">
+                                    <th class="px-2 py-2"></th>
+                                    <th class="px-2 py-2" colspan="2">Favorite</th>
+                                    <th class="px-2 py-2 text-center">Points</th>
+                                    <th class="px-2 py-2 text-right" colspan="2">Underdog</th>
+                                    <th class="px-2 py-2"></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <template v-for="row in rows" :key="row.field">
+                                <template v-for="(row, i) in rows" :key="row.field">
                                     <tr v-if="row.isMondayNight">
-                                        <th height="25"></th>
-                                        <th colspan="8" align="center"><span class="style2">Monday Night</span></th>
+                                        <th colspan="7" class="px-2 pt-4 pb-1 text-center font-semibold text-nfl-navy-800">Monday Night</th>
                                     </tr>
-                                    <tr>
-                                        <td class="px-2 py-1" align="right" valign="middle">
-                                            <input v-if="!row.noline" type="radio" :value="row.favId" v-model="form[row.field]" />
+                                    <tr class="border-t border-gray-200" :class="i % 2 === 1 ? 'bg-gray-50' : 'bg-white'">
+                                        <td class="px-2 py-1 text-right align-middle">
+                                            <input v-if="!row.noline" type="radio" :value="row.favId" v-model="form[row.field]" :aria-label="`Pick ${row.favLabel} to win`" class="border-gray-300 text-nfl-navy-700 focus:ring-nfl-navy-500" />
                                         </td>
-                                        <td class="px-2 py-1" align="center" valign="middle"><img :src="`/images/nfl/${row.favHelmet}`" /></td>
-                                        <td class="px-2 py-1" align="left" valign="middle">{{ row.favLabel }}</td>
-                                        <td class="px-2 py-1" align="center" valign="middle">{{ row.pointSpread }}</td>
-                                        <td class="px-2 py-1" align="right" valign="middle">{{ row.dogLabel }}</td>
-                                        <td class="px-2 py-1" align="center" valign="middle"><img :src="`/images/nfl/${row.dogHelmet}`" /></td>
-                                        <td class="px-2 py-1" align="left" valign="middle">
-                                            <input v-if="!row.noline" type="radio" :value="row.dogId" v-model="form[row.field]" />
+                                        <td class="px-2 py-1 text-center align-middle"><img :src="`/images/nfl/${row.favHelmet}`" class="inline-block h-6 w-auto" /></td>
+                                        <td class="px-2 py-1 text-left align-middle font-semibold">{{ row.favLabel }}</td>
+                                        <td class="px-2 py-1 text-center align-middle font-semibold">{{ row.pointSpread }}</td>
+                                        <td class="px-2 py-1 text-right align-middle font-semibold">{{ row.dogLabel }}</td>
+                                        <td class="px-2 py-1 text-center align-middle"><img :src="`/images/nfl/${row.dogHelmet}`" class="inline-block h-6 w-auto" /></td>
+                                        <td class="px-2 py-1 text-left align-middle">
+                                            <input v-if="!row.noline" type="radio" :value="row.dogId" v-model="form[row.field]" :aria-label="`Pick ${row.dogLabel} to win`" class="border-gray-300 text-nfl-navy-700 focus:ring-nfl-navy-500" />
                                         </td>
-                                        <td class="px-2 py-1"></td>
                                     </tr>
                                 </template>
-
-                                <tr>
-                                    <td colspan="5" align="right" valign="middle"><span class="style2">Monday Night Football Total Pts </span></td>
-                                    <td align="left" valign="middle" colspan="3">
-                                        <input type="text" v-model="form.totpts" size="4" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td align="center" valign="top" colspan="8">
-                                        <button class="font-bold text-white rounded-lg bg-nfl-navy-700 hover:bg-nfl-navy-600 disabled:opacity-50 transition px-4 py-2" type="submit" :disabled="form.processing">
-                                            Submit
-                                        </button>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
+                        </div>
+
+                        <div class="mt-4 flex items-center gap-2">
+                            <span class="font-semibold">Monday Night Football Total Pts:</span>
+                            <input type="text" v-model="form.totpts" size="4" class="rounded border-gray-300 text-sm focus:border-nfl-navy-500 focus:ring-nfl-navy-500" />
+                        </div>
+
+                        <div class="mt-6 text-center">
+                            <button class="font-bold text-white rounded-lg bg-nfl-navy-700 hover:bg-nfl-navy-600 disabled:opacity-50 transition px-4 py-2" type="submit" :disabled="form.processing">
+                                Submit
+                            </button>
                         </div>
                     </form>
                 </div>

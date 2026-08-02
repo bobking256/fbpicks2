@@ -35,19 +35,19 @@ class ResultsallController extends Controller
         $rank = $this->getResultsAll();
         Log::debug($rank);
 
-        $x = array(array());
+        $standings = array(array());
 
         if (empty($rank)) {
             for ($i = 0; $i < sizeof($users); $i++) {
-                $x[$i]['name'] = $users[$i]['name'];
+                $standings[$i]['name'] = $users[$i]['name'];
                 for ($j = 1; $j <= 18; $j++) {
-                    $x[$i][$j] = 0;
+                    $standings[$i][$j] = 0;
                 }
-                $x[$i][19] = 0;
+                $standings[$i][19] = 0;
             }
         } else {
             for ($i = 0; $i < sizeof($rank); $i++) {
-                $x[$i]['name'] = $rank[$i]['name'];
+                $standings[$i]['name'] = $rank[$i]['name'];
                 $id = null;
                 foreach ($users as $u) {
                     if ($u['name'] == $rank[$i]['name']) {
@@ -56,12 +56,12 @@ class ResultsallController extends Controller
                     }
                 }
                 for ($j = 1; $j <= 18; $j++) {
-                    $x[$i][$j] = $this->getUserWeekResultsAll($id, $j);
+                    $standings[$i][$j] = $this->getUserWeekResultsAll($id, $j);
                 }
-                $x[$i][19] = $rank[$i]['tot'];
+                $standings[$i][19] = $rank[$i]['tot'];
             }
         }
 
-        return Inertia::render('Resultsall/Standings', ['x' => $x]);
+        return Inertia::render('Resultsall/Standings', ['standings' => $standings]);
     }
 }

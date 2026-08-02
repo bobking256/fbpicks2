@@ -24,15 +24,15 @@ const page = usePage();
             </template>
         </div>
 
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 flex flex-column items-center justify-center">
+        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 flex flex-col items-center justify-center">
             <ApplicationMark class="size-20 text-nfl-red-500 mb-2" />
 
-            <div class="flex justify-center pt-4 sm:pt-0">
-                <img src="/assets/pauliefbp.png" class="rounded shadow-lg" />
+            <div class="flex justify-center pt-4 sm:pt-0 rounded-lg shadow-lg overflow-hidden">
+                <img src="/assets/pauliefbp.png" class="rounded-lg shadow-lg overflow-hidden" />
             </div>
 
-            <div class="mt-8 bg-white overflow-hidden shadow-sm text-center rounded-lg px-6 py-4">
-                <span class="font-display font-medium tracking-wide text-nfl-navy-800">Paulie's Football Picks 2025/26 Season.</span>
+            <div class="mt-8 bg-white overflow-hidden shadow-sm text-center rounded px-6 py-4">
+                <span class="font-display font-medium tracking-wide text-nfl-navy-800">Paulie's Football Picks 2026/27 Season.</span>
                 <span class="text-gray-500"> {{ appVersion }}</span>
             </div>
         </div>

@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from 'vue';
 import { usePage, Link } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
@@ -9,6 +10,25 @@ import resultsall from '@/routes/resultsall';
 
 const page = usePage();
 const user = page.props.auth.user;
+
+const games = computed(() => [
+    {
+        key: 'pick531',
+        enabled: user.pick531,
+        title: 'Pick 5-3-1',
+        description: 'Rank your favorite picks by confidence — 5, 3, and 1 points, plus a bonus.',
+        createHref: createPick531(),
+        standingsHref: results.standings(),
+    },
+    {
+        key: 'pickall',
+        enabled: user.pickall,
+        title: 'Pick All',
+        description: 'Pick every game against the spread, plus a Monday Night total-points tiebreaker.',
+        createHref: createPickall(),
+        standingsHref: resultsall.standings(),
+    },
+].filter((game) => game.enabled));
 </script>
 
 <template>
@@ -36,36 +56,28 @@ const user = page.props.auth.user;
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div v-if="user.pick531" class="bg-white overflow-hidden shadow-xl rounded-lg p-6 flex flex-col">
-                        <h4 class="font-display text-lg font-semibold text-nfl-navy-800 tracking-wide">Pick 5-3-1</h4>
-                        <p class="mt-1 text-sm text-gray-500 grow">
-                            Rank your favorite picks by confidence &mdash; 5, 3, and 1 points, plus a bonus.
-                        </p>
+                <div v-if="games.length" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div
+                        v-for="game in games"
+                        :key="game.key"
+                        class="bg-white overflow-hidden shadow-xl rounded-lg p-6 flex flex-col"
+                        :class="{ 'sm:col-span-2': games.length === 1 }"
+                    >
+                        <h4 class="font-display text-lg font-semibold text-nfl-navy-800 tracking-wide">{{ game.title }}</h4>
+                        <p class="mt-1 text-sm text-gray-500 grow">{{ game.description }}</p>
                         <div class="mt-4 flex flex-wrap gap-3">
-                            <Link :href="createPick531()" class="inline-flex items-center px-4 py-2 bg-nfl-navy-700 rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-nfl-navy-600 transition">
+                            <Link :href="game.createHref" class="inline-flex items-center px-4 py-2 bg-nfl-navy-700 rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-nfl-navy-600 transition">
                                 Make Your Picks
                             </Link>
-                            <Link :href="results.standings()" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-50 transition">
+                            <Link :href="game.standingsHref" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-50 transition">
                                 Standings
                             </Link>
                         </div>
                     </div>
+                </div>
 
-                    <div v-if="user.pickall" class="bg-white overflow-hidden shadow-xl rounded-lg p-6 flex flex-col">
-                        <h4 class="font-display text-lg font-semibold text-nfl-navy-800 tracking-wide">Pick All</h4>
-                        <p class="mt-1 text-sm text-gray-500 grow">
-                            Pick every game against the spread, plus a Monday Night total-points tiebreaker.
-                        </p>
-                        <div class="mt-4 flex flex-wrap gap-3">
-                            <Link :href="createPickall()" class="inline-flex items-center px-4 py-2 bg-nfl-navy-700 rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-nfl-navy-600 transition">
-                                Make Your Picks
-                            </Link>
-                            <Link :href="resultsall.standings()" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-50 transition">
-                                Standings
-                            </Link>
-                        </div>
-                    </div>
+                <div v-else class="bg-white overflow-hidden shadow-xl rounded-lg p-6 text-sm text-gray-500">
+                    You're not enrolled in any pick'em games yet. Contact an admin to get set up.
                 </div>
             </div>
         </div>

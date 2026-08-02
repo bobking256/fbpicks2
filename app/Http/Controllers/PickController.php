@@ -148,7 +148,7 @@ class PickController extends Controller
             }
         }
 
-        return Inertia::render('Pick531/Locked', ['x' => $x, 'weekno' => $weekno]);
+        return Inertia::render('Pick531/Locked', ['rows' => $x, 'weekno' => $weekno]);
     }
 
     public function adminpick531(User $user)
