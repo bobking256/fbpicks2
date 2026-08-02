@@ -34,7 +34,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::resources(['teams' => TeamController::class]);
     Route::get('pick531', [PickController::class, 'create'])->name('pick531.create');
     Route::post('pick531', [PickController::class, 'store'])->name('pick531.store');
-    Route::get('complete', [PickController::class, 'complete'])->name('pick531.complete');
     Route::get('pick531locked', [PickController::class, 'pick531locked'])->name('pick531.pickslocked');
     Route::get('results', [ResultController::class, 'results'])->name('results.results');
     Route::get('resultsbyweek/{id}', [ResultController::class, 'resultsbyweek'])->name('results.resultsbyweek');
