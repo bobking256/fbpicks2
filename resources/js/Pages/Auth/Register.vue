@@ -13,6 +13,8 @@ const form = useForm({
     email: '',
     password: '',
     password_confirmation: '',
+    pick531: false,
+    pickall: false,
     terms: false,
 });
 
@@ -83,6 +85,24 @@ const submit = () => {
                     autocomplete="new-password"
                 />
                 <InputError class="mt-2" :message="form.errors.password_confirmation" />
+            </div>
+
+            <div class="mt-4">
+                <InputLabel for="pick531">
+                    <div class="flex items-center">
+                        <Checkbox id="pick531" v-model:checked="form.pick531" name="pick531" />
+                        <div class="ms-2">Play Pick 5-3-1</div>
+                    </div>
+                </InputLabel>
+            </div>
+
+            <div class="mt-4">
+                <InputLabel for="pickall">
+                    <div class="flex items-center">
+                        <Checkbox id="pickall" v-model:checked="form.pickall" name="pickall" />
+                        <div class="ms-2">Play Pick All</div>
+                    </div>
+                </InputLabel>
             </div>
 
             <div v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature" class="mt-4">
