@@ -1,6 +1,7 @@
 <script setup>
 import { useForm, usePage } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import admin from '@/routes/admin';
 
 const props = defineProps({
     schedule: Array,
@@ -28,7 +29,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('admin.updatepointspread'));
+    form.post(admin.updatepointspread().url);
 };
 </script>
 

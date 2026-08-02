@@ -1,6 +1,7 @@
 <script setup>
 import { Head } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import { emailnotpicked } from '@/routes/pick531';
 
 defineProps({
     users: Array,
@@ -36,7 +37,7 @@ defineProps({
             </div>
 
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-4">
-                <a :href="route('pick531.emailnotpicked')">
+                <a :href="emailnotpicked().url">
                     <button class="bg-red-200 font-bold hover:bg-red-500 px-4 py-2 border-2 border-gray-400 rounded-lg">
                         Email Not Picked Users
                     </button>

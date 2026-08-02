@@ -6,6 +6,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import Checkbox from '@/Components/Checkbox.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import admin from '@/routes/admin';
 
 const props = defineProps({
     user: Object,
@@ -21,7 +22,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('admin.updateuser', props.user.id));
+    form.post(admin.updateuser(props.user.id).url);
 };
 </script>
 

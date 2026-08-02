@@ -2,6 +2,8 @@
 import { computed } from 'vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import { store } from '@/routes/pick531';
+import admin from '@/routes/admin';
 
 const props = defineProps({
     picks: Object,
@@ -65,11 +67,11 @@ const rows = computed(() => props.scheds.map((s) => {
 const showBonus = computed(() => props.weekno > 2 && props.weekno < 18);
 
 const submit = () => {
-    const url = props.adminUser
-        ? route('admin.storepick531', props.adminUser.id)
-        : route('pick531.store');
+    const action = props.adminUser
+        ? admin.storepick531(props.adminUser.id)
+        : store();
 
-    form.post(url);
+    form.post(action.url);
 };
 </script>
 

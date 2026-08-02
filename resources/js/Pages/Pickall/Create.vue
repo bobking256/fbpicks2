@@ -2,6 +2,8 @@
 import { computed } from 'vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import { store } from '@/routes/pickall';
+import admin from '@/routes/admin';
 
 const props = defineProps({
     scheds: Array,
@@ -43,11 +45,11 @@ const form = useForm({
 });
 
 const submit = () => {
-    const url = props.adminUser
-        ? route('admin.storepickall', props.adminUser.id)
-        : route('pickall.store');
+    const action = props.adminUser
+        ? admin.storepickall(props.adminUser.id)
+        : store();
 
-    form.post(url);
+    form.post(action.url);
 };
 </script>
 

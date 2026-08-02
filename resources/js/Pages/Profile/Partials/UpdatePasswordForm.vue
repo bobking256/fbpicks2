@@ -7,6 +7,7 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import { update } from '@/routes/user-password';
 
 const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
@@ -18,7 +19,7 @@ const form = useForm({
 });
 
 const updatePassword = () => {
-    form.put(route('user-password.update'), {
+    form.put(update().url, {
         errorBag: 'updatePassword',
         preserveScroll: true,
         onSuccess: () => form.reset(),

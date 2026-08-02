@@ -9,6 +9,15 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import {
+    enable as twoFactorEnable,
+    confirm as twoFactorConfirm,
+    disable as twoFactorDisable,
+    qrCode as twoFactorQrCode,
+    secretKey as twoFactorSecretKey,
+    recoveryCodes as twoFactorRecoveryCodes,
+    regenerateRecoveryCodes as twoFactorRegenerateRecoveryCodes,
+} from '@/routes/two-factor';
 
 const props = defineProps({
     requiresConfirmation: Boolean,
@@ -40,7 +49,7 @@ watch(twoFactorEnabled, () => {
 const enableTwoFactorAuthentication = () => {
     enabling.value = true;
 
-    router.post(route('two-factor.enable'), {}, {
+    router.post(twoFactorEnable().url, {}, {
         preserveScroll: true,
         onSuccess: () => Promise.all([
             showQrCode(),
@@ -55,25 +64,25 @@ const enableTwoFactorAuthentication = () => {
 };
 
 const showQrCode = () => {
-    return axios.get(route('two-factor.qr-code')).then(response => {
+    return axios.get(twoFactorQrCode().url).then(response => {
         qrCode.value = response.data.svg;
     });
 };
 
 const showSetupKey = () => {
-    return axios.get(route('two-factor.secret-key')).then(response => {
+    return axios.get(twoFactorSecretKey().url).then(response => {
         setupKey.value = response.data.secretKey;
     });
 }
 
 const showRecoveryCodes = () => {
-    return axios.get(route('two-factor.recovery-codes')).then(response => {
+    return axios.get(twoFactorRecoveryCodes().url).then(response => {
         recoveryCodes.value = response.data;
     });
 };
 
 const confirmTwoFactorAuthentication = () => {
-    confirmationForm.post(route('two-factor.confirm'), {
+    confirmationForm.post(twoFactorConfirm().url, {
         errorBag: "confirmTwoFactorAuthentication",
         preserveScroll: true,
         preserveState: true,
@@ -87,14 +96,14 @@ const confirmTwoFactorAuthentication = () => {
 
 const regenerateRecoveryCodes = () => {
     axios
-        .post(route('two-factor.recovery-codes'))
+        .post(twoFactorRegenerateRecoveryCodes().url)
         .then(() => showRecoveryCodes());
 };
 
 const disableTwoFactorAuthentication = () => {
     disabling.value = true;
 
-    router.delete(route('two-factor.disable'), {
+    router.delete(twoFactorDisable().url, {
         preserveScroll: true,
         onSuccess: () => {
             disabling.value = false;

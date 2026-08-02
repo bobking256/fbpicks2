@@ -6,6 +6,7 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import { update } from '@/routes/password';
 
 const props = defineProps({
     email: String,
@@ -20,7 +21,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('password.update'), {
+    form.post(update().url, {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
 };

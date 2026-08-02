@@ -1,6 +1,7 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import { resultsbyweek } from '@/routes/results';
 
 defineProps({
     res: Array,
@@ -23,7 +24,7 @@ const weeks = Array.from({ length: 18 }, (_, i) => i + 1);
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
                     Week No.:
                     <template v-for="w in weeks" :key="w">
-                        <Link :href="route('results.resultsbyweek', w)">{{ w }}</Link>&nbsp;&nbsp;
+                        <Link :href="resultsbyweek(w)">{{ w }}</Link>&nbsp;&nbsp;
                     </template>
                     <br /><br />
                     As of Week #{{ week_no }}

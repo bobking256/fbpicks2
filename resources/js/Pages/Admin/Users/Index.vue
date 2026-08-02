@@ -2,6 +2,7 @@
 import { Head, Link } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import ConfirmDeleteButton from '@/Components/ConfirmDeleteButton.vue';
+import admin from '@/routes/admin';
 
 defineProps({
     users: Array,
@@ -36,7 +37,7 @@ defineProps({
                         <tbody>
                             <tr v-for="u in users" :key="u.id">
                                 <td class="px-2 py-1">
-                                    <Link class="underline text-blue-700" :href="route('admin.edituser', u.id)">{{ u.id }}</Link>
+                                    <Link class="underline text-blue-700" :href="admin.edituser(u.id)">{{ u.id }}</Link>
                                 </td>
                                 <td class="px-2 py-1">{{ u.name }}</td>
                                 <td class="px-2 py-1">{{ u.email }}</td>
@@ -44,13 +45,13 @@ defineProps({
                                 <td class="px-2 py-1"><input disabled type="checkbox" :checked="!!u.pickall" /></td>
                                 <td class="px-2 py-1"><input disabled type="checkbox" :checked="!!u.admin" /></td>
                                 <td class="px-2 py-1">
-                                    <Link :href="route('admin.pick531', u.id)" class="underline text-blue-500 hover:text-red-700">Pick 5-3-1</Link>
+                                    <Link :href="admin.pick531(u.id)" class="underline text-blue-500 hover:text-red-700">Pick 5-3-1</Link>
                                 </td>
                                 <td class="px-2 py-1">
-                                    <Link :href="route('admin.pickall', u.id)" class="underline text-blue-500 hover:text-red-700">Pick All</Link>
+                                    <Link :href="admin.pickall(u.id)" class="underline text-blue-500 hover:text-red-700">Pick All</Link>
                                 </td>
                                 <td class="px-2 py-1">
-                                    <ConfirmDeleteButton :action="route('admin.destroyuser', u.id)" />
+                                    <ConfirmDeleteButton :action="admin.destroyuser(u.id).url" />
                                 </td>
                             </tr>
                         </tbody>

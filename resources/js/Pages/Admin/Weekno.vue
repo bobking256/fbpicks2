@@ -1,6 +1,7 @@
 <script setup>
 import { Head, useForm, usePage } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import admin from '@/routes/admin';
 
 const props = defineProps({
     weekno: Object,
@@ -23,7 +24,7 @@ for (let i = 0; i < 18; i++) {
 const form = useForm(fields);
 
 const submit = () => {
-    form.post(route('admin.storeweekno'));
+    form.post(admin.storeweekno().url);
 };
 </script>
 

@@ -1,6 +1,7 @@
 <script setup>
 import { Head, useForm, usePage } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import admin from '@/routes/admin';
 
 const props = defineProps({
     option: Object,
@@ -14,7 +15,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.put(route('admin.option.update', props.option.id));
+    form.put(admin.option.update(props.option.id).url);
 };
 </script>
 
