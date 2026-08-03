@@ -73,9 +73,24 @@ const pointsUsedOnce = computed(() => {
     return ['5', '3', '1'].every((points) => values.filter((v) => v === points).length === 1);
 });
 
+const bonusForbiddenTeamIds = computed(() => {
+    const forbidden = new Set();
+    rows.value.forEach((row, i) => {
+        const game = form.games[i];
+        if (game.sela !== '0') forbidden.add(row.dogId);
+        if (game.selb !== '0') forbidden.add(row.favId);
+    });
+    return forbidden;
+});
+
+const availableBonusTeams = computed(() => props.teams.filter((t) => !bonusForbiddenTeamIds.value.has(t.id)));
+
 const validationError = computed(() => {
     if (rowHasDoublePick.value) return 'A game cannot have picks on both the favorite and the underdog.';
     if (!pointsUsedOnce.value) return 'Each of 5, 3, and 1 points must be picked exactly once.';
+    if (form.bonus && bonusForbiddenTeamIds.value.has(form.bonus)) {
+        return 'The bonus pick cannot be the opponent of a team you already picked for 5, 3, or 1 points.';
+    }
     return null;
 });
 
@@ -155,7 +170,7 @@ const submit = () => {
                                 <span class="font-semibold">Bonus Pick:</span>
                                 <select v-if="showBonus" v-model="form.bonus" class="rounded border-gray-300 text-sm focus:border-nfl-navy-500 focus:ring-nfl-navy-500">
                                     <option :value="0"></option>
-                                    <option v-for="t in teams" :key="t.id" :value="t.id">{{ t.name }}</option>
+                                    <option v-for="t in availableBonusTeams" :key="t.id" :value="t.id">{{ t.name }}</option>
                                 </select>
                                 <span v-else class="text-gray-500">Not Available.</span>
                             </div>
