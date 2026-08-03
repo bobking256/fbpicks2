@@ -55,7 +55,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('admin/users', [GroupController::class, 'index'])->name('admin.users');
     Route::get('admin/edituser/{user}', [GroupController::class, 'edituser'])->name('admin.edituser');
-    Route::post('admin/updateuser/{user}', [GroupController::class, 'updateuser'])->name('admin.updateuser');
+    Route::put('admin/updateuser/{user}', [GroupController::class, 'updateuser'])->name('admin.updateuser');
     Route::get('admin/pick531/{user}', [PickController::class, 'adminpick531'])->name('admin.pick531');
     Route::post('admin/storepick531/{user}', [PickController::class, 'storeadminpick531'])->name('admin.storepick531');
     Route::get('admin/pickall/{user}', [PickallController::class, 'adminpickall'])->name('admin.pickall');
