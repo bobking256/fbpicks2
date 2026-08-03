@@ -22,7 +22,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(admin.updateuser(props.user.id).url);
+    form.put(admin.updateuser(props.user.id).url);
 };
 </script>
 
