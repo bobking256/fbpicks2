@@ -16,7 +16,7 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($this->route('user'))],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($this->route('user'))],
+            'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['nullable', 'string', 'min:8'],
             'pick531' => ['boolean'],
             'pickall' => ['boolean'],
