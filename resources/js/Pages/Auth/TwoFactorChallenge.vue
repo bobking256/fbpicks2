@@ -39,7 +39,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Two-factor Confirmation" />
+    <Head title="Paulie's Picks" />
 
     <AuthenticationCard>
         <template #logo>

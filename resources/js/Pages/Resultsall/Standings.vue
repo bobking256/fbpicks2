@@ -10,7 +10,7 @@ const weeks = Array.from({ length: 18 }, (_, i) => i + 1);
 </script>
 
 <template>
-    <Head title="Pick All Standings" />
+    <Head title="Paulie's Picks" />
 
     <AppLayout>
         <template #header>

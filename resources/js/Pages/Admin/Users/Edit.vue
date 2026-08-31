@@ -27,7 +27,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Edit User" />
+    <Head title="Paulie's Picks" />
 
     <AppLayout>
         <template #header>

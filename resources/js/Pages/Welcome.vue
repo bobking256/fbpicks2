@@ -13,7 +13,7 @@ const page = usePage();
 </script>
 
 <template>
-    <Head title="Paulie's Football Picks" />
+    <Head title="Paulie's Picks" />
 
     <div class="flex flex-col min-h-screen bg-nfl-navy-800">
         <div v-if="canLogin" class="flex justify-end gap-4 px-4 py-4 sm:px-6 lg:px-8">

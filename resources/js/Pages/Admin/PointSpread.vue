@@ -1,5 +1,5 @@
 <script setup>
-import { useForm, usePage } from '@inertiajs/vue3';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import admin from '@/routes/admin';
 
@@ -34,6 +34,8 @@ const submit = () => {
 </script>
 
 <template>
+    <Head title="Paulie's Picks" />
+
     <AppLayout>
         <template #header>
             <h2 class="font-display font-semibold text-xl text-nfl-navy-800 tracking-wide leading-tight">Admin Point Spreads</h2>

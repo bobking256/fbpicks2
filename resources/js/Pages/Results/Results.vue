@@ -11,7 +11,7 @@ const rankings = computed(() => props.res.filter((r) => r.name));
 </script>
 
 <template>
-    <Head title="Pick 5-3-1 Weekly Results" />
+    <Head title="Paulie's Picks" />
 
     <AppLayout>
         <template #header>

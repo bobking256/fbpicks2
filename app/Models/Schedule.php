@@ -19,4 +19,8 @@ class Schedule extends Model
         'gamedate',
         'noline',
     ];
+
+    protected $casts = [
+        'noline' => 'boolean',
+    ];
 }

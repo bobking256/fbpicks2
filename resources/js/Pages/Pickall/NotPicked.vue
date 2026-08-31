@@ -9,7 +9,7 @@ defineProps({
 </script>
 
 <template>
-    <Head title="Not Yet Picked All" />
+    <Head title="Paulie's Picks" />
 
     <AppLayout>
         <template #header>

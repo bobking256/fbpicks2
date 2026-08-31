@@ -4,7 +4,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 </script>
 
 <template>
-    <Head title="Pick All" />
+    <Head title="Paulie's Picks" />
 
     <AppLayout>
         <template #header>

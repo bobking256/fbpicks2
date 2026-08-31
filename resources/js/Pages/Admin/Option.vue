@@ -20,7 +20,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Admin Options" />
+    <Head title="Paulie's Picks" />
 
     <AppLayout>
         <template #header>

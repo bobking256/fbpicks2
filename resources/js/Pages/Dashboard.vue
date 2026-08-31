@@ -32,7 +32,7 @@ const games = computed(() => [
 </script>
 
 <template>
-    <AppLayout title="Dashboard">
+    <AppLayout title="Paulie's Picks">
         <template #header>
             <h2 class="font-display font-semibold text-xl text-nfl-navy-800 tracking-wide leading-tight">
                 Dashboard
