@@ -22,7 +22,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Forgot Password" />
+    <Head title="Paulie's Picks" />
 
     <AuthenticationCard>
         <template #logo>

@@ -10,7 +10,7 @@ defineProps({
 </script>
 
 <template>
-    <Head title="Users" />
+    <Head title="Paulie's Picks" />
 
     <AppLayout>
         <template #header>

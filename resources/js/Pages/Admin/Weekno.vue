@@ -29,7 +29,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Weekly Schedule" />
+    <Head title="Paulie's Picks" />
 
     <AppLayout>
         <template #header>

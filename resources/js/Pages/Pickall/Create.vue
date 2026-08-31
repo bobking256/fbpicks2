@@ -54,7 +54,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Pick All" />
+    <Head title="Paulie's Picks" />
 
     <AppLayout>
         <template #header>

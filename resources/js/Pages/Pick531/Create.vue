@@ -106,7 +106,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Pick 5-3-1" />
+    <Head title="Paulie's Picks" />
 
     <AppLayout>
         <template #header>
