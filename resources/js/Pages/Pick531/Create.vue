@@ -123,6 +123,8 @@ const submit = () => {
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-6 py-4">
+                    <p class="text-sm text-gray-500 mb-4">Home team in all <span class="font-semibold uppercase">CAPS</span>.</p>
+
                     <form @submit.prevent="submit">
                         <div class="overflow-x-auto">
                         <table class="w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
