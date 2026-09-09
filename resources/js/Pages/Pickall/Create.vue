@@ -18,6 +18,7 @@ const fieldFor = (i) => 'p' + (i + 1);
 
 const teamName = (id) => props.teams[id - 1]?.name ?? '';
 const teamHelmet = (id) => props.teams[id - 1]?.gif ?? '';
+const teamLabel = (teamId, s) => (teamId === s.hometeam_id ? teamName(teamId).toUpperCase() : teamName(teamId).toLowerCase());
 
 const rows = computed(() => props.scheds.map((s, i) => {
     const favIsAway = s.awayteam_id === s.favoriteteam_id;
@@ -28,8 +29,8 @@ const rows = computed(() => props.scheds.map((s, i) => {
         field: fieldFor(i),
         favId,
         dogId,
-        favLabel: teamName(favId).toUpperCase(),
-        dogLabel: teamName(dogId).toLowerCase(),
+        favLabel: teamLabel(favId, s),
+        dogLabel: teamLabel(dogId, s),
         favHelmet: teamHelmet(favId),
         dogHelmet: teamHelmet(dogId),
         pointSpread: s.point_spread,
@@ -59,7 +60,7 @@ const submit = () => {
     <AppLayout>
         <template #header>
             <h2 class="font-display font-semibold text-xl text-nfl-navy-800 tracking-wide leading-tight">
-                Pick All - Favored Team in Caps for Week No. {{ weekno }}
+                Pick All - Home Teams in Caps for Week No. {{ weekno }}
                 <span v-if="adminUser"> &mdash; {{ adminUser.name }}</span>
             </h2>
         </template>
