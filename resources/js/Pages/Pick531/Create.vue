@@ -38,13 +38,13 @@ const form = useForm({
 
 const teamName = (id) => props.teams[id - 1]?.name ?? '';
 const teamHelmet = (id) => props.teams[id - 1]?.gif ?? '';
+const teamLabel = (teamId, s) => (teamId === s.hometeam_id ? teamName(teamId).toUpperCase() : teamName(teamId).toLowerCase());
 
 const rows = computed(() => props.scheds.map((s) => {
     const favIsAway = s.awayteam_id === s.favoriteteam_id;
     const favId = favIsAway ? s.awayteam_id : s.hometeam_id;
     const dogId = favIsAway ? s.hometeam_id : s.awayteam_id;
-    let favLabel = favIsAway ? teamName(s.awayteam_id) : teamName(s.hometeam_id).toUpperCase();
-    if (favIsAway) favLabel = favLabel.toUpperCase();
+    let favLabel = teamLabel(favId, s);
     if (s.default_game == 5) favLabel += ' [5]';
     if (s.default_game == 3) favLabel += ' [3]';
     if (s.default_game == 1) favLabel += ' [1]';
@@ -54,7 +54,7 @@ const rows = computed(() => props.scheds.map((s) => {
         dogId,
         favLabel,
         favHelmet: teamHelmet(favId),
-        dogLabel: teamName(dogId),
+        dogLabel: teamLabel(dogId, s),
         dogHelmet: teamHelmet(dogId),
         pointSpread: s.point_spread,
         noline: s.noline,

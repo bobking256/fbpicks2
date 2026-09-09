@@ -18,6 +18,7 @@ const fieldFor = (i) => 'p' + (i + 1);
 
 const teamName = (id) => props.teams[id - 1]?.name ?? '';
 const teamHelmet = (id) => props.teams[id - 1]?.gif ?? '';
+const teamLabel = (teamId, s) => (teamId === s.hometeam_id ? teamName(teamId).toUpperCase() : teamName(teamId).toLowerCase());
 
 const rows = computed(() => props.scheds.map((s, i) => {
     const favIsAway = s.awayteam_id === s.favoriteteam_id;
@@ -28,8 +29,8 @@ const rows = computed(() => props.scheds.map((s, i) => {
         field: fieldFor(i),
         favId,
         dogId,
-        favLabel: (favIsAway ? teamName(s.awayteam_id) : teamName(s.hometeam_id)).toUpperCase(),
-        dogLabel: favIsAway ? teamName(s.hometeam_id) : teamName(s.awayteam_id),
+        favLabel: teamLabel(favId, s),
+        dogLabel: teamLabel(dogId, s),
         favHelmet: teamHelmet(favId),
         dogHelmet: teamHelmet(dogId),
         pointSpread: s.point_spread,
