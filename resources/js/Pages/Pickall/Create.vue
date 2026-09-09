@@ -28,8 +28,8 @@ const rows = computed(() => props.scheds.map((s, i) => {
         field: fieldFor(i),
         favId,
         dogId,
-        favLabel: (favIsAway ? teamName(s.awayteam_id) : teamName(s.hometeam_id)).toUpperCase(),
-        dogLabel: favIsAway ? teamName(s.hometeam_id) : teamName(s.awayteam_id),
+        favLabel: teamName(favId).toUpperCase(),
+        dogLabel: teamName(dogId).toLowerCase(),
         favHelmet: teamHelmet(favId),
         dogHelmet: teamHelmet(dogId),
         pointSpread: s.point_spread,
@@ -59,7 +59,7 @@ const submit = () => {
     <AppLayout>
         <template #header>
             <h2 class="font-display font-semibold text-xl text-nfl-navy-800 tracking-wide leading-tight">
-                Pick All - Home Teams in Caps for Week No. {{ weekno }}
+                Pick All - Favored Team in Caps for Week No. {{ weekno }}
                 <span v-if="adminUser"> &mdash; {{ adminUser.name }}</span>
             </h2>
         </template>
