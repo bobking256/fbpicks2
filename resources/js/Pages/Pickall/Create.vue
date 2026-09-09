@@ -60,7 +60,7 @@ const submit = () => {
     <AppLayout>
         <template #header>
             <h2 class="font-display font-semibold text-xl text-nfl-navy-800 tracking-wide leading-tight">
-                Pick All - Home Teams in Caps for Week No. {{ weekno }}
+                Pick All for Week No. {{ weekno }}
                 <span v-if="adminUser"> &mdash; {{ adminUser.name }}</span>
             </h2>
         </template>
@@ -68,6 +68,7 @@ const submit = () => {
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-6 py-4">
+                    <p class="text-sm text-gray-500 mb-1">Home team in all <span class="font-semibold uppercase">CAPS</span>.</p>
                     <p class="text-sm text-gray-500 mb-4">Picks must be entered by: <span class="font-semibold text-nfl-navy-800">{{ picktime }}</span></p>
 
                     <form @submit.prevent="submit">
