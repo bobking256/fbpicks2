@@ -79,7 +79,7 @@ const submit = () => {
                                         <input v-model="game.noline" type="checkbox" class="rounded border-gray-300 text-nfl-navy-700 focus:ring-nfl-navy-500" />
                                     </td>
                                     <td class="px-3 py-2">
-                                        <select v-model="game.awayteam_id" class="w-full rounded border-gray-300 text-sm focus:border-nfl-navy-500 focus:ring-nfl-navy-500">
+                                        <select v-model="game.awayteam_id" class="w-full min-w-36 rounded border-gray-300 text-sm focus:border-nfl-navy-500 focus:ring-nfl-navy-500">
                                             <option v-for="t in teams" :key="t.id" :value="t.id">{{ t.name }}</option>
                                         </select>
                                     </td>
@@ -90,7 +90,7 @@ const submit = () => {
                                         <input v-model="game.point_spread" type="text" size="4" class="w-16 rounded border-gray-300 text-sm text-center focus:border-nfl-navy-500 focus:ring-nfl-navy-500" />
                                     </td>
                                     <td class="px-3 py-2">
-                                        <select v-model="game.hometeam_id" class="w-full rounded border-gray-300 text-sm focus:border-nfl-navy-500 focus:ring-nfl-navy-500">
+                                        <select v-model="game.hometeam_id" class="w-full min-w-36 rounded border-gray-300 text-sm focus:border-nfl-navy-500 focus:ring-nfl-navy-500">
                                             <option v-for="t in teams" :key="t.id" :value="t.id">{{ t.name }}</option>
                                         </select>
                                     </td>
